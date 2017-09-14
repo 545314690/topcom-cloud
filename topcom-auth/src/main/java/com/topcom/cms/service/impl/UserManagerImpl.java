@@ -1,0 +1,179 @@
+package com.topcom.cms.service.impl;
+
+import java.util.*;
+
+import com.topcom.cms.dao.RoleDao;
+import com.topcom.cms.domain.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.topcom.cms.base.service.impl.GenericManagerImpl;
+import com.topcom.cms.dao.UserDao;
+import com.topcom.cms.domain.User;
+import com.topcom.cms.service.UserManager;
+
+/**
+ * 用户信息访问接口
+ *
+ * @author lism
+ */
+@Service(value = "userManager")
+@Transactional
+public class UserManagerImpl extends GenericManagerImpl<User, Long> implements
+        UserManager {
+
+    UserDao userDao;
+
+    @Autowired
+    RoleDao roleDao;
+
+    @Autowired
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+        this.dao = this.userDao;
+    }
+
+    @Autowired
+    private UserManager userManager;
+
+    @Override
+    public User findById(Long id) {
+        return userDao.findById(id);
+    }
+
+    @Override
+    public Page<User> fuzzyQueryByName(Pageable pageable, String username) {
+        return userDao.fuzzyQueryByName(pageable, username);
+    }
+
+
+    @Override
+    public Page<User> fuzzyQueryByFullName(Pageable pageable, String fullName) {
+        return userDao.fuzzyQueryByFullName(pageable, fullName);
+    }
+
+    @Override
+    public Page<User> fuzzyQueryByFAC(Pageable pageable, String fac) {
+        return userDao.fuzzyQueryByFAC(pageable, fac);
+    }
+
+    @Override
+    public User findByUsernameAndPassword(String username, String password) {
+        return userDao.findByUsernameAndPassword(username, password);
+    }
+
+    @Override
+    public List<String> findAuthsById(Long id) {
+        // findAuthsByIdWithGroup 获取用户所属组所对应的权限(菜单)
+        List<String> list = userDao.findAuthsByIdWithGroup(id);
+        // findAuthsByIdWithGroup 获取用户角色所对应的权限(菜单)
+        List<String> list2 = userDao.findAuthByIdNoGroup(id);
+        // 获取用户权限
+        list.addAll(list2);
+        return list;
+    }
+
+    @Override
+    public Set<Resource> findResourceById(Long id) {
+        // 获取用户所属组所对应的权限(菜单)
+        return userDao.findResourceById(id);
+    }
+
+    @Override
+    public Set<Resource> findResourceByGroupId(Long id) {
+        // 获取用户部门所属组所对应的权限(菜单)
+        return userDao.findResourceByGroupsId(id);
+    }
+
+    @Override
+    // 将缓存保存进andCache，并使用参数中的id加上一个字符串(这里使用方法名称)作为缓存的key
+    @Cacheable(value = "userCache", key = "#page + 'findAll'")
+    public Page<User> findAll(Pageable page) {
+        return super.findAll(page);
+    }
+
+    @Override
+    @CacheEvict(value = "userCache", allEntries = true)
+    // 清除掉全部缓存
+    public void delete(Long id) {
+        super.delete(id);
+
+    }
+
+    @Override
+    @CacheEvict(value = "userCache", allEntries = true)
+    public User save(User model) {
+        return super.save(model);
+    }
+
+    @Override
+    @Cacheable(value = "userCache", key = "#id + 'findById'")
+    // 将缓存保存进userCache，并使用参数中的id加上一个字符串(这里使用方法名称)作为缓存的key
+    public User findUserById(Long id) {
+        return super.findById(id);
+    }
+
+    /**
+     * 根据用户id更新密码
+     *
+     * @param id              用户id
+     * @param newPwd          新密码
+     * @param salt
+     * @return
+     */
+    @Override
+    public int updatePassword(Long id, String newPwd, String salt) {
+        return userDao.updatePassWord(id, newPwd, salt);
+    }
+
+    @Override
+    public List<User> getUsersByGroupId(Long groupId) {
+        return userDao.getUsersByGroups(groupId);
+    }
+
+    @Override
+    public Page<User> getPageUsersByGroupIdAndName(Pageable pageable, Long groupId, String name) {
+        return userDao.getPageUsersByGroupsAndUsername(pageable, groupId, name);
+    }
+
+    @Override
+    public User findUserByCode(String user_code) {
+        return userDao.findUserByCode(user_code);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
+    public Set<String> findRoleNames(User user) {
+        Set<String> roleNames = user.getRoleNames();
+        return roleNames;
+    }
+
+    @Override
+    public Set<String> findPermissions(User user) {
+        return user.getPermissions();
+    }
+
+    @Override
+    public List<User> findByUsernameLike(String username) {
+        return userDao.findByUsernameLike(username);
+    }
+
+    @Override
+    public int updateState(String username, User.State state) {
+        return userDao.updateState(username, state);
+    }
+
+    @Override
+    public int updateState(Long userId, User.State state) {
+        return userDao.updateState(userId, state);
+    }
+}

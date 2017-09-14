@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.topcom</groupId>
+	<artifactId>topcom-cloud</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<modules>
+		<module>topcom-auth</module>
+		<module>topcom-base</module>
+        <module>topcom-webservice</module>
+		<module>topcom-scheduling</module>
+	</modules>
+	<packaging>pom</packaging>
+
+	<name>topcom-cloud</name>
+	<description>topcom-cloud parent</description>
+
+	<parent>
+		<artifactId>springcloud</artifactId>
+		<groupId>com.topcom</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+	</properties>
+
+	<dependencies>
+	</dependencies>
+
+</project>
