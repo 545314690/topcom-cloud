@@ -16,5 +16,6 @@
         <module>webservice-test</module>
     </modules>
     <packaging>pom</packaging>
-
+    <properties>
+    </properties>
 </project>
