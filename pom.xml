@@ -19,18 +19,74 @@
 	<description>topcom-cloud parent</description>
 
 	<parent>
-		<artifactId>springcloud</artifactId>
-		<groupId>com.topcom</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.4.RELEASE</version>
+		<!--<version>1.4.7.RELEASE</version>-->
 	</parent>
 
 	<properties>
+		<spring-cloud.version>Camden.SR7</spring-cloud.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Nexus Release Repository</name>
+			<url>http://www.limushui.top:8081/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>Snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://www.limushui.top:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<!--<distributionManagement>-->
+	<!--<repository>-->
+	<!--<id>releases</id>-->
+	<!--<name>Internal Releases</name>-->
+	<!--<url>-->
+	<!--http://bjtopcom.xicp.cn:8081/nexus/content/repositories/releases/-->
+	<!--</url>-->
+	<!--</repository>-->
+	<!--<snapshotRepository>-->
+	<!--<id>Snapshots</id>-->
+	<!--<name>Internal Snapshots</name>-->
+	<!--<url>-->
+	<!--http://bjtopcom.xicp.cn:8081/nexus/content/repositories/snapshots/-->
+	<!--</url>-->
+	<!--</snapshotRepository>-->
+	<!--</distributionManagement>-->
 
 </project>
