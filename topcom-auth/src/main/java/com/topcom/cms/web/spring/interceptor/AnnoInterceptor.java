@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Created by lism on 17-6-13.
  */
-@ConfigurationProperties(prefix = "anno",locations = "classpath:auth.properties")
+@ConfigurationProperties(prefix = "anno")
+//@ConfigurationProperties(prefix = "anno",locations = "classpath:auth.properties")
 @Configuration
 public class AnnoInterceptor {
 
