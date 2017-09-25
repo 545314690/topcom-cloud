@@ -12,6 +12,7 @@
     <artifactId>config-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
+        <!--<docker.image.prefix>limushui.top:8082</docker.image.prefix>-->
         <docker.image.prefix>192.168.0.184:5000</docker.image.prefix>
     </properties>
     <dependencies>
@@ -30,6 +31,10 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
     </dependencies>
     <build>
