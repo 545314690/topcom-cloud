@@ -80,12 +80,17 @@ public class SubjectUtil {
             return (User) object;
         }
         String authzHeader = getAuthzHeader(request);
+        if(StringUtils.isBlank(authzHeader)){
+            throw new UnLoginException();
+        }
         return getCurrentUser(authzHeader);
     }
 
+    public static Set<String> getPermissions(String token) throws UnLoginException {
+        return getCurrentUser(token).getPermissions();
+    }
     public static Set<String> getPermissions(HttpServletRequest request) throws UnLoginException {
-        User user = getCurrentUser(request);
-        return user.getPermissions();
+        return getCurrentUser(request).getPermissions();
     }
 
     public static User getCurrentUser(String token) throws UnLoginException {

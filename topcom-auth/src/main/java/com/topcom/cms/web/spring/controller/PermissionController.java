@@ -4,9 +4,11 @@ import com.topcom.cms.base.web.spring.controller.GenericController;
 import com.topcom.cms.domain.Resource;
 import com.topcom.cms.domain.User;
 import com.topcom.cms.exception.BusinessException;
+import com.topcom.cms.exception.ResponseData;
 import com.topcom.cms.perm.token.TokenManager;
 import com.topcom.cms.service.UserManager;
 import com.topcom.cms.utils.PasswordHelper;
+import com.topcom.cms.utils.PermissionUtils;
 import com.topcom.cms.web.bind.annotation.CurrentUser;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.map.HashedMap;
@@ -30,38 +32,22 @@ import java.util.*;
  * @author lsm
  */
 @Controller
-@RequestMapping("/auth/")
-public class AuthController extends GenericController<User, Long, UserManager> {
+@RequestMapping("/perm/")
+public class PermissionController{
 
     @Autowired
-    TokenManager tokenManager;
-    UserManager userManager;
-
-    @Autowired
-    public void setUserManager(UserManager userManager) {
-        this.userManager = userManager;
-        this.manager = this.userManager;
-    }
-
+    PermissionUtils permissionUtils;
 
 
     /**
-     * 返回登录用户的resource
+     * 校验是否登录和权限
      */
-    @ApiOperation("获取resource")
-    @RequestMapping(
-            value = {"resource"},
-            method = {RequestMethod.GET}
-    )
+    @ApiOperation("校验权限")
+    @RequestMapping(value = {"check"}, method = {RequestMethod.POST})
     @ResponseBody
-    public List<Resource> resource(@CurrentUser User user) {
-        User user1 = this.manager.findById(user.getId());//缓存user懒加载，没有resource，需要在数据库查询
-        //user.getPermissionNames();
-        List<Resource> resourceList = user1.getResource();
-        if (resourceList==null||resourceList.size()==0){
-            return null;
-        }
-        return resourceList;
+    public ResponseData check(@RequestParam String requestUri, @RequestParam String requestMethod, @RequestParam String token) throws Exception {
+        boolean status = permissionUtils.checkPermission(requestUri, requestMethod, token);
+        return new ResponseData(status);
     }
 
 

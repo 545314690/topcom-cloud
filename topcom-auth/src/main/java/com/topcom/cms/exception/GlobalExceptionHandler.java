@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         /**
          * 为了ajax能error 能捕获异常，需要跨域
          */
-        response.addHeader("Access-Control-Allow-Origin", "*");
+//        response.addHeader("Access-Control-Allow-Origin", "*");
         ResponseData r = new ResponseData();
         int code = HttpServletResponse.SC_OK;
         if (e instanceof NoHandlerFoundException) {
@@ -56,8 +56,10 @@ public class GlobalExceptionHandler {
         }
         r.setData(null);
         r.setStatus(false);
+
         r.setCode(code);
-        response.setStatus(code);
+        //把返回状态设置为200
+        response.setStatus(HttpServletResponse.SC_OK);
         return r;
     }
 }
