@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.logging.Logger;
 
 @RestController
-public class HelloController {
+public class HellosController {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    @Autowired
-    private DiscoveryClient client;
+//    @Autowired
+//    private DiscoveryClient client;
 
-    @RequestMapping(value = "/hello")
+    @RequestMapping(value = "/hello/hello")
     public String index() {
-        ServiceInstance instance = client.getLocalServiceInstance();
-        logger.info("/hello:" + instance.getHost() + ",service_id: " + instance.getServiceId());
+        //ServiceInstance instance = client.getLocalServiceInstance();
+        //logger.info("/hello:" + instance.getHost() + ",service_id: " + instance.getServiceId());
         return "hello world";
     }
 
-    @RequestMapping(value = "/add")
+    @RequestMapping(value = "/hello/add")
     public int add(int a, int b) {
-        ServiceInstance instance = client.getLocalServiceInstance();
-        logger.info("/add:" + instance.getHost() + ",service_id: " + instance.getServiceId());
+        //ServiceInstance instance = client.getLocalServiceInstance();
+        //logger.info("/add:" + instance.getHost() + ",service_id: " + instance.getServiceId());
         return a + b;
     }
 }

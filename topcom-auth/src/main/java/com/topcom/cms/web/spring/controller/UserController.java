@@ -4,9 +4,11 @@ import com.topcom.cms.base.web.spring.controller.GenericController;
 import com.topcom.cms.domain.Resource;
 import com.topcom.cms.domain.User;
 import com.topcom.cms.exception.BusinessException;
+import com.topcom.cms.perm.exception.UnLoginException;
 import com.topcom.cms.perm.token.TokenManager;
 import com.topcom.cms.service.UserManager;
 import com.topcom.cms.utils.PasswordHelper;
+import com.topcom.cms.utils.SubjectUtil;
 import com.topcom.cms.web.bind.annotation.CurrentUser;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
@@ -283,136 +285,14 @@ public class UserController extends GenericController<User, Long, UserManager> {
         }
         return resourceList;
     }
-
-    private Resource getResourceParent(Resource resource){
-        Resource parent = resource.getParent();
-        if (parent!=null){
-            List<Resource> resourceList = new ArrayList<>();
-            resourceList.add(resource);
-            parent.setChildren(resourceList);
-            return getResourceParent(parent);
-        }else {
-            return resource;
-        }
+    @ApiOperation("获取登录user")
+    @RequestMapping(
+            value = {"/getCurrentUser"},
+            method = {RequestMethod.GET}
+    )
+    @ResponseBody
+    public User getCurrentUser(HttpServletRequest request) throws UnLoginException {
+        return SubjectUtil.getCurrentUser(request);
     }
 
-    private Resource mergeChild(Resource resource1,Resource resource2){
-        List<Resource> children1 = resource1.getChildren();
-        List<Resource> children2 = resource2.getChildren();
-        if (children1==null){
-            return resource2;
-        }else {
-            if (children2==null){
-                return resource1;
-            }else {
-                children1.addAll(children2);
-                Map<Long,Resource> resultMap = new HashMap<>();
-                for (int i=0;i<children1.size();i++){
-                    Resource resource_i = children1.get(i);
-                    Long id_i = resource_i.getId();
-                    for (int j=i+1;j<children1.size();j++){
-                        Resource resource_j = children1.get(j);
-                        Long id_j = resource_j.getId();
-                        if (id_i == id_j){
-                            resource_i = mergeChild(resource_i,resource_j);
-                        }
-                    }
-                    if (!resultMap.keySet().contains(id_i)){
-                        resultMap.put(id_i,resource_i);
-                    }
-                }
-                children1.clear();
-                for (Long l:resultMap.keySet()){
-                    children1.add(resultMap.get(l));
-                }
-                resource1.setChildren(children1);
-                return resource1;
-            }
-        }
-    }
-    private List<Resource> mergeChild(List<Resource> resourceList){
-        Map<Long,Resource> resultMap = new HashMap<>();
-        for (int i=0;i<resourceList.size();i++){
-            if (i==23){
-                System.out.println("23");
-            }
-            Resource resource_i = resourceList.get(i);
-            Long resourceId_i = resource_i.getId();
-            for (int j=i+1;j<resourceList.size();j++){
-                Resource resource_j = resourceList.get(j);
-                Long resourceId_j = resource_j.getId();
-                if (resourceId_i==resourceId_j){
-//                    List<Resource> childrenList = resource_i.getChildren();
-//                    childrenList.addAll(resource_j.getChildren());
-                    resource_i=mergeChild(resource_i,resource_j);
-                }
-            }
-            if (!resultMap.keySet().contains(resourceId_i)){
-                resultMap.put(resourceId_i,resource_i);
-            }
-        }
-        resourceList.clear();
-        for (Long l:resultMap.keySet()){
-            resourceList.add(resultMap.get(l));
-        }
-        return resourceList;
-    }
-
-
-    private List<Resource> getTreeOn( List<Resource> resourceList){
-        Map<Long,Resource> resultMap = new HashedMap();
-        for (int i = 0;i<resourceList.size();i++){
-            Resource resource_i=resourceList.get(i);
-            Resource superParent_i = getResourceParent(resource_i);
-            Long parentId_i = superParent_i.getId();
-            for (int j=i+1;j<resourceList.size();j++){
-                Resource resource_j=resourceList.get(j);
-                superParent_i = megerBtoA(superParent_i,resource_j);
-            }
-            if (!resultMap.keySet().contains(parentId_i)){
-                resultMap.put(parentId_i,superParent_i);
-            }
-        }
-        resourceList.clear();
-        for (Long l:resultMap.keySet()){
-            resourceList.add(resultMap.get(l));
-        }
-        return resourceList;
-    }
-
-    private Resource megerBtoA(Resource resource_a,Resource resource_b){
-        Long aId = resource_a.getId();
-        Long bId = resource_b.getId();
-        Long parentId_b = resource_b.getParentId();
-        if (aId==bId){
-            return resource_b;
-        }
-        if (parentId_b==null){
-            return resource_a;
-        }
-        List<Resource> childrenList = resource_a.getChildren();
-        if (parentId_b==aId){
-            childrenList = addToList(childrenList,resource_b);
-        }else {
-            for (int i=0;i<childrenList.size();i++){
-                Resource resouce_i = megerBtoA(childrenList.get(i),resource_b);
-                childrenList = addToList(childrenList,resouce_i);
-            }
-        }
-        resource_a.setChildren(childrenList);
-        return resource_a;
-    }
-    private List<Resource> addToList(List<Resource> resourceList,Resource resource){
-        Long id = resource.getId();
-        List<Resource> result = new ArrayList<>();
-        for (int i=0;i<resourceList.size();i++){
-            Long id_i = resourceList.get(i).getId();
-            if (id==id_i){
-                result.add(resource);
-            }else {
-                result.add(resourceList.get(i));
-            }
-        }
-        return result;
-    }
 }
