@@ -5,8 +5,11 @@ import com.netflix.zuul.context.RequestContext;
 import com.topcom.zuulapi.client.AuthClient;
 import com.topcom.zuulapi.vo.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class AccessFilter extends ZuulFilter {
@@ -18,6 +21,10 @@ public class AccessFilter extends ZuulFilter {
         return request.getHeader(AUTHORIZATION_HEADER);
     }
 
+    private PathMatcher pathMatcher = new AntPathMatcher();
+
+    @Autowired
+    AccessFilterConfig config;
     @Autowired
     AuthClient authClient;
 
@@ -33,7 +40,12 @@ public class AccessFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        return true;
+        RequestContext ctx = RequestContext.getCurrentContext();
+        HttpServletRequest request = ctx.getRequest();
+        Optional<String> matched = config.getIngorePatterns().stream().filter(pattern -> {
+            return pathMatcher.match(pattern, request.getRequestURI());
+        }).findFirst();
+        return !matched.isPresent();
     }
 
     @Override
@@ -47,7 +59,7 @@ public class AccessFilter extends ZuulFilter {
         if (accessToken == null) {
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);
-            ctx.setResponseBody(new ResponseData(401,"accessToken is null").toString());// 返回错误内容
+            ctx.setResponseBody(new ResponseData(401, "accessToken is null").toString());// 返回错误内容
             return null;
         } else {
             try {
