@@ -20,7 +20,7 @@ import java.util.Map;
 public class DataXTranslateJobController {
     @RequestMapping(value = "run", method = RequestMethod.POST)
     @ResponseBody
-    public String run(@RequestBody JSONObject jobJson, @RequestParam(required = false) Map paramMap) throws Exception {
+    public String run(@RequestBody JSONObject jobJson, @RequestParam(required = false,value = "paramMap") Map paramMap) throws Exception {
         String result = DataXUtil.runJob(jobJson, paramMap);
         return result;
     }
@@ -40,7 +40,7 @@ public class DataXTranslateJobController {
             method = {RequestMethod.GET}
     )
     @ResponseBody
-    public Map<String,String> logContent(@RequestParam String logPath) throws Exception{
+    public Map<String,String> logContent(@RequestParam(value = "logPath") String logPath) throws Exception{
         Map<String,String> map = new HashMap<>();
         String content = FileUtils.readFileToString(new File(logPath), "utf-8");
         map.put("content",content);
