@@ -18,7 +18,7 @@
 	<description>eureka-server</description>
 
 	<properties>
-		<docker.image.prefix>192.168.0.186:8082</docker.image.prefix>
+		<docker.image.prefix>192.168.1.12:5000</docker.image.prefix>
 	</properties>
 
 	<dependencies>
