@@ -1,6 +1,6 @@
 "# config-server" 
 #1.build project 
-mvnw install dockerfile:build
+./mvnw install -Dmaven.test.skip=true dockerfile:build
 
 #2.tag project
 docker tag lisenmiao/config-server lisenmiao/config-server:latest
