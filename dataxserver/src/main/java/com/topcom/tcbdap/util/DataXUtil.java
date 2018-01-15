@@ -2,7 +2,9 @@ package com.topcom.tcbdap.util;
 
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -20,8 +22,8 @@ import java.util.concurrent.Future;
  *
  * @author lism
  */
-@Controller
-public class DataXUtil {
+@Component
+public class DataXUtil implements InitializingBean{
 
     private static final ExecutorService executorService = Executors.newFixedThreadPool(100);
     private final static String TEMP_DIR = System.getProperty("java.io.tmpdir");
@@ -50,10 +52,13 @@ public class DataXUtil {
     @Value("${pythonPath:/usr/bin/python }")
     public void setPythonPath(String pythonPath) {
         DataXUtil.pythonPath = pythonPath;
-        GET_TEMPLATE = DataXUtil.pythonPath + " " + DataXUtil.dataxPath + " -r {YOUR_READER} -w {YOUR_WRITER}";
-        JOB = DataXUtil.pythonPath + " " + " {param} " + DataXUtil.dataxPath + " {JSON_FILE}";
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        GET_TEMPLATE = DataXUtil.pythonPath + " " + DataXUtil.dataxPath + " -r {YOUR_READER} -w {YOUR_WRITER}";
+        JOB = DataXUtil.pythonPath + " "  + DataXUtil.dataxPath + " {param} " + " {JSON_FILE}";
+    }
     private static String run(String cmd) throws Exception {
         return ShellRunner.run(cmd);
     }
@@ -119,4 +124,5 @@ public class DataXUtil {
         JSONObject jsonObject = JSONObject.fromObject(json);
         DataXUtil.runJob(jsonObject,json);
     }
+
 }

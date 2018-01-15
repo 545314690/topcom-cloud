@@ -20,7 +20,7 @@ import java.util.Map;
 public class DataXTranslateJobController {
     @RequestMapping(value = "run", method = RequestMethod.POST)
     @ResponseBody
-    public String run(@RequestBody JSONObject jobJson, @RequestParam(required = false,value = "paramMap") Map paramMap) throws Exception {
+    public String run(@RequestBody JSONObject jobJson, @RequestParam(required = false) Map paramMap) throws Exception {
         String result = DataXUtil.runJob(jobJson, paramMap);
         return result;
     }
