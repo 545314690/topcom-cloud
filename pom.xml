@@ -88,5 +88,10 @@
 	<!--</url>-->
 	<!--</snapshotRepository>-->
 	<!--</distributionManagement>-->
-
+    <repositories>
+        <repository>
+            <id>186</id>
+            <url>http://bjtopcom.xicp.cn:8089/repository/maven-public/</url>
+        </repository>
+    </repositories>
 </project>
