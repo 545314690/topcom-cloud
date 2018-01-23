@@ -2,10 +2,11 @@ package com.topcom.tcbdap.util;
 
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ import java.util.concurrent.Future;
 @Component
 public class DataXUtil implements InitializingBean{
 
+    private static Log logger = LogFactory.getLog(DataXUtil.class);
     private static final ExecutorService executorService = Executors.newFixedThreadPool(100);
     private final static String TEMP_DIR = System.getProperty("java.io.tmpdir");
     private static String dataxPath = "datax.py";
@@ -102,6 +104,7 @@ public class DataXUtil implements InitializingBean{
                     jobCmd = jobCmd.replace("{param}", "-p \""+  param + "\"");
                 }
                 jobCmd += " > " + logfile;
+                logger.info("jobCmd is : " + jobCmd);
                 String result = ShellRunner.run(jobCmd);
                 tmp.delete();
                 return logfile;
