@@ -202,6 +202,9 @@ public class DataTranslateLog extends BaseEntityModel {
 //        if(lastParseRowNum >= lines.size()){
 //            this.setState(State.SUCCESS);
 //        }
+        if(lastParseRowNum ==0){
+            lastParseRowNum = 1;//防止从-1行开始读
+        }
         for (int i = lastParseRowNum - 1; i < lines.size(); i++) {
             String line = lines.get(i);
 //            System.out.println(line);
