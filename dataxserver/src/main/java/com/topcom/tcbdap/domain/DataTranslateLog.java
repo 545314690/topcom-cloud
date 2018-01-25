@@ -199,9 +199,9 @@ public class DataTranslateLog extends BaseEntityModel {
     public void parseLogFile() throws IOException {
         File logFile = new File(this.getLogFile());
         List<String> lines = FileUtils.readLines(logFile, "utf-8");
-        if(lastParseRowNum >= lines.size()){
-            this.setState(State.SUCCESS);
-        }
+//        if(lastParseRowNum >= lines.size()){
+//            this.setState(State.SUCCESS);
+//        }
         for (int i = lastParseRowNum - 1; i < lines.size(); i++) {
             String line = lines.get(i);
 //            System.out.println(line);
@@ -227,6 +227,11 @@ public class DataTranslateLog extends BaseEntityModel {
             if (line != null && line.contains("异常Msg")) {
                 String errorMsg = line.split("异常Msg:")[1].trim();
                 this.setErrorMsg(errorMsg);
+                this.setState(State.FAILED);
+            }
+            //下一行为错误信息
+            if (line != null && line.contains("经DataX智能分析,该任务最可能的错误原因是:")) {
+                this.setErrorMsg(lines.get(i+1));
                 this.setState(State.FAILED);
             }
             if (line != null && line.contains("任务启动时刻")) {
