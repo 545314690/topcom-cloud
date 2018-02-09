@@ -7,6 +7,7 @@ import com.topcom.zuulapi.vo.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -42,6 +43,10 @@ public class AccessFilter extends ZuulFilter {
     public boolean shouldFilter() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
+        //跨域不拦截OPTIONS方法
+        if (request.getMethod().equals(RequestMethod.OPTIONS.name())) {
+            return false;
+        }
         Optional<String> matched = config.getIngorePatterns().stream().filter(pattern -> {
             return pathMatcher.match(pattern, request.getRequestURI());
         }).findFirst();
