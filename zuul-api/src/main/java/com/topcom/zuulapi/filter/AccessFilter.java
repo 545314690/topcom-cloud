@@ -24,9 +24,9 @@ public class AccessFilter extends ZuulFilter {
     private PathMatcher pathMatcher = new AntPathMatcher();
 
     @Autowired
-    AccessFilterConfig config;
+    private AccessFilterConfig config;
     @Autowired
-    AuthClient authClient;
+    private AuthClient authClient;
 
     @Override
     public String filterType() {
@@ -53,8 +53,10 @@ public class AccessFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         log.info(String.format("%s request to %s", request.getMethod(), request.getRequestURL().toString()));
-//        String token = this.getToken(request);
-        String accessToken = request.getParameter("accessToken");
+        String accessToken = this.getToken(request);
+        if(accessToken == null){
+            accessToken = request.getParameter("accessToken");
+        }
         ctx.getResponse().setContentType("text/html;charset=UTF-8");
         if (accessToken == null) {
             ctx.setSendZuulResponse(false);

@@ -1,7 +1,5 @@
 package com.topcom.zuulapi.vo;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,13 +16,13 @@ public class ResponseData implements Serializable {
     public ResponseData() {
     }
 
+    public ResponseData(boolean status) {
+        this.status = status;
+    }
+
     public ResponseData(int code, String message) {
         this.message = message;
         this.code = code;
-    }
-
-    public ResponseData(boolean status) {
-        this.status = status;
     }
 
     public Long getTimestamp() {
