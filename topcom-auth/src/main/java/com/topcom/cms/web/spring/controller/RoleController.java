@@ -2,11 +2,13 @@ package com.topcom.cms.web.spring.controller;
 
 import com.topcom.cms.base.web.spring.controller.GenericController;
 import com.topcom.cms.domain.Role;
+import com.topcom.cms.exception.BusinessException;
 import com.topcom.cms.service.RoleManager;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +40,7 @@ public class RoleController extends GenericController<Role, Long, RoleManager> {
     /**
      * 重写父类get方法 缓存role
      */
+    @Override
     @RequestMapping(value = {"/"}, method = {RequestMethod.GET}, produces = {"application/json"})
     @ResponseBody
     public Page<Role> get(HttpServletRequest request,
@@ -46,41 +49,45 @@ public class RoleController extends GenericController<Role, Long, RoleManager> {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (StringUtils.isNotBlank(page)) {
-            this.pageNumber = (Integer.valueOf(page).intValue() - 1);
+            pageNumber = (Integer.valueOf(page).intValue() - 1);
         } else {
-            this.pageNumber = 0;
+            pageNumber = 0;
         }
         if (StringUtils.isNotBlank(limit)) {
-            this.pageSize = Integer.valueOf(limit).intValue();
+            pageSize = Integer.valueOf(limit).intValue();
         }
-        this.pageable = new PageRequest(this.pageNumber, this.pageSize,
-                new Sort(Sort.Direction.ASC, new String[]{"id"}));
+        Pageable pageable = new PageRequest(pageNumber, pageSize,
+                new Sort(Sort.Direction.DESC, new String[]{"id"}));
+        Page rolePage = null;
         if (StringUtils.isBlank(roleName)) {
-            this.page = this.manager.findAllRole(this.pageable);
+            rolePage = this.manager.findAllRole(pageable);
         } else {
-            this.page = this.manager.findByNameLike(this.pageable, roleName);
+            rolePage = this.manager.findByNameLike(pageable, roleName);
         }
-        this.logger.info(this.page);
-        return this.page;
+        return rolePage;
     }
 
     /**
      * 重写父类post方法
      */
+    @Override
     @RequestMapping(value = {"/"}, method = {RequestMethod.POST}, produces = {"application/json"}, consumes = {"application/json"})
     @ResponseBody
-    public Role create(@RequestBody Role model) {
-        this.model = model;
+    public Role create(@RequestBody Role model) throws BusinessException {
+        if (roleManager.findByName(model.getName()) != null) {
+            throw new BusinessException("角色已存在");
+        }
         Date date = new Date();
-        this.model.setDateCreated(date);
-        this.model.setDateModified(date);
-        this.model = roleManager.saveRole(this.model);
-        return this.model;
+        model.setDateCreated(date);
+        model.setDateModified(date);
+        model = roleManager.saveRole(model);
+        return model;
     }
 
     /**
      * 重写父类put方法 修改角色信息使用 无models
      */
+    @Override
     @RequestMapping(value = {"/{id}"}, method = {RequestMethod.PUT}, produces = {"application/json"}, consumes = {"application/json"})
     @ResponseBody
     public Role update(@PathVariable Long id, @RequestBody Role model) {
@@ -98,13 +105,14 @@ public class RoleController extends GenericController<Role, Long, RoleManager> {
     public Role updateRoleModel(@PathVariable Long id, @RequestBody Role model) {
         model.setId(Long.valueOf(id.toString()));
         model.setDateModified(new Date());
-        this.model = roleManager.saveRole(model);
-        return this.model;
+        model = roleManager.saveRole(model);
+        return model;
     }
 
     /**
      * 重写父类delete方法
      */
+    @Override
     @RequestMapping(value = {"/{id}"}, method = {RequestMethod.DELETE}, produces = {"application/json"})
     @ResponseBody
     public void delete(@PathVariable Long id) throws IOException {

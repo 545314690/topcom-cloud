@@ -31,7 +31,7 @@ public class LoginInterceptor extends BaseInterceptor implements HandlerIntercep
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+            throws AuthenticationException {
 
         if (isOptionRequest(request,response) || logined(request)) {
             return true;

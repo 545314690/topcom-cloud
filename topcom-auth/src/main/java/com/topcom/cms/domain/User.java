@@ -47,7 +47,7 @@ public class User extends BaseEntityModel {
     private String password;
     @JsonIgnore
     private String salt;
-    private State state;
+    private User.State state;
     @ManyToMany(
             fetch = FetchType.EAGER
     )
@@ -70,6 +70,26 @@ public class User extends BaseEntityModel {
             name = "userinfo_id"
     )
     private UserInfo userInfo;
+
+
+    @OneToOne(
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true
+    )
+    @JoinColumn(
+            name = "companyinfo_id"
+    )
+    private CompanyInfo companyInfo;
+
+    public CompanyInfo getCompanyInfo() {
+        return companyInfo;
+    }
+
+    public void setCompanyInfo(CompanyInfo companyInfo) {
+        this.companyInfo = companyInfo;
+    }
+
     @Transient
     private String[] groupNames;
     @Transient
@@ -144,15 +164,15 @@ public class User extends BaseEntityModel {
         this.username = username;
     }
 
-    public State getState() {
+    public User.State getState() {
         return this.state;
     }
 
-    public void setState(State state) {
+    public void setState(User.State state) {
         this.state = state;
     }
 
-    public User(Date dateCreated, Date dateModified, Boolean deleted, Long id, String code, String fullName, Gender gender, String password, String username, State state, Set<Group> groups) {
+    public User(Date dateCreated, Date dateModified, Boolean deleted, Long id, String code, String fullName, Gender gender, String password, String username, User.State state, Set<Group> groups) {
         this.dateCreated = dateCreated;
         this.dateModified = dateModified;
         this.deleted = deleted;
@@ -198,13 +218,18 @@ public class User extends BaseEntityModel {
     @Transient
     public Set<Role> getAllRoles() {
         Set<Role> roles = this.getRoles();
+        if(roles == null){
+            roles = new HashSet<>();
+        }
         Set<Group> groups = this.getGroups();
         if (groups != null) {
             Iterator var3 = groups.iterator();
 
             while (var3.hasNext()) {
                 Group group = (Group) var3.next();
-                roles.addAll(group.getRoles());
+                if(group.getRoles() != null){
+                    roles.addAll(group.getRoles());
+                }
             }
         }
 
@@ -248,6 +273,21 @@ public class User extends BaseEntityModel {
 
         return permissions;
     }
+    @Transient
+    @JsonIgnore
+    public Boolean isAdmin() {
+        Set<Role> roles = this.getAllRoles();
+        if (roles != null) {
+            Iterator iterator = roles.iterator();
+            while (iterator.hasNext()) {
+                Role role = (Role) iterator.next();
+                if(role != null && role.getAdmin() != null && role.getAdmin() == true){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     @JsonIgnore
     public Set<String> getPermissionNames() {
@@ -278,23 +318,24 @@ public class User extends BaseEntityModel {
      */
     @Transient
     @JsonIgnore
-    public List<Resource> getResource() {
-        List<Resource> resourceList = new ArrayList<>();
+    public Set<Resource> getResource() {
+        Set<Resource> resourceSet = new LinkedHashSet<>();
         Set<Role> roles = this.getAllRoles();
         if (roles != null) {
             Iterator var3 = roles.iterator();
 
             while (var3.hasNext()) {
                 Role role = (Role) var3.next();
-                resourceList.addAll(role.getResources());
+                resourceSet.addAll(role.getResources());
             }
         }
 
-        return resourceList;
+        return resourceSet;
     }
 
     public static enum State {
         AVAILABLE,
+        UNAVAILABLE,
         LOCKED,
         ONLINE,
         OFFLINE;

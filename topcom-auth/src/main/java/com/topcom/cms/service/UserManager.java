@@ -3,6 +3,7 @@ package com.topcom.cms.service;
 import java.util.List;
 import java.util.Set;
 
+import com.topcom.cms.vo.UserSearchVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,7 @@ import com.topcom.cms.domain.User;
 /**
  * 用户信息访问接口
  *
- * @author maodaqiang
+ * @author lism
  */
 public interface UserManager extends GenericManager<User, Long> {
     /**
@@ -120,4 +121,8 @@ public interface UserManager extends GenericManager<User, Long> {
     int updateState(String username, User.State state);
 
     int updateState(Long userId, User.State state);
+
+    User register(User model);
+
+    Page<User> findByCriteriaQuery(Pageable pageable, UserSearchVO userSearchVO);
 }

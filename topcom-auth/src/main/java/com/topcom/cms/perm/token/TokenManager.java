@@ -29,7 +29,7 @@ public interface TokenManager {
     }
 
     default long getExpirationDate() {
-        return 1000 * 60 * 60 * 24 * 5;
+        return 1000 * 60 * 60 * 24 * 7;
     }
 
     public String getIssuer();
@@ -75,7 +75,7 @@ public interface TokenManager {
             builder.subject(userId.toString());
             builder.issueTime(new Date());
             builder.notBeforeTime(new Date());
-            builder.expirationTime(new Date(new Date().getTime() + getExpirationDate()));
+            builder.expirationTime(new Date(System.currentTimeMillis() + getExpirationDate()));
             builder.jwtID(UUID.randomUUID().toString());
 
             JWTClaimsSet claimsSet = builder.build();
@@ -122,4 +122,17 @@ public interface TokenManager {
     void createAndSaveToken(User user);
 
     String findByUsername(String username);
+
+    /**
+     * 获取验证码
+     * @param code
+     * @return
+     */
+    String getCaptcha(String code);
+
+    /**
+     * 保存验证码
+     * @param code
+     */
+    void setCaptcha(String code,String captcha);
 }

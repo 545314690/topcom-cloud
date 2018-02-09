@@ -1,13 +1,10 @@
 package com.topcom.cms.web.spring.controller;
 
-import com.topcom.cms.exception.BusinessException;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.topcom.cms.base.web.spring.controller.GenericControllerTestCase;
 import com.topcom.cms.domain.User;
 import com.topcom.cms.service.UserManager;
-import com.topcom.cms.web.spring.controller.UserController;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserControllerTest extends GenericControllerTestCase {
 
@@ -24,14 +21,14 @@ public class UserControllerTest extends GenericControllerTestCase {
 		this.manager = manager;
 	}
 	@Test
-	public void test() throws BusinessException {
+	public void test() throws Exception {
 		User model = new User();
 		this.userController.create(model);
 
 	}
 	
 	@Test
-	public void login() throws BusinessException {
+	public void login() throws Exception {
 		User model = new User();
 		this.userController.create(model);
 

@@ -15,13 +15,18 @@ import javax.persistence.Table;
 )
 public class UserInfo extends BaseEntityModel {
     private static final long serialVersionUID = 1L;
-    String companyName;
-    String managers;
-    String telephone;
-    String mobilePhone;
-    String email;
-    String address;
-    String remarks;
+    /**
+     * 用户类型
+     */
+    private int type;
+    private String companyName;
+    private String managers;
+    private String telephone;
+    private String mobilePhone;
+    private String email;
+    private String regin;
+    private String address;
+    private String remarks;
 
     public String getCompanyName() {
         return this.companyName;
@@ -77,6 +82,22 @@ public class UserInfo extends BaseEntityModel {
 
     public void setManagers(String managers) {
         this.managers = managers;
+    }
+
+    public String getRegin() {
+        return regin;
+    }
+
+    public void setRegin(String regin) {
+        this.regin = regin;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public UserInfo() {

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 角色信息访问接口
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Service(value = "roleManager")

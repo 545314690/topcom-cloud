@@ -16,7 +16,7 @@ import com.topcom.cms.service.GroupManager;
 /**
  * 用户组信息访问实现类
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Service(value = "groupManager")

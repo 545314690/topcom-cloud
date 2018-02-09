@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 /**
  * 角色管理——服务接口
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 public interface RoleManager extends GenericManager<Role, Long> {

@@ -19,7 +19,7 @@ import java.lang.reflect.ParameterizedType;
  *
  * @author lism
  */
-@Aspect
+//@Aspect
 @Component
 public class OperationLogService {
     /**
@@ -89,6 +89,7 @@ public class OperationLogService {
         /**
          * 不使用save方法，更改了操作日志的保存方法，否则会造成无限循环调用
          */
+        //TODO:写一个注解，在方法名上标注不被拦截的方法
         operationLogManager.persist(ol);
     }
 }

@@ -1,18 +1,19 @@
 package com.topcom.cms.utils;
 
 import com.topcom.cms.domain.Resource;
-import com.topcom.cms.domain.User;
 import com.topcom.cms.perm.exception.AuthenticationException;
+import com.topcom.cms.perm.exception.UnAuthorizedException;
 import com.topcom.cms.perm.exception.UnLoginException;
-import com.topcom.cms.perm.exception.UnauthorizedException;
 import com.topcom.cms.service.ResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -36,7 +37,7 @@ public class PermissionUtils {
             throw new UnLoginException();
         }
         if (!hasPermission(request)) {
-            throw new UnauthorizedException();
+            throw new UnAuthorizedException();
         }
         return true;
     }
@@ -47,7 +48,7 @@ public class PermissionUtils {
             throw new UnLoginException();
         }
         if (!hasPermission(token,requestUri,requestMethod)) {
-            throw new UnauthorizedException();
+            throw new UnAuthorizedException();
         }
         return true;
     }

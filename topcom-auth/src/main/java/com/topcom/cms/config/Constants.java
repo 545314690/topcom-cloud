@@ -1,7 +1,7 @@
 package com.topcom.cms.config;
 
 /**
- * <p>User: Zhang Kaitao
+ * <p> @author lism
  * <p>Date: 14-2-15
  * <p>Version: 1.0
  */

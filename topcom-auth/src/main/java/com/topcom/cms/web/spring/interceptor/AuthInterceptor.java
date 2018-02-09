@@ -1,7 +1,7 @@
 package com.topcom.cms.web.spring.interceptor;
 
 import com.topcom.cms.domain.Resource;
-import com.topcom.cms.perm.exception.UnauthorizedException;
+import com.topcom.cms.perm.exception.UnAuthorizedException;
 import com.topcom.cms.service.ResourceManager;
 import com.topcom.cms.utils.SubjectUtil;
 import org.apache.log4j.Logger;
@@ -44,7 +44,7 @@ public class AuthInterceptor extends BaseInterceptor implements HandlerIntercept
         if (hasPermission(request)) {
             return true;
         } else {
-            throw new UnauthorizedException();
+            throw new UnAuthorizedException();
         }
     }
 

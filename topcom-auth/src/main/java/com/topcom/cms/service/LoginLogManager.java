@@ -8,7 +8,7 @@ import com.topcom.cms.domain.LoginLog;
 /**
  * 登录日志信息接口
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Transactional

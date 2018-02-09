@@ -77,4 +77,3 @@ public class ResponseData implements Serializable {
         return sb.toString();
     }
 }
-

@@ -12,7 +12,7 @@ import com.topcom.cms.base.service.GenericTreeManager;
 /**
  * 菜单信息访问接口
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 public interface ResourceManager extends GenericTreeManager<Resource, Long> {

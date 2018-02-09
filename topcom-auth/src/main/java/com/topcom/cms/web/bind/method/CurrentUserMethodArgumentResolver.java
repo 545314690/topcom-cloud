@@ -39,8 +39,11 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
 //            return new User(100L);
             String token = webRequest.getHeader("Authorization");
             if (token == null) {
+                token = webRequest.getParameter("accessToken");
+            }
+            if(token == null){
                 throw new UnLoginException();
-            } else {
+            }else {
                 User obj = SubjectUtil.getCurrentUser(token);
                 if (obj == null) {
                     throw new UnLoginException();

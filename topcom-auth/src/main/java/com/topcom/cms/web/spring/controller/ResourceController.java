@@ -1,5 +1,6 @@
 package com.topcom.cms.web.spring.controller;
 
+import com.topcom.cms.base.model.BaseTreeEntityModel;
 import com.topcom.cms.base.web.spring.controller.GenericTreeController;
 import com.topcom.cms.domain.Resource;
 import com.topcom.cms.domain.Role;
@@ -62,9 +63,6 @@ public class ResourceController extends
     /*
      * 保存添加节点
      *
-     * @see
-     * edu.zut.cs.nlp.cms.web.spring.controller.GenericController#create(edu
-     * .zut.cs.nlp.cms.model.BaseEntityModel)
      */
     @RequestMapping(value = "/getLeafs", method = RequestMethod.GET)
     @ResponseBody
@@ -129,5 +127,28 @@ public class ResourceController extends
             return false;
         }
         return true;
+    }
+
+    @Override
+    @ResponseBody
+    @RequestMapping(
+            value = {"/getTree.json"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    public List<Resource> getTree(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "id", required = false) Long id) {
+        List<Resource> result = null;
+        if(id == null) {
+            result = this.treeManager.getRoot();
+        } else {
+            BaseTreeEntityModel node = (BaseTreeEntityModel)this.treeManager.findById(id);
+            result = node.getChildren();
+        }
+        if (result!=null&&result.size()>0){
+            for (Resource resource:result){
+                resource.sortByChildId();
+            }
+        }
+        return result;
     }
 }

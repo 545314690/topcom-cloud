@@ -6,7 +6,7 @@ import com.topcom.cms.domain.OperationLog;
 /**
  * 系统操作日志访问接口类
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 public interface OperationLogManager extends GenericManager<OperationLog, Long> {

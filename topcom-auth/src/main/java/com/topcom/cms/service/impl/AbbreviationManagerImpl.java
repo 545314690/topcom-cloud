@@ -12,7 +12,7 @@ import com.topcom.cms.service.AbbreviationManager;
 /**
  * 简称信息访问实现类
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Service(value = "abbreviationManager")

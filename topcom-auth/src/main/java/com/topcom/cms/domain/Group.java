@@ -60,7 +60,8 @@ public class Group extends BaseTreeEntityModel<Group> implements Comparable<Grou
                     name = "roles_ID"
             )}
     )
-    @JsonIgnore
+    //JsonIgnore的话，给用户组加角色加不上，暂时注释，等待发现其他问题
+//    @JsonIgnore
     private Set<Role> roles;
     @Transient
     @JsonBackReference

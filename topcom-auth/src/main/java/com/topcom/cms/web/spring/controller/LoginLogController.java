@@ -15,7 +15,7 @@ import com.topcom.cms.service.LoginLogManager;
 /**
  * 登录日志信息管理维护的交互控制
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Controller

@@ -8,7 +8,7 @@ import com.topcom.cms.domain.Notice;
 /**
  * 系统公告信息接口
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Transactional

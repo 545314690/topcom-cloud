@@ -6,7 +6,7 @@ import com.topcom.cms.domain.LoginLog;
 /**
  * 登录日志信息访问接口
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 public interface LoginLogDao extends GenericDao<LoginLog, Long> {

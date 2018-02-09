@@ -8,6 +8,7 @@ public class UsernamePasswordToken {
 
     private String username;
     private String password;
+    private Boolean admin = false;
 
     public UsernamePasswordToken() {
     }
@@ -31,5 +32,13 @@ public class UsernamePasswordToken {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
 }

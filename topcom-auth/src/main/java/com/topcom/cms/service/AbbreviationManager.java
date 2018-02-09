@@ -6,7 +6,7 @@ import com.topcom.cms.domain.Abbreviation;
 /**
  * 简称信息访问接口
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 public interface AbbreviationManager extends

@@ -13,7 +13,7 @@ import com.topcom.cms.service.NoticeManager;
 /**
  * 登录日志访问实现类
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Service(value = "noticeManager")

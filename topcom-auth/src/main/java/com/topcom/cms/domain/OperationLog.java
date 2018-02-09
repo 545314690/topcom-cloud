@@ -78,11 +78,11 @@ public class OperationLog extends BaseEntityModel {
         this.username = username;
     }
 
-    public Operation getOperation() {
+    public OperationLog.Operation getOperation() {
         return this.operation;
     }
 
-    public void setOperation(Operation operation) {
+    public void setOperation(OperationLog.Operation operation) {
         this.operation = operation;
     }
 

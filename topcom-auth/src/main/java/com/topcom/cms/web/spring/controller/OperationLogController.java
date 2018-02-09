@@ -11,7 +11,7 @@ import com.topcom.cms.service.OperationLogManager;
 /**
  * 系统操作日志信息管理维护的交互控制
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Controller

@@ -6,7 +6,7 @@ import com.topcom.cms.domain.Abbreviation;
 /**
  * 简称对照信息访问接口
  * 
- * @author maodaqiang 简称对照接口
+ * @author lism 简称对照接口
  * 
  */
 public interface AbbreviationDao extends GenericTreeDao<Abbreviation, Long> {

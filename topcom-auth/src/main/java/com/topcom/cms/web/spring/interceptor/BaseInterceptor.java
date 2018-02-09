@@ -43,11 +43,11 @@ public class BaseInterceptor {
      * @return
      */
     protected boolean isOptionRequest(HttpServletRequest request, HttpServletResponse response) {
-//        if(request.getMethod().equals(RequestMethod.OPTIONS.name()))
-//        {
-//            response.setStatus(HttpStatus.OK.value());
-//            return true;
-//        }else{
+        if (request.getMethod().equals(RequestMethod.OPTIONS.name())) {
+            response.setStatus(HttpStatus.OK.value());
+            return true;
+        }
+// else{
 //            return false;
 //        }
         String access_headers = request.getHeader("access-control-request-headers");

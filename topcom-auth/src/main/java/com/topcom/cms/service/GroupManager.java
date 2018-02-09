@@ -8,7 +8,7 @@ import com.topcom.cms.domain.Group;
 /**
  * 用户组信息访问接口
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 public interface GroupManager extends GenericTreeManager<Group, Long> {

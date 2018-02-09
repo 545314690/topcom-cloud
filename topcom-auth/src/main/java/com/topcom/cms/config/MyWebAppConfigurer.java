@@ -1,11 +1,9 @@
 package com.topcom.cms.config;
 
 
-import com.topcom.cms.service.ResourceManager;
 import com.topcom.cms.web.bind.method.CurrentUserMethodArgumentResolver;
 import com.topcom.cms.web.spring.interceptor.AnnoInterceptor;
 import com.topcom.cms.web.spring.interceptor.AuthInterceptor;
-import com.topcom.cms.web.spring.interceptor.BaseInterceptor;
 import com.topcom.cms.web.spring.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +13,10 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
-//@Configuration
+@Configuration
 public class MyWebAppConfigurer
         extends WebMvcConfigurerAdapter {
 
@@ -54,9 +52,11 @@ public class MyWebAppConfigurer
         // 多个拦截器组成一个拦截器链
         // addPathPatterns 用于添加拦截规则
         // excludePathPatterns 用户排除拦截
-        String[] excludePaths = annoInterceptor.getExcludePaths();
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns(excludePaths);
-        registry.addInterceptor(authInterceptor).addPathPatterns(authInterceptor.getPaths()).excludePathPatterns(excludePaths);
-        super.addInterceptors(registry);
+//        Set<String> excludePathsSet = annoInterceptor.getExcludePaths();
+//        String [] excludePaths = new String[]{};
+//        excludePaths = excludePathsSet.toArray(excludePaths);
+//        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns(excludePaths);
+//        registry.addInterceptor(authInterceptor).addPathPatterns(authInterceptor.getPaths()).excludePathPatterns(excludePaths);
+//        super.addInterceptors(registry);
     }
 }

@@ -2,20 +2,24 @@ package com.topcom.cms.service.impl;
 
 import java.util.*;
 
+import com.topcom.cms.common.model.Gender;
 import com.topcom.cms.dao.RoleDao;
-import com.topcom.cms.domain.Resource;
+import com.topcom.cms.domain.*;
+import com.topcom.cms.vo.UserSearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.topcom.cms.base.service.impl.GenericManagerImpl;
 import com.topcom.cms.dao.UserDao;
-import com.topcom.cms.domain.User;
 import com.topcom.cms.service.UserManager;
+
+import javax.persistence.criteria.*;
 
 /**
  * 用户信息访问接口
@@ -29,8 +33,8 @@ public class UserManagerImpl extends GenericManagerImpl<User, Long> implements
 
     UserDao userDao;
 
-    @Autowired
-    RoleDao roleDao;
+//    @Autowired
+//    RoleDao roleDao;
 
     @Autowired
     public void setUserDao(UserDao userDao) {
@@ -121,8 +125,8 @@ public class UserManagerImpl extends GenericManagerImpl<User, Long> implements
     /**
      * 根据用户id更新密码
      *
-     * @param id              用户id
-     * @param newPwd          新密码
+     * @param id     用户id
+     * @param newPwd 新密码
      * @param salt
      * @return
      */
@@ -175,5 +179,73 @@ public class UserManagerImpl extends GenericManagerImpl<User, Long> implements
     @Override
     public int updateState(Long userId, User.State state) {
         return userDao.updateState(userId, state);
+    }
+
+    @Override
+    public User register(User model) {
+        return userDao.save(model);
+    }
+
+    @Override
+    public Page<User> findByCriteriaQuery(Pageable pageable, UserSearchVO userSearchVO) {
+        return this.findAll(getWhereClause(userSearchVO),pageable);
+    }
+
+    /**
+     * 动态生成where语句
+     *
+     * @param userSearchVO
+     * @return
+     */
+    private Specification<User> getWhereClause(final UserSearchVO userSearchVO) {
+        return new Specification<User>() {
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> predicate = new ArrayList<>();
+                if (userSearchVO.getUsername() != null) {
+                    predicate.add(cb.like(root.get("username").as(String.class), "%" + userSearchVO.getUsername() + "%"));
+                }
+                if (userSearchVO.getFullName() != null) {
+                    predicate.add(cb.like(root.get("fullName").as(String.class), "%" + userSearchVO.getFullName() + "%"));
+                }
+                if (userSearchVO.getType() != null) {
+                    //两张表关联查询
+                    Join<User, UserInfo> userInfoJoin = root.join(root.getModel().getSingularAttribute("userInfo", UserInfo.class), JoinType.LEFT);
+                    predicate.add(cb.equal(userInfoJoin.get("type").as(Integer.class), userSearchVO.getType()));
+                }
+                if (userSearchVO.getState() != null) {
+                    predicate.add(cb.equal(root.get("state").as(User.State.class), userSearchVO.getState()));
+                }
+                if (userSearchVO.getGender() != null) {
+                    predicate.add(cb.equal(root.get("gender").as(Gender.class), userSearchVO.getGender()));
+                }
+                Set<Group> groups = userSearchVO.getGroups();
+                if (groups != null) {
+                    Set<Long> groupIds = new HashSet<>();
+                    for (Group group: groups) {
+                        groupIds.add(group.getId());
+                    }
+                    //两张表关联查询
+                    Join<User, Group> groupJoin = root.join(root.getModel().getSet("groups", Group.class), JoinType.LEFT);
+                    CriteriaBuilder.In inGroup = cb.in(groupJoin.get("id").as(Long.class));
+                    inGroup.value(groupIds);
+                    predicate.add(inGroup);
+                }
+                Set<Role> roles = userSearchVO.getRoles();
+                if (roles != null) {
+                    Set<Long> roleIds = new HashSet<>();
+                    for (Role role: roles) {
+                        roleIds.add(role.getId());
+                    }
+                    //两张表关联查询
+                    Join<User, Role> roleJoin = root.join(root.getModel().getSet("roles", Role.class), JoinType.LEFT);
+                    CriteriaBuilder.In inRole = cb.in(roleJoin.get("id").as(Long.class));
+                    inRole.value(roleIds);
+                    predicate.add(inRole);
+                }
+                Predicate[] pre = new Predicate[predicate.size()];
+                return query.where(predicate.toArray(pre)).distinct(true).getRestriction();
+            }
+        };
     }
 }

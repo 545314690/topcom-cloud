@@ -41,24 +41,10 @@ public class GroupController extends GenericTreeController<Group, Long, GroupMan
 		this.treeManager = this.groupManager;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "index.html")
-	public String index() {
-		return "/manage/group/index";
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "add.html")
-	public String add() {
-		return "/manage/group/add";
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "edit.html")
-	public String edit() {
-		return "/manage/group/edit";
-	}
-
 	/**
 	 * 删除控制
 	 */
+	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@ResponseBody
 	public void delete(@PathVariable Long id) throws IOException {
@@ -69,15 +55,15 @@ public class GroupController extends GenericTreeController<Group, Long, GroupMan
 	/**
 	 * 新增控制
 	 */
+	@Override
 	@RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Group create(@RequestBody Group model) {
-		this.model = model;
 		Date date = new Date();
-		this.model.setDateCreated(date);
-		this.model.setDateModified(date);
-		this.model = this.manager.saveGroup(this.model);
-		return this.model;
+		model.setDateCreated(date);
+		model.setDateModified(date);
+		model = this.manager.saveGroup(model);
+		return model;
 	}
 
 	/*
@@ -87,11 +73,12 @@ public class GroupController extends GenericTreeController<Group, Long, GroupMan
 	 * edu.zut.cs.nlp.cms.web.spring.controller.GenericController#update(java
 	 * .io.Serializable, edu.zut.cs.nlp.cms.model.BaseEntityModel)
 	 */
+	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Group update(@PathVariable Long id, @RequestBody Group model) {
-		this.model = this.manager.saveGroup(model);
-		return this.model;
+		model = this.manager.saveGroup(model);
+		return model;
 	}
 
 	/**
@@ -100,6 +87,7 @@ public class GroupController extends GenericTreeController<Group, Long, GroupMan
 	 * @param id
 	 * @return
 	 */
+	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Group get(@PathVariable Long id) {
@@ -122,7 +110,7 @@ public class GroupController extends GenericTreeController<Group, Long, GroupMan
 		return parentId;
 	}
 
-	@RequestMapping(value = "/checkGroupName.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/checkGroupName", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Boolean> checkModuleName(HttpServletRequest request) {
 		Map<String, Boolean> ret = new HashMap<>();
@@ -152,7 +140,7 @@ public class GroupController extends GenericTreeController<Group, Long, GroupMan
 	/*
 	 * 节点拖动，改变节点的顺序，位置
 	 */
-	@RequestMapping(value = "/changChildId.json", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/changChildId", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public void changeChildId(@RequestParam Long id, @RequestParam Long parentId,
 			@RequestParam(required = false) Long nextChildId) throws IOException {
@@ -164,8 +152,9 @@ public class GroupController extends GenericTreeController<Group, Long, GroupMan
 	 * 
 	 * @return
 	 */
+	@Override
 	@ResponseBody
-	@RequestMapping(value = "/getGroup.json", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getGroup", method = RequestMethod.GET, produces = "application/json")
 	public List<Group> getChildren(@RequestParam(required = false) Long id) {
 		//List<Group> result = this.treeManager.getChildren(id);
 		List<Group> result;

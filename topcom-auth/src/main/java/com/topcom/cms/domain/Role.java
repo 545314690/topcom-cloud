@@ -45,6 +45,7 @@ public class Role extends BaseEntityModel {
     String name;
     String description;
     Boolean available;
+    Boolean admin;
 
     public String getName() {
         return this.name;
@@ -121,5 +122,17 @@ public class Role extends BaseEntityModel {
         }
 
         return permissions;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
 }

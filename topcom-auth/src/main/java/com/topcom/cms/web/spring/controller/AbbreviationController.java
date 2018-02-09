@@ -18,7 +18,7 @@ import com.topcom.cms.service.AbbreviationManager;
 /**
  * 平台管理-简称信息管理维护的交互控制
  * 
- * @author maodaqiang
+ * @author lism
  * 
  */
 @Controller

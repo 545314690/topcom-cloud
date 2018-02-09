@@ -3,13 +3,12 @@ package com.topcom.cms.utils;
 import com.topcom.cms.config.Constants;
 import com.topcom.cms.domain.User;
 import com.topcom.cms.perm.exception.*;
-import com.topcom.cms.service.UserManager;
 import com.topcom.cms.perm.token.TokenManager;
 import com.topcom.cms.perm.token.UsernamePasswordToken;
+import com.topcom.cms.service.UserManager;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -52,11 +51,12 @@ public class SubjectUtil {
      *
      * @return
      */
-    public static User getCurrentUser() throws UnLoginException {
+    public static User getCurrentUser() throws AuthenticationException {
         return getCurrentUser(getRequest());
     }
 
     public static HttpServletRequest getRequest() {
+        //TODO:单元测试的时候，还是会得到requestAttributes，不等于null
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (requestAttributes != null) {
             return requestAttributes.getRequest();
@@ -71,7 +71,7 @@ public class SubjectUtil {
      * @param request
      * @return
      */
-    public static User getCurrentUser(HttpServletRequest request) throws UnLoginException {
+    public static User getCurrentUser(HttpServletRequest request) throws AuthenticationException {
         if (request == null) {
             return null;
         }
@@ -80,30 +80,24 @@ public class SubjectUtil {
             return (User) object;
         }
         String authzHeader = getAuthzHeader(request);
-        if(StringUtils.isBlank(authzHeader)){
-            throw new UnLoginException();
-        }
         return getCurrentUser(authzHeader);
     }
 
+    public static Set<String> getPermissions(HttpServletRequest request) throws AuthenticationException {
+        User user = getCurrentUser(request);
+        return user.getPermissions();
+    }
     public static Set<String> getPermissions(String token) throws UnLoginException {
         return getCurrentUser(token).getPermissions();
     }
-    public static Set<String> getPermissions(HttpServletRequest request) throws UnLoginException {
-        return getCurrentUser(request).getPermissions();
-    }
-
-    public static User getCurrentUser(String token) throws UnLoginException {
+    public static User getCurrentUser(String token) throws UnLoginException  {
+        if (token == null) {
+            return null;
+        }
         if (!SubjectUtil.isValidToken(token)) {
             return null;
         }
-        if (token == null) {
-            throw new UnLoginException();
-        }
         User user = (User) tokenManager.getTokenObject(token);
-        if (user == null) {
-            user = new User(100L);
-        }
         return user;
     }
 
@@ -115,9 +109,17 @@ public class SubjectUtil {
         if (user == null) {
             throw new UnknownAccountException();//没找到帐号
         }
-
+        if (User.State.UNAVAILABLE.equals(user.getState())) {
+            throw new AccountUnavailableException(); //帐号不可用
+        }
         if (User.State.LOCKED.equals(user.getState())) {
             throw new LockedAccountException(); //帐号锁定
+        }
+        if(token.getAdmin() != null && token.getAdmin() == true){
+            Boolean admin = user.isAdmin();
+            if(admin == null || admin != true){
+                throw new UnknownAccountException("不是管理员帐号,不能登录");//不是管理员帐号
+            }
         }
         boolean matched = true;
         String loginPassword = token.getPassword();
@@ -162,4 +164,24 @@ public class SubjectUtil {
     public static boolean isValidToken(String token) {
         return tokenManager.validateToken(token);
     }
+
+    /**
+     * 获取验证码
+     *
+     * @param code
+     * @return
+     */
+    public static String getCaptcha(String code) {
+        return tokenManager.getCaptcha(code);
+    }
+
+    /**
+     * 保存验证码
+     *
+     * @param code
+     */
+    public static void setCaptcha(String code, String captcha) {
+        tokenManager.setCaptcha(code, captcha);
+    }
+
 }

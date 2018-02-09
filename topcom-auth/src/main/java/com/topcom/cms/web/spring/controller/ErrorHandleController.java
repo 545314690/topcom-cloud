@@ -3,7 +3,7 @@ package com.topcom.cms.web.spring.controller;
 import com.topcom.cms.exception.NoHandlerFoundException;
 import com.topcom.cms.perm.exception.AuthenticationException;
 import com.topcom.cms.perm.exception.UnLoginException;
-import com.topcom.cms.perm.exception.UnauthorizedException;
+import com.topcom.cms.perm.exception.UnAuthorizedException;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ErrorHandleController implements ErrorController {
     /**
      * @return
-     * @see ErrorController#getErrorPath()
+     * @see org.springframework.boot.autoconfigure.web.ErrorController#getErrorPath()
      */
     @Override
     public String getErrorPath() {
@@ -31,8 +31,8 @@ public class ErrorHandleController implements ErrorController {
 
     @RequestMapping(method = RequestMethod.GET, value = "403")
     public void _403(HttpServletRequest request, HttpServletResponse response)
-            throws UnauthorizedException {
-        throw new UnauthorizedException();
+            throws UnAuthorizedException {
+        throw new UnAuthorizedException();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "401")
