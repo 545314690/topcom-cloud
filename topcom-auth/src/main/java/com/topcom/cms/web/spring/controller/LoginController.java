@@ -123,4 +123,38 @@ public class LoginController {
         return modelMap;
 
     }
+
+    @RequestMapping(value = "/loginGet", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelMap loginGet(HttpServletRequest request, HttpServletResponse response,
+                           @RequestParam String username,
+                           @RequestParam String password,
+                           @RequestParam(required = false) String captcha,
+                           @RequestParam(required = false) Boolean admin,
+                           @RequestParam(required = false) Boolean rememberMe) throws AuthenticationException {
+
+
+        ModelMap modelMap = new ModelMap("success", false);
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
+        if(admin != null && admin == true ){
+            usernamePasswordToken.setAdmin(admin);
+        }
+        boolean logined = SubjectUtil.login(usernamePasswordToken);
+        // 验证是否登录成功
+        if (logined) {
+            modelMap.put("success", true);
+            modelMap.put("message", "登录成功");
+
+            String token = SubjectUtil.getLoginToken(username);
+            User currentUser = SubjectUtil.getCurrentUser(token);
+            request.getSession().setAttribute(Constants.CURRENT_USER, currentUser);
+            modelMap.put("token", token);
+            modelMap.put("user", currentUser.getFullName() == null ? username : currentUser.getFullName());
+        } else {
+            throw new AuthenticationException();
+        }
+
+        return modelMap;
+
+    }
 }
