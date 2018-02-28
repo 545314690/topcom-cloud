@@ -3,7 +3,7 @@ package com.topcom.bi.domain;
 /**
  * Created by lsm on 2018/2/28 0028.
  */
-public class Filed {
+public class Field {
     public enum Type{
         STRING,NUMBER,DATE
     }

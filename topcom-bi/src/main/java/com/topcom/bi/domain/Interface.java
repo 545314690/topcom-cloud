@@ -17,8 +17,8 @@ public class Interface extends BaseEntityModel {
     private String path;
     private RequestMethod method;
     private String returnType = "JSON";
-    private List<Filed> requestParams;
-    private List<Filed> returnValues;
+    private List<Field> requestParams;
+    private List<Field> returnValues;
 
     public String getSysName() {
         return sysName;
@@ -68,19 +68,19 @@ public class Interface extends BaseEntityModel {
         this.returnType = returnType;
     }
 
-    public List<Filed> getRequestParams() {
+    public List<Field> getRequestParams() {
         return requestParams;
     }
 
-    public void setRequestParams(List<Filed> requestParams) {
+    public void setRequestParams(List<Field> requestParams) {
         this.requestParams = requestParams;
     }
 
-    public List<Filed> getReturnValues() {
+    public List<Field> getReturnValues() {
         return returnValues;
     }
 
-    public void setReturnValues(List<Filed> returnValues) {
+    public void setReturnValues(List<Field> returnValues) {
         this.returnValues = returnValues;
     }
 }
