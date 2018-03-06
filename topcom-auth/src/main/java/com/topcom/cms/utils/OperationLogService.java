@@ -5,10 +5,10 @@ import com.topcom.cms.domain.OperationLog;
 import com.topcom.cms.domain.User;
 import com.topcom.cms.service.OperationLogManager;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.lang.reflect.ParameterizedType;
  *
  * @author lism
  */
-//@Aspect
+@Aspect
 @Component
 public class OperationLogService {
     /**
@@ -32,7 +32,7 @@ public class OperationLogService {
     /**
      * 定义一个切入点
      */
-    @Pointcut("execution(* com.topcom.cms..service..*.save*(..)))")
+    @Pointcut("execution(* com.topcom.cms..service.*.save*(..))")
     private void saveMethod() {
     }
 
