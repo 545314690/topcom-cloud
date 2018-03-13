@@ -120,4 +120,7 @@ public interface ResourceManager extends GenericTreeManager<Resource, Long> {
 
 //	Set<String> getUserPermissions(Long id);
 	List<Resource> getAllResources();
+
+
+	Page<Resource> searchResource(Set<Resource> resourceSet, String word,Integer limit, Integer page);
 }

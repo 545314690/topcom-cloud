@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.topcom.cms.base.service.impl.GenericTreeManagerImpl;
 import com.topcom.cms.dao.ResourceDao;
+import org.springframework.util.StringUtils;
 
 /**
  * 资源访问实现类
@@ -138,6 +141,8 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 		return this.getDescendants(null);
 	}
 
+
+
 	@Override
 	public Resource save(Resource entity) {
 		return super.save(entity);
@@ -156,5 +161,73 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 	@Override
 	public void deleteInBatch(Iterable<Resource> entities) {
 		super.deleteInBatch(entities);
+	}
+
+
+	@Override
+	public Page<Resource> searchResource(Set<Resource> resourceSet,String word, Integer limit, Integer page) {
+		if (limit==null||limit==0){
+			limit=20;
+		}
+		if (page==null||page==0){
+			page=1;
+		}
+		List<Resource> content = new ArrayList<>();
+		if (StringUtils.isEmpty(word)){
+			content.addAll(resourceSet);
+		}else {
+			content = searchText(word,resourceSet);
+		}
+		return new PageImpl(content,new PageRequest(page-1,limit),resourceSet.size());
+	}
+
+	private List<Resource> searchText(String keyWord,Set<Resource> resourceList){
+		Map<Resource,Double> resourceMap = new HashMap<>();
+		for(Resource resource:resourceList){
+			Double d = 0D;
+			String name = resource.getName();
+			String description = resource.getDescription();
+			if (name.indexOf(keyWord)!=-1){
+				d = d+10;
+			}
+			if (description.indexOf(keyWord)!=-1){
+				d=d+1;
+			}
+			if (d>0){
+				resourceMap.put(resource,d);
+			}
+		}
+		return sort(resourceMap);
+	}
+
+	/**
+	 * 排序
+	 * @param coats
+	 * @return
+     */
+	private List<Resource> sort(Map<Resource, Double> coats){
+		List<Map.Entry<Resource, Double>> mappingList = null;
+		mappingList = new ArrayList<Map.Entry<Resource, Double>>(coats.entrySet());
+		Collections.sort(mappingList, new Comparator<Map.Entry<Resource, Double>>() {
+			@Override
+			public int compare(Map.Entry<Resource, Double> mapping1, Map.Entry<Resource, Double> mapping2) {
+				return -mapping1.getValue().compareTo(mapping2.getValue());
+			}
+		});
+		List<Resource> result = new ArrayList<>();
+		for (int i=0;i<mappingList.size();i++){
+			result.add(mappingList.get(i).getKey());
+		}
+		return result;
+	}
+
+
+	public static void main(String[] args) {
+		List list= new ArrayList<>();
+		for (int i=0;i<100;i++){
+			list.add(i);
+		}
+		Page page = new PageImpl(list,new PageRequest(0,2),100);
+		System.out.println(page.getTotalElements());
 	}
 }

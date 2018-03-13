@@ -4,7 +4,12 @@ import com.topcom.cms.base.model.BaseTreeEntityModel;
 import com.topcom.cms.base.web.spring.controller.GenericTreeController;
 import com.topcom.cms.domain.Resource;
 import com.topcom.cms.domain.Role;
+import com.topcom.cms.domain.User;
 import com.topcom.cms.service.ResourceManager;
+import com.topcom.cms.service.SearchWordManager;
+import com.topcom.cms.service.UserManager;
+import com.topcom.cms.web.bind.annotation.CurrentUser;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 平台子系统与各级模块管理维护的交互控制
@@ -36,6 +42,11 @@ public class ResourceController extends
      */
     private static final Logger logger = Logger
             .getLogger(ResourceController.class);
+
+    @Autowired
+    UserManager userManager;
+    @Autowired
+    SearchWordManager searchWordManager;
 
     ResourceManager resourceManager;
 
@@ -150,5 +161,27 @@ public class ResourceController extends
             }
         }
         return result;
+    }
+
+
+    @ApiOperation("获取resource")
+    @RequestMapping(
+            value = {"findByUser"},
+            method = {RequestMethod.GET}
+    )
+    @ResponseBody
+    public Page<Resource> resource(@CurrentUser User user,@RequestParam(required = false) String word,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer page) {
+        User user1 = this.userManager.findById(user.getId());//缓存user懒加载，没有resource，需要在数据库查询
+        //user.getPermissionNames();
+        Set<Resource> resourceSet = user1.getResource();
+        if (resourceSet == null || resourceSet.size() == 0) {
+            return null;
+        }
+        for (Resource resource : resourceSet) {
+            resource.sortByChildId();
+        }
+        //增加查询条数
+        searchWordManager.addClickCount(word,1);
+        return this.resourceManager.searchResource(resourceSet,word,limit,page);
     }
 }
