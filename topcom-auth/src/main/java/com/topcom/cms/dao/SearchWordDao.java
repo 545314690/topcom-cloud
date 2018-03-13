@@ -13,4 +13,8 @@ public interface SearchWordDao extends GenericDao<SearchWord, Long> {
     List<SearchWord> findByWordAndType(String word, Integer type);
 
     Page<SearchWord> findByType(Pageable page, Integer type);
+
+    List<SearchWord> findByWordAndTypeAndGroupId(String word, Integer type, String groupId);
+
+    Page<SearchWord> findByTypeAndGroupIdIn(Pageable page, Integer type, List<String> groupIdList);
 }

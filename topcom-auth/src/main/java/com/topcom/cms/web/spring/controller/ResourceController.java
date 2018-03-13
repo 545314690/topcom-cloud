@@ -2,12 +2,11 @@ package com.topcom.cms.web.spring.controller;
 
 import com.topcom.cms.base.model.BaseTreeEntityModel;
 import com.topcom.cms.base.web.spring.controller.GenericTreeController;
-import com.topcom.cms.domain.Resource;
-import com.topcom.cms.domain.Role;
-import com.topcom.cms.domain.User;
+import com.topcom.cms.domain.*;
 import com.topcom.cms.service.ResourceManager;
 import com.topcom.cms.service.SearchWordManager;
 import com.topcom.cms.service.UserManager;
+import com.topcom.cms.utils.FileUploader;
 import com.topcom.cms.web.bind.annotation.CurrentUser;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -19,14 +18,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 平台子系统与各级模块管理维护的交互控制
@@ -43,6 +45,8 @@ public class ResourceController extends
     private static final Logger logger = Logger
             .getLogger(ResourceController.class);
 
+    @Autowired
+    FileUploader fileUploader;
     @Autowired
     UserManager userManager;
     @Autowired
@@ -174,6 +178,7 @@ public class ResourceController extends
         User user1 = this.userManager.findById(user.getId());//缓存user懒加载，没有resource，需要在数据库查询
         //user.getPermissionNames();
         Set<Resource> resourceSet = user1.getResource();
+        Set<Group> groups = user1.getGroups();
         if (resourceSet == null || resourceSet.size() == 0) {
             return null;
         }
@@ -181,7 +186,20 @@ public class ResourceController extends
             resource.sortByChildId();
         }
         //增加查询条数
-        searchWordManager.addClickCount(word,1);
+        searchWordManager.addClickCount(groups,word,1);
         return this.resourceManager.searchResource(resourceSet,word,limit,page);
+    }
+
+    @RequestMapping(value = "uploadImages/{name}", method = RequestMethod.POST)
+    @ResponseBody
+    public List<String> uploadImages(
+            @RequestParam(value = "images") MultipartFile[] images,
+            @PathVariable String name) throws Exception {
+
+        List<UploadFile> uploadFiles = fileUploader.upload(images, "/home/topcom/resource/" + File.separatorChar + name);
+        List<String> filepathList = uploadFiles.stream().map(uploadFile -> {
+            return uploadFile.getFilepath();
+        }).collect(Collectors.toList());
+        return filepathList;
     }
 }

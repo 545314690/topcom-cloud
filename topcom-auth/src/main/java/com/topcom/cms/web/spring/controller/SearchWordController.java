@@ -1,8 +1,12 @@
 package com.topcom.cms.web.spring.controller;
 
 import com.topcom.cms.base.web.spring.controller.GenericController;
+import com.topcom.cms.domain.Group;
 import com.topcom.cms.domain.SearchWord;
+import com.topcom.cms.domain.User;
 import com.topcom.cms.service.SearchWordManager;
+import com.topcom.cms.service.UserManager;
+import com.topcom.cms.web.bind.annotation.CurrentUser;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  */
@@ -24,6 +30,9 @@ import java.util.List;
 @RequestMapping("/searchWord")
 public class SearchWordController extends GenericController<SearchWord, Long, SearchWordManager> {
 
+
+    @Autowired
+    UserManager userManager;
     private SearchWordManager searchWordManager;
 
     @Autowired
@@ -39,9 +48,11 @@ public class SearchWordController extends GenericController<SearchWord, Long, Se
      */
     @RequestMapping(method = RequestMethod.GET, value = "/add", produces = "application/json")
     @ResponseBody
-    public SearchWord addClickCount(@ApiParam("Word") @RequestParam(required = true) String word,
+    public SearchWord addClickCount(@CurrentUser User user,@ApiParam("Word") @RequestParam(required = true) String word,
                                     @ApiParam("type") @RequestParam(required = true) Integer type){
-        return searchWordManager.addClickCount(word,type);
+        User user1 = this.userManager.findById(user.getId());
+        Set<Group> groups = user1.getGroups();
+        return searchWordManager.addClickCount(groups,word,type);
     }
 
 
@@ -51,12 +62,22 @@ public class SearchWordController extends GenericController<SearchWord, Long, Se
      */
     @RequestMapping(method = RequestMethod.GET, value = "/findByType", produces = "application/json")
     @ResponseBody
-    public List<SearchWord> findByType(@ApiParam("limit") @RequestParam(required = true) Integer limit,
+    public List<SearchWord> findByType(@CurrentUser User user,@ApiParam("limit") @RequestParam(required = true) Integer limit,
                                        @ApiParam("type") @RequestParam(required = true) Integer type){
-
         Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC,"wordCount"));
         Pageable page = new PageRequest(0,limit,sort);
-        Page<SearchWord> searchWords  = this.searchWordManager.findByType(page,type);
+        User user1 = this.userManager.findById(user.getId());
+        Set<Group> groups = user1.getGroups();
+        String groupId = SearchWord.groupIdBySet(groups);
+        List<String> groupIdList = new ArrayList<>();
+        groupIdList.add(groupId);
+        if (groupId.indexOf(",")!=-1){
+            String[] split = groupId.split(",");
+            for (String s:split){
+                groupIdList.add(s);
+            }
+        }
+        Page<SearchWord> searchWords =  this.searchWordManager.findByTypeAndGroupIdIn(page,type,groupIdList);
 
         return searchWords.getContent();
     }

@@ -2,6 +2,7 @@ package com.topcom.cms.service.impl;
 
 import com.topcom.cms.base.service.impl.GenericManagerImpl;
 import com.topcom.cms.dao.SearchWordDao;
+import com.topcom.cms.domain.Group;
 import com.topcom.cms.domain.SearchWord;
 import com.topcom.cms.service.SearchWordManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 资源访问实现类
@@ -43,9 +45,10 @@ implements SearchWordManager {
 	}
 
 	@Override
-	public SearchWord addClickCount(String word, Integer type) {
+	public SearchWord addClickCount(Set<Group> groups,String word, Integer type) {
+		String groupId =SearchWord.groupIdBySet(groups);
 		SearchWord result = new SearchWord();
-		List<SearchWord> searchWords = this.findByWordAndType(word,type);
+		List<SearchWord> searchWords = searchWordDao.findByWordAndTypeAndGroupId(word,type,groupId);
 		if (searchWords!=null&&searchWords.size()>0){
 			if (searchWords.size()>1){
 				for (int i=1;i<searchWords.size();i++){
@@ -59,8 +62,14 @@ implements SearchWordManager {
 		}else {
 			result.setType(type);
 			result.setWord(word);
+			result.setGroupId(groupId);
 			result.setWordCount(1);
 		}
 		return this.save(result);
+	}
+
+	@Override
+	public Page<SearchWord> findByTypeAndGroupIdIn(Pageable page, Integer type, List<String> groupIdList) {
+		return searchWordDao.findByTypeAndGroupIdIn(page,type,groupIdList);
 	}
 }

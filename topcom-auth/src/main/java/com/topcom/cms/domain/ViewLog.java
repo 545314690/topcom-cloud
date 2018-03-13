@@ -46,6 +46,14 @@ public class ViewLog extends BaseEntityModel {
      */
     private Long viewSum;
 
+    public Long getViewSum() {
+        return viewSum;
+    }
+
+    public void setViewSum(Long viewSum) {
+        this.viewSum = viewSum;
+    }
+
 
     public Long getUserId() {
         return userId;
