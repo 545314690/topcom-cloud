@@ -41,8 +41,7 @@ public class SearchWordController extends GenericController<SearchWord, Long, Se
     @ResponseBody
     public SearchWord addClickCount(@ApiParam("Word") @RequestParam(required = true) String word,
                                     @ApiParam("type") @RequestParam(required = true) Integer type){
-        SearchWord result = searchWordManager.addClickCount(word,type);
-        return this.searchWordManager.save(result);
+        return searchWordManager.addClickCount(word,type);
     }
 
 

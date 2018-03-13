@@ -61,6 +61,6 @@ implements SearchWordManager {
 			result.setWord(word);
 			result.setWordCount(1);
 		}
-		return result;
+		return this.save(result);
 	}
 }

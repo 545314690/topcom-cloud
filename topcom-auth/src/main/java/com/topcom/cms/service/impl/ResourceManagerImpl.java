@@ -176,7 +176,14 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 		if (StringUtils.isEmpty(word)){
 			content.addAll(resourceSet);
 		}else {
+			int index_s = (page-1)*limit;
+			int index_e = page*limit-1;
 			content = searchText(word,resourceSet);
+			if (index_s>content.size()){
+				content.clear();
+			}else {
+				content =content.subList(index_s,index_e>content.size()?content.size():index_e);
+			}
 		}
 		return new PageImpl(content,new PageRequest(page-1,limit),resourceSet.size());
 	}
@@ -187,10 +194,10 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 			Double d = 0D;
 			String name = resource.getName();
 			String description = resource.getDescription();
-			if (name.indexOf(keyWord)!=-1){
+			if (name!=null&&name.indexOf(keyWord)!=-1){
 				d = d+10;
 			}
-			if (description.indexOf(keyWord)!=-1){
+			if (description!=null&&description.indexOf(keyWord)!=-1){
 				d=d+1;
 			}
 			if (d>0){
