@@ -140,6 +140,11 @@
 			<!--<classifier>min</classifier> &lt;!&ndash;如果是需要nlp方式分词,就去掉这个标签&ndash;&gt;-->
 			<version>2.0.8</version>
 		</dependency>
+        <dependency>
+            <groupId>org.nlpcn</groupId>
+            <artifactId>nlp-lang</artifactId>
+            <version>0.2</version>
+        </dependency>
 	</dependencies>
 
 	<build>
