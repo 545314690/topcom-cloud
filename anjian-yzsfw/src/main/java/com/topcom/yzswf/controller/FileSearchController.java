@@ -1,5 +1,6 @@
 package com.topcom.yzswf.controller;
 
+import com.topcom.yzswf.config.UploadConfig;
 import com.topcom.yzswf.service.EsFileService;
 import com.topcom.yzswf.util.FileDownloader;
 import com.topcom.yzswf.util.Page;
@@ -23,6 +24,8 @@ import java.util.Map;
 public class FileSearchController {
 
     @Autowired
+    private UploadConfig uploadConfig;
+    @Autowired
     private EsFileService esFileService;
 
     @ApiOperation("fileSearch")
@@ -43,6 +46,7 @@ public class FileSearchController {
                          HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map map = esFileService.downloadTimesPlusOne(id);
         String filepath = (String) map.get("filePath");
+        filepath = uploadConfig.getBaseFolder() + File.separatorChar + filepath;
         new FileDownloader((String) map.get("filename"), filepath, request, response).invoke();
     }
 }

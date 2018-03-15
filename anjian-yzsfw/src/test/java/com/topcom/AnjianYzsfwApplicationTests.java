@@ -29,6 +29,7 @@ public class AnjianYzsfwApplicationTests {
 				esIndexFile.setFilename(name);
 				esIndexFile.setSource("安监总局");
 				esIndexFile.setType("事故案例");
+				esIndexFile.setFilePath(name);
 				Random random = new Random();
 				//随机取时间
 				int date = -random.nextInt(100);
