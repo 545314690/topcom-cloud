@@ -1,7 +1,11 @@
 package com.topcom.bi.domain;
 
+import com.topcom.bi.utils.JsonUtil;
 import com.topcom.cms.base.model.nosql.BaseEntityModel;
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.PropertyFilter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -46,6 +50,6 @@ public class Page extends BaseEntityModel {
     }
 
     public void setPageConfig(JSONObject pageConfig) {
-        this.pageConfig = pageConfig;
+        this.pageConfig =JsonUtil.toJsonNoNull(pageConfig);
     }
 }
