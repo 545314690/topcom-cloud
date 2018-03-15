@@ -13,5 +13,5 @@ public interface EsFileService {
     public com.topcom.yzswf.util.Page  search(FileQueryVO fileQueryVO) throws Exception;
     public Map<String, Object> findById(String id) throws Exception;
 
-    void downloadTimesPlusOne(String id) throws Exception;
+    Map downloadTimesPlusOne(String id) throws Exception;
 }

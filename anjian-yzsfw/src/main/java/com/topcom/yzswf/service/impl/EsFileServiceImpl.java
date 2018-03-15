@@ -92,7 +92,7 @@ public class EsFileServiceImpl implements EsFileService {
     }
 
     @Override
-    public void downloadTimesPlusOne(String id) throws Exception {
+    public Map downloadTimesPlusOne(String id) throws Exception {
         Map<String, Object> map = this.findById(id);
         if(map != null && map.size()>0){
             Integer downloadTimes = (Integer)map.get("downloadTimes");
@@ -100,5 +100,6 @@ public class EsFileServiceImpl implements EsFileService {
             map.put("downloadTimes",downloadTimes);
             this.elasticSearchService.updateData(EsConf.INDEX,EsConf.TYPE,id,JSONObject.fromObject(map).toString());
         }
+        return map;
     }
 }
