@@ -56,7 +56,17 @@
 		<!--</dependency>-->
 		<dependency>
 			<groupId>com.topcom</groupId>
-			<artifactId>mongo-base</artifactId>
+			<artifactId>swagger</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.topcom</groupId>
+			<artifactId>topcom-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.topcom</groupId>
+			<artifactId>jpa-base</artifactId>
 			<version>3.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -116,6 +126,19 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>2.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
+		<dependency>
+			<groupId>com.belerweb</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+		<!-- ansj -->
+		<dependency>
+			<groupId>org.ansj</groupId>
+			<artifactId>ansj_seg</artifactId>
+			<!--<classifier>min</classifier> &lt;!&ndash;如果是需要nlp方式分词,就去掉这个标签&ndash;&gt;-->
+			<version>2.0.8</version>
 		</dependency>
 	</dependencies>
 
