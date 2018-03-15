@@ -1,6 +1,8 @@
 package com.topcom.bi.domain;
 
+import com.topcom.bi.utils.JsonUtil;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 /**
  * Created by lsm on 2018/3/2 0002.
@@ -34,7 +36,7 @@ public class GridsterItem {
     }
 
     public void setOption(JSONObject option) {
-        this.option = option;
+        this.option = JsonUtil.toJsonNoNull(option);
     }
 
     public JSONObject getData() {
@@ -42,7 +44,7 @@ public class GridsterItem {
     }
 
     public void setData(JSONObject data) {
-        this.data = data;
+        this.data = JsonUtil.toJsonNoNull(data);
     }
 
     public JSONObject getStyle() {
@@ -50,7 +52,7 @@ public class GridsterItem {
     }
 
     public void setStyle(JSONObject style) {
-        this.style = style;
+        this.style = JsonUtil.toJsonNoNull(style);
     }
 
     public Interface getDataInterface() {
