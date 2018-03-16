@@ -12,6 +12,8 @@
         <module>topcom-webservice</module>
 		<module>topcom-scheduling</module>
         <module>config-server</module>
+		<module>topcom-bi</module>
+		<module>anjian-risk</module>
     </modules>
 	<packaging>pom</packaging>
 
@@ -93,5 +95,9 @@
             <id>186</id>
             <url>http://bjtopcom.xicp.cn:8089/repository/maven-public/</url>
         </repository>
+		<repository>
+			<id>121</id>
+			<url>http://bjtopcom.xicp.cn:8081/nexus/content/repositories/public/</url>
+		</repository>
     </repositories>
 </project>
