@@ -174,7 +174,7 @@ public class ResourceController extends
             method = {RequestMethod.GET}
     )
     @ResponseBody
-    public Page<Resource> resource(@CurrentUser User user,@RequestParam(required = false) String word,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer page) {
+    public Page<Resource> resource(@CurrentUser User user,@RequestParam(required = false) String filterType,@RequestParam(required = false) String word,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer page) {
         User user1 = this.userManager.findById(user.getId());//缓存user懒加载，没有resource，需要在数据库查询
         //user.getPermissionNames();
         Set<Resource> resourceSet = user1.getResource();
@@ -187,7 +187,7 @@ public class ResourceController extends
         }
         //增加查询条数
         searchWordManager.addClickCount(groups,word,1);
-        return this.resourceManager.searchResource(resourceSet,word,limit,page);
+        return this.resourceManager.searchResource(resourceSet,word,limit,page,filterType);
     }
 
     @RequestMapping(value = "uploadImages/{name}", method = RequestMethod.POST)
