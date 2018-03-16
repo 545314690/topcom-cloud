@@ -13,6 +13,6 @@ public interface ViewLogDao extends GenericDao<ViewLog, Long> {
 
 
 
-    @Query("SELECT new com.topcom.cms.vo.ViewLogDto(count(v.id),v.resourceId,v.resourceName) FROM ViewLog v where v.resourceId in :ids group by  v.resourceId,v.resourceName")
+    @Query("SELECT new com.topcom.cms.vo.ViewLogDto(count(v.id),v.resourceId,v.resourceName,v.url) FROM ViewLog v where v.resourceId in :ids group by  v.resourceId,v.resourceName,v.url")
     List<ViewLogDto> findByResourceIdInAndGroupByResourceNameAndResourceId(@Param("ids") List resourceId);
 }
