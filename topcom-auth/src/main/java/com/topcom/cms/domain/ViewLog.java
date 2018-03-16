@@ -31,6 +31,8 @@ public class ViewLog extends BaseEntityModel {
      * 菜单id 资源id
      */
     private Long resourceId;
+
+    private String url;
     /**
      * 菜单名称  view name
      */
@@ -45,6 +47,14 @@ public class ViewLog extends BaseEntityModel {
      * 访问次数（备用）
      */
     private Long viewSum;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public Long getViewSum() {
         return viewSum;
