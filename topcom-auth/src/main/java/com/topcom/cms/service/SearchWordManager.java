@@ -19,4 +19,5 @@ public interface SearchWordManager extends GenericManager<SearchWord, Long> {
 
     Page<SearchWord> findByTypeAndGroupIdIn(Pageable page, Integer type, List<String> groupIdList);
 
+    Page<SearchWord> findByWordAndGroupIdIn(Pageable page, String word, List<String> groupIdList);
 }

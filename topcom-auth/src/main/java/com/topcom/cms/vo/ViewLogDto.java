@@ -15,12 +15,21 @@ public class ViewLogDto implements Serializable {
      * 菜单名称  view name
      */
     private String resourceName;
+    private String url;
 
+    public String getUrl() {
+        return url;
+    }
 
-    public ViewLogDto(Long count, Long resourceId, String resourceName) {
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public ViewLogDto(Long count, Long resourceId, String resourceName,String url) {
         this.count = count;
         this.resourceId = resourceId;
         this.resourceName = resourceName;
+        this.url =url;
     }
 
 

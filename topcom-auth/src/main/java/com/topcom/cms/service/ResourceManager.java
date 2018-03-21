@@ -122,5 +122,5 @@ public interface ResourceManager extends GenericTreeManager<Resource, Long> {
 	List<Resource> getAllResources();
 
 
-	Page<Resource> searchResource(Set<Resource> resourceSet, String word,Integer limit, Integer page);
+	Page<Resource> searchResource(Set<Resource> resourceSet, String word,Integer limit, Integer page,String filterType);
 }

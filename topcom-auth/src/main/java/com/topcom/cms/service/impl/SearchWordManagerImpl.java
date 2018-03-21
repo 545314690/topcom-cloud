@@ -72,4 +72,10 @@ implements SearchWordManager {
 	public Page<SearchWord> findByTypeAndGroupIdIn(Pageable page, Integer type, List<String> groupIdList) {
 		return searchWordDao.findByTypeAndGroupIdIn(page,type,groupIdList);
 	}
+
+	@Override
+	public Page<SearchWord> findByWordAndGroupIdIn(Pageable page, String word, List<String> groupIdList) {
+		word = "%" + word+"%";
+		return searchWordDao.findByWordLikeAndGroupIdIn(page,word,groupIdList);
+	}
 }

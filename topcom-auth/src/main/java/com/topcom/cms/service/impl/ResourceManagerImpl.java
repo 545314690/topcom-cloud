@@ -165,7 +165,7 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 
 
 	@Override
-	public Page<Resource> searchResource(Set<Resource> resourceSet,String word, Integer limit, Integer page) {
+	public Page<Resource> searchResource(Set<Resource> resourceSet,String word, Integer limit, Integer page,String filterType) {
 		if (limit==null||limit==0){
 			limit=20;
 		}
@@ -178,7 +178,7 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 		}else {
 			int index_s = (page-1)*limit;
 			int index_e = page*limit-1;
-			content = searchText(word,resourceSet);
+			content = searchText(word,resourceSet,filterType);
 			if (index_s>content.size()){
 				content.clear();
 			}else {
@@ -188,20 +188,44 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 		return new PageImpl(content,new PageRequest(page-1,limit),resourceSet.size());
 	}
 
-	private List<Resource> searchText(String keyWord,Set<Resource> resourceList){
+	private List<Resource> searchText(String keyWord,Set<Resource> resourceList,String filterType){
 		Map<Resource,Double> resourceMap = new HashMap<>();
-		for(Resource resource:resourceList){
-			Double d = 0D;
-			String name = resource.getName();
-			String description = resource.getDescription();
-			if (name!=null&&name.indexOf(keyWord)!=-1){
-				d = d+10;
+		if ("description".equals(filterType)){
+			for(Resource resource:resourceList){
+				Double d = 0D;
+				String description = resource.getDescription();
+				if (description!=null&&description.indexOf(keyWord)!=-1){
+					d=d+1;
+				}
+				if (d>0){
+					resourceMap.put(resource,d);
+				}
 			}
-			if (description!=null&&description.indexOf(keyWord)!=-1){
-				d=d+1;
+		}else if ("name".equals(filterType)){
+			for(Resource resource:resourceList){
+				Double d = 0D;
+				String name = resource.getName();
+				if (name!=null&&name.indexOf(keyWord)!=-1){
+					d = d+10;
+				}
+				if (d>0){
+					resourceMap.put(resource,d);
+				}
 			}
-			if (d>0){
-				resourceMap.put(resource,d);
+		}else {
+			for(Resource resource:resourceList){
+				Double d = 0D;
+				String name = resource.getName();
+				String description = resource.getDescription();
+				if (name!=null&&name.indexOf(keyWord)!=-1){
+					d = d+10;
+				}
+				if (description!=null&&description.indexOf(keyWord)!=-1){
+					d=d+1;
+				}
+				if (d>0){
+					resourceMap.put(resource,d);
+				}
 			}
 		}
 		return sort(resourceMap);
