@@ -176,14 +176,14 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 		if (StringUtils.isEmpty(word)){
 			content.addAll(resourceSet);
 		}else {
-			int index_s = (page-1)*limit;
-			int index_e = page*limit-1;
 			content = searchText(word,resourceSet,filterType);
-			if (index_s>content.size()){
-				content.clear();
-			}else {
-				content =content.subList(index_s,index_e>content.size()?content.size():index_e);
-			}
+		}
+		int index_s = (page-1)*limit;
+		int index_e = page*limit-1;
+		if (index_s>content.size()){
+			content.clear();
+		}else {
+			content =content.subList(index_s,index_e>content.size()?content.size():index_e);
 		}
 		return new PageImpl(content,new PageRequest(page-1,limit),resourceSet.size());
 	}
