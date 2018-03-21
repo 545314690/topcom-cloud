@@ -10,9 +10,9 @@ import com.topcom.cms.base.model.BaseEntityModel;
 import com.topcom.cms.common.model.Gender;
 import com.topcom.cms.utils.MD5Utils;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.persistence.*;
 
 @Entity
 @Table(
@@ -236,14 +236,15 @@ public class User extends BaseEntityModel {
         return roles;
     }
 
-
+    @JsonIgnore
     public Set<String> getGroupNames() {
         Set<Group> groups = this.getGroups();
         return groups == null ? null : (Set) groups.stream().map((group) -> {
             return group.getName();
         }).collect(Collectors.toSet());
     }
-
+    //禁止序列化
+    @JsonIgnore
     public Set<String> getRoleNames() {
         Set<Role> roles = this.getAllRoles();
         return roles == null ? null : (Set) roles.stream().map((role) -> {

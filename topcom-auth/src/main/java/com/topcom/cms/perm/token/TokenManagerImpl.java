@@ -57,9 +57,17 @@ public class TokenManagerImpl implements TokenManager {
 
     @Override
     public void createAndSaveToken(User user) {
-        String token = createToken(user.getUsername());
+        //TODO:防止取出的时候报序列化失败的错，把用户组和角色置为空
+        //org.springframework.data.redis.serializer.SerializationException: Could not read JSON: failed to lazily initialize a collection, could not initialize proxy - no Session (through reference chain: com.topcom.cms.domain.User["groups"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: failed to lazily initialize a collection, could not initialize proxy - no Session (through reference chain: com.topcom.cms.domain.User["groups"])
+        //新构造一个user，只保存以下信息
+        User userToSave = new User();
+        userToSave.setUsername(user.getUsername());
+        userToSave.setId(user.getId());
+        userToSave.setState(user.getState());
+
+        String token = createToken(userToSave.getUsername());
         LogUtil.logger.info(token);
-        saveToken(token, user);
+        saveToken(token, userToSave);
     }
 
     @Override

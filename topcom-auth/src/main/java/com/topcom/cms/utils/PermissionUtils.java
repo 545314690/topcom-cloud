@@ -60,6 +60,8 @@ public class PermissionUtils {
         }
         boolean permit = false;
         String permString = map.get(requestUri);
+
+        //TODO:由于用户的权限没有保存到redis数据库user对象中，这个地方暂未实现
         Set<String> permissions = SubjectUtil.getPermissions(token);
         if (permissions != null && permissions.contains(permString)) {
             permit = true;
