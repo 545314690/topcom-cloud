@@ -179,7 +179,7 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 			content = searchText(word,resourceSet,filterType);
 		}
 		int index_s = (page-1)*limit;
-		int index_e = page*limit-1;
+		int index_e = page*limit;
 		if (index_s>content.size()){
 			content.clear();
 		}else {
