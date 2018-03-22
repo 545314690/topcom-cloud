@@ -185,7 +185,7 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 		}else {
 			content =content.subList(index_s,index_e>content.size()?content.size():index_e);
 		}
-		return new PageImpl(content,new PageRequest(page-1,limit),resourceSet.size());
+		return new PageImpl(content,new PageRequest(page-1,limit),content.size());
 	}
 
 	private List<Resource> searchText(String keyWord,Set<Resource> resourceList,String filterType){
