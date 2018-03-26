@@ -166,6 +166,7 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 
 	@Override
 	public Page<Resource> searchResource(Set<Resource> resourceSet,String word, Integer limit, Integer page,String filterType) {
+		Page result = null;
 		if (limit==null||limit==0){
 			limit=20;
 		}
@@ -179,13 +180,13 @@ public class ResourceManagerImpl extends GenericTreeManagerImpl<Resource, Long>
 			content = searchText(word,resourceSet,filterType);
 		}
 		int index_s = (page-1)*limit;
-		int index_e = page*limit-1;
+		int index_e = page*limit;
 		if (index_s>content.size()){
 			content.clear();
 		}else {
-			content =content.subList(index_s,index_e>content.size()?content.size():index_e);
+			result = new PageImpl(content.subList(index_s,index_e>content.size()?content.size():index_e),new PageRequest(page-1,limit),content.size());
 		}
-		return new PageImpl(content,new PageRequest(page-1,limit),resourceSet.size());
+		return result;
 	}
 
 	private List<Resource> searchText(String keyWord,Set<Resource> resourceList,String filterType){
