@@ -7,11 +7,14 @@ import com.topcom.tjs.service.TjsSpecialCompanyManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * @author maxl
  * @date 2018/3/26 0026
  */
 @Service("tjsSpecialCompanyManager")
+@Transactional
 public class TjsSpecialCompanyManagerImpl extends GenericManagerImpl<TjsSpecialCompany, Long> implements TjsSpecialCompanyManager {
 
     TjsSpecialCompanyDao tjsSpecialCompanyDao;

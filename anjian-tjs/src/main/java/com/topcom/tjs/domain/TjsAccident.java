@@ -18,114 +18,114 @@ public class TjsAccident extends BaseEntityModel {
     /**
      * 事故发生单位
      */
-    @Column(columnDefinition="COMMENT '事故发生单位'")
+    @Column(columnDefinition="varchar(100) COMMENT '事故发生单位'")
     private String company;
     /**
      * 管理分类
      */
-    @Column(columnDefinition="COMMENT '管理分类'")
+    @Column(columnDefinition="varchar(20) COMMENT '管理分类'")
     private String manageType;
     /**
      * 事故类型
      */
-    @Column(columnDefinition="COMMENT '事故类型'")
+    @Column(columnDefinition="varchar(20) COMMENT '事故类型'")
     private String type;
     /**
      * 事故发生地点
      */
-    @Column(columnDefinition="COMMENT '事故发生地点'")
+    @Column(columnDefinition="varchar(255) COMMENT '事故发生地点'")
     private String address;
-    @Column(columnDefinition="COMMENT '省'")
+    @Column(columnDefinition="varchar(20) COMMENT '省'")
     private String province;
-    @Column(columnDefinition="COMMENT '市'")
+    @Column(columnDefinition="varchar(20) COMMENT '市'")
     private String city;
-    @Column(columnDefinition="COMMENT '县'")
+    @Column(columnDefinition="varchar(20) COMMENT '县'")
     private String county;
     /**
      * 经纬度
      */
-    @Column(columnDefinition="COMMENT '经纬度'")
-    private Double lat;
+    @Column(columnDefinition="varchar(30) COMMENT '经纬度'")
+    private String lat;
     /**
      * 经纬度
      */
-    @Column(columnDefinition="COMMENT '经纬度'")
-    private Double lng;
+    @Column(columnDefinition="varchar(30) COMMENT '经纬度'")
+    private String lng;
     /**
      * 事故发生时间
      */
-    @Column(columnDefinition="COMMENT '事故发生时间'")
+    @Column(columnDefinition="datetime COMMENT '事故发生时间'")
     private Date haddenedTime;
     /**
      * 死亡(下落不明）人数
      */
-    @Column(columnDefinition="COMMENT '死亡(下落不明）人数'")
+    @Column(columnDefinition="bigint(20) COMMENT '死亡(下落不明）人数'")
     private Integer deathNumber;
     /**
      * 受伤人数
      */
-    @Column(columnDefinition="COMMENT '受伤人数'")
+    @Column(columnDefinition="bigint(20) COMMENT '受伤人数'")
     private Integer injuredNumber;
     /**
      * 重伤人数
      */
-    @Column(columnDefinition="COMMENT '重伤人数'")
+    @Column(columnDefinition="bigint(20) COMMENT '重伤人数'")
     private Integer terribleNumber;
     /**
      * 事故概况
      */
-    @Column(columnDefinition="COMMENT '事故概况'")
+    @Column(columnDefinition="varchar(500) COMMENT '事故概况'")
     private String profile;
     /**
      * 事故发生单位详细情况
      */
-    @Column(columnDefinition="COMMENT '事故发生单位详细情况'")
+    @Column(columnDefinition="varchar(500) COMMENT '事故发生单位详细情况'")
     private String companyProfile;
     /**
      * 社会信用代码
      */
-    @Column(columnDefinition="COMMENT '社会信用代码'")
+    @Column(columnDefinition="varchar(30) COMMENT '社会信用代码'")
     private String SCC;
     /**
      * 单位规模
      */
-    @Column(columnDefinition="COMMENT '单位规模'")
+    @Column(columnDefinition="varchar(20) COMMENT '单位规模'")
     private String companyScale;
     /**
      * 直接经济损失
      */
-    @Column(columnDefinition="COMMENT '直接经济损失'")
+    @Column(columnDefinition="double COMMENT '直接经济损失'")
     private Double loss;
     /**
      * 国有企业属性
      */
-    @Column(columnDefinition="COMMENT '国有企业属性'")
+    @Column(columnDefinition="varchar(20) COMMENT '国有企业属性'")
     private String companyAttribute;
     /**
      * 是否为举报事故
      */
-    @Column(columnDefinition="COMMENT '是否为举报事故'")
-    private String report;
+    @Column(columnDefinition="bit(1) COMMENT '是否为举报事故'")
+    private Boolean report;
     /**
      * 是否涉及相关因素
      */
-    @Column(columnDefinition="COMMENT '是否涉及相关因素'")
+    @Column(columnDefinition="varchar(20) COMMENT '是否涉及相关因素'")
     private String factors;
     /**
      * 登记注册类型
      */
-    @Column(columnDefinition="COMMENT '登记注册类型'")
+    @Column(columnDefinition="varchar(20) COMMENT '登记注册类型'")
     private String companyType;
     /**
      * 所属行业
      */
-    @Column(columnDefinition="COMMENT '所属行业'")
+    @Column(columnDefinition="varchar(20) COMMENT '所属行业'")
     private String companyIndustry;
     /**
      * 事故详细情况
      */
-    @Column(columnDefinition="COMMENT '事故详细情况'")
-    private String describe;
+    @Column(columnDefinition="varchar(500) COMMENT '事故详细情况'")
+    private String description;
 
 
     public String getCompany() {
@@ -184,19 +184,19 @@ public class TjsAccident extends BaseEntityModel {
         this.county = county;
     }
 
-    public Double getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(Double lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public Double getLng() {
+    public String getLng() {
         return lng;
     }
 
-    public void setLng(Double lng) {
+    public void setLng(String lng) {
         this.lng = lng;
     }
 
@@ -280,11 +280,11 @@ public class TjsAccident extends BaseEntityModel {
         this.companyAttribute = companyAttribute;
     }
 
-    public String getReport() {
+    public Boolean getReport() {
         return report;
     }
 
-    public void setReport(String report) {
+    public void setReport(Boolean report) {
         this.report = report;
     }
 
@@ -312,11 +312,11 @@ public class TjsAccident extends BaseEntityModel {
         this.companyIndustry = companyIndustry;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
