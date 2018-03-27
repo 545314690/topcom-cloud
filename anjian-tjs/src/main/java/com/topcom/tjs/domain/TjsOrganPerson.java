@@ -17,71 +17,71 @@ public class TjsOrganPerson extends BaseEntityModel {
     /**
      *单位名称
      */
-    @Column(columnDefinition="COMMENT '单位名称'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '单位名称'")
     private  String organ_name;
 
     /**
      *单位级别
      */
-    @Column(columnDefinition="COMMENT '单位级别'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '单位级别'")
     private  String organ_type;
 
     /**
      *所在地区
      */
-    @Column(columnDefinition="COMMENT '所在地区'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '所在地区'")
     private  String organ_addr;
 
-    @Column(columnDefinition="COMMENT '省'")
+    @Column(columnDefinition="VARCHAR(20) COMMENT '省'")
     private String province;
-    @Column(columnDefinition="COMMENT '市'")
+    @Column(columnDefinition="VARCHAR(20) COMMENT '市'")
     private String city;
-    @Column(columnDefinition="COMMENT '县'")
+    @Column(columnDefinition="VARCHAR(20) COMMENT '县'")
     private String county;
     /**
      * 经纬度
      */
-    @Column(columnDefinition="COMMENT '经纬度'")
-    private Double lat;
+    @Column(columnDefinition="VARCHAR(50) COMMENT '经纬度'")
+    private String lat;
     /**
      * 经纬度
      */
-    @Column(columnDefinition="COMMENT '经纬度'")
-    private Double lng;
+    @Column(columnDefinition="VARCHAR(50) COMMENT '经纬度'")
+    private String lng;
     /**
      *姓名
      */
-    @Column(columnDefinition="COMMENT '姓名'")
+    @Column(columnDefinition="VARCHAR(20) COMMENT '姓名'")
     private  String name;
 
     /**
      *性别
      */
-    @Column(columnDefinition="COMMENT '性别'")
+    @Column(columnDefinition="VARCHAR(10) COMMENT '性别'")
     private  String gender;
 
     /**
      *年龄
      */
-    @Column(columnDefinition="COMMENT '年龄'")
+    @Column(columnDefinition="INT COMMENT '年龄'")
     private  Integer age;
 
     /**
      *行政级别
      */
-    @Column(columnDefinition="COMMENT '行政级别'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '行政级别'")
     private  String level;
 
     /**
      *执法证编号
      */
-    @Column(columnDefinition="COMMENT '执法证编号'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '执法证编号'")
     private  String number;
 
     /**
      *备注
      */
-    @Column(columnDefinition="COMMENT '备注'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '备注'")
     private  String remarks;
 
     public String getOrgan_name() {
@@ -132,19 +132,19 @@ public class TjsOrganPerson extends BaseEntityModel {
         this.county = county;
     }
 
-    public Double getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(Double lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public Double getLng() {
+    public String getLng() {
         return lng;
     }
 
-    public void setLng(Double lng) {
+    public void setLng(String lng) {
         this.lng = lng;
     }
 
