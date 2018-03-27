@@ -2,9 +2,7 @@ package com.topcom.tjs.domain;
 
 import com.topcom.cms.base.model.BaseEntityModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author maxl
@@ -14,40 +12,9 @@ import javax.persistence.Table;
 @Table(name = "tjs_organ_person")
 public class TjsOrganPerson extends BaseEntityModel {
 
-    /**
-     *单位名称
-     */
-    @Column(columnDefinition="VARCHAR(50) COMMENT '单位名称'")
-    private  String organ_name;
-
-    /**
-     *单位级别
-     */
-    @Column(columnDefinition="VARCHAR(50) COMMENT '单位级别'")
-    private  String organ_type;
-
-    /**
-     *所在地区
-     */
-    @Column(columnDefinition="VARCHAR(50) COMMENT '所在地区'")
-    private  String organ_addr;
-
-    @Column(columnDefinition="VARCHAR(20) COMMENT '省'")
-    private String province;
-    @Column(columnDefinition="VARCHAR(20) COMMENT '市'")
-    private String city;
-    @Column(columnDefinition="VARCHAR(20) COMMENT '县'")
-    private String county;
-    /**
-     * 经纬度
-     */
-    @Column(columnDefinition="VARCHAR(50) COMMENT '经纬度'")
-    private String lat;
-    /**
-     * 经纬度
-     */
-    @Column(columnDefinition="VARCHAR(50) COMMENT '经纬度'")
-    private String lng;
+    @ManyToOne
+    @JoinColumn(name = "organId",columnDefinition="bigint(20) COMMENT '组织机构id'")
+    private TjsOrgan organ;
     /**
      *姓名
      */
@@ -84,69 +51,6 @@ public class TjsOrganPerson extends BaseEntityModel {
     @Column(columnDefinition="VARCHAR(50) COMMENT '备注'")
     private  String remarks;
 
-    public String getOrgan_name() {
-        return organ_name;
-    }
-
-    public void setOrgan_name(String organ_name) {
-        this.organ_name = organ_name;
-    }
-
-    public String getOrgan_type() {
-        return organ_type;
-    }
-
-    public void setOrgan_type(String organ_type) {
-        this.organ_type = organ_type;
-    }
-
-    public String getOrgan_addr() {
-        return organ_addr;
-    }
-
-    public void setOrgan_addr(String organ_addr) {
-        this.organ_addr = organ_addr;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCounty() {
-        return county;
-    }
-
-    public void setCounty(String county) {
-        this.county = county;
-    }
-
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLng() {
-        return lng;
-    }
-
-    public void setLng(String lng) {
-        this.lng = lng;
-    }
 
     public String getName() {
         return name;
@@ -194,5 +98,13 @@ public class TjsOrganPerson extends BaseEntityModel {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public TjsOrgan getOrgan() {
+        return organ;
+    }
+
+    public void setOrgan(TjsOrgan organ) {
+        this.organ = organ;
     }
 }

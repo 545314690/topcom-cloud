@@ -2,9 +2,7 @@ package com.topcom.tjs.domain;
 
 import com.topcom.cms.base.model.BaseEntityModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -23,7 +21,9 @@ public class TjsEnforcement extends BaseEntityModel {
 
     public TjsEnforcement() {
     }
-
+    @ManyToOne
+    @JoinColumn(name = "companyId",columnDefinition="bigint(20) COMMENT '企业id'")
+    private TjsSpecialCompany company;
     /**
      * 执法检查起始时间
      */
@@ -739,5 +739,13 @@ public class TjsEnforcement extends BaseEntityModel {
 
     public void setTBRQ(Date TBRQ) {
         this.TBRQ = TBRQ;
+    }
+
+    public TjsSpecialCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(TjsSpecialCompany company) {
+        this.company = company;
     }
 }

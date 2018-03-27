@@ -2,9 +2,7 @@ package com.topcom.tjs.domain;
 
 import com.topcom.cms.base.model.BaseEntityModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -14,6 +12,12 @@ import java.util.Date;
 @Entity
 @Table(name = "tjs_death_person")
 public class TjsDeathPerson extends BaseEntityModel {
+    /**
+     * 事故信息
+     */
+    @ManyToOne
+    @JoinColumn(name = "accidentId",columnDefinition="bigint(20) COMMENT '事故id'")
+    private TjsAccident accident;
     /**
      * 姓名
      */
@@ -73,12 +77,6 @@ public class TjsDeathPerson extends BaseEntityModel {
      */
     @Column(columnDefinition="BIT COMMENT '有无工伤保险'")
     private Boolean industrialInsurance;
-
-
-    /**
-     * 事故
-     */
-    private TjsAccident accident;
 
     public String getName() {
         return name;

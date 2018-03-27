@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2018年3月26日11:54:12
  */
 @Entity
-@Table(name = "t_accidentInvestigation")
+@Table(name = "t_accident_investigation")
 public class TjsAccidentInvestigation extends BaseEntityModel {
     /**
      *

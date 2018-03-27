@@ -2,9 +2,7 @@ package com.topcom.tjs.domain;
 
 import com.topcom.cms.base.model.BaseEntityModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -14,12 +12,14 @@ import java.util.Date;
 @Entity
 @Table(name = "tjs_accident")
 public class TjsAccident extends BaseEntityModel {
-
+    @ManyToOne
+    @JoinColumn(name = "companyId",columnDefinition="bigint(20) COMMENT '企业id'")
+    private TjsSpecialCompany company;
     /**
      * 事故发生单位
      */
     @Column(columnDefinition="varchar(100) COMMENT '事故发生单位'")
-    private String company;
+    private String companyName;
     /**
      * 管理分类
      */
@@ -128,12 +128,12 @@ public class TjsAccident extends BaseEntityModel {
     private String description;
 
 
-    public String getCompany() {
-        return company;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getManageType() {
@@ -318,5 +318,13 @@ public class TjsAccident extends BaseEntityModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public TjsSpecialCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(TjsSpecialCompany company) {
+        this.company = company;
     }
 }
