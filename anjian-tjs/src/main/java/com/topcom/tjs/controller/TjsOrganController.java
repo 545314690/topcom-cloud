@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date 2018/3/26 0026
  */
 @Controller
-@RequestMapping("/tjsDeathPerson/")
+@RequestMapping("/tjsOrgan/")
 public class TjsOrganController extends GenericController<
         TjsOrgan, Long, TjsOrganManager> {
 
