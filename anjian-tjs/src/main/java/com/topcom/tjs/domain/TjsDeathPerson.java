@@ -17,68 +17,67 @@ public class TjsDeathPerson extends BaseEntityModel {
     /**
      * 姓名
      */
-    @Column(columnDefinition="COMMENT '姓名'")
+    @Column(columnDefinition=" VARCHAR(20) COMMENT '姓名'")
     private String name;
 
     /**
      * 身份证号码
      */
-    @Column(columnDefinition="COMMENT '身份证号码'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '身份证号码'")
     private String cardId;
 
     /**
      * 性别
      */
-    @Column(columnDefinition="COMMENT '性别'")
+    @Column(columnDefinition="VARCHAR(10) COMMENT '性别'")
     private String gender;
 
     /**
      * 年龄
      */
-    @Column(columnDefinition="COMMENT '年龄'")
+    @Column(columnDefinition="INT COMMENT '年龄'")
     private Integer age;
 
     /**
      * 状态
      */
-    @Column(columnDefinition="COMMENT '状态'")
+    @Column(columnDefinition="VARCHAR(10) COMMENT '状态'")
     private String status;
 
     /**
      * 死亡日期
      */
-    @Column(columnDefinition="COMMENT '死亡日期'")
+    @Column(columnDefinition="DATETIME COMMENT '死亡日期'")
     private Date deathDate;
 
     /**
      * 是否职业死亡
      */
-    @Column(columnDefinition="COMMENT '是否职业死亡'")
+    @Column(columnDefinition="BIT COMMENT '是否职业死亡'")
     private Boolean professionDeath;
 
     /**
      * 文化程度
      */
-    @Column(columnDefinition="COMMENT '文化程度'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '文化程度'")
     private String education;
 
     /**
      * 职业
      */
-    @Column(columnDefinition="COMMENT '职业'")
+    @Column(columnDefinition="VARCHAR(50) COMMENT '职业'")
     private String profession;
 
     /**
      * 有无工伤保险
      */
-    @Column(columnDefinition="COMMENT '有无工伤保险'")
+    @Column(columnDefinition="BIT COMMENT '有无工伤保险'")
     private Boolean industrialInsurance;
 
 
     /**
      * 事故
      */
-    @Column(columnDefinition="COMMENT '事故'")
     private TjsAccident accident;
 
     public String getName() {
