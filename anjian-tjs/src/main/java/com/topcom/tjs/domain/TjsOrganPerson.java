@@ -32,6 +32,22 @@ public class TjsOrganPerson extends BaseEntityModel {
     @Column(columnDefinition="COMMENT '所在地区'")
     private  String organ_addr;
 
+    @Column(columnDefinition="COMMENT '省'")
+    private String province;
+    @Column(columnDefinition="COMMENT '市'")
+    private String city;
+    @Column(columnDefinition="COMMENT '县'")
+    private String county;
+    /**
+     * 经纬度
+     */
+    @Column(columnDefinition="COMMENT '经纬度'")
+    private Double lat;
+    /**
+     * 经纬度
+     */
+    @Column(columnDefinition="COMMENT '经纬度'")
+    private Double lng;
     /**
      *姓名
      */
@@ -90,6 +106,46 @@ public class TjsOrganPerson extends BaseEntityModel {
 
     public void setOrgan_addr(String organ_addr) {
         this.organ_addr = organ_addr;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
     public String getName() {

@@ -24,6 +24,23 @@ public class TjsSpecialCompany extends BaseEntityModel {
     @Column(columnDefinition="COMMENT '注册地址'")
     private String address;
 
+    @Column(columnDefinition="COMMENT '省'")
+    private String province;
+    @Column(columnDefinition="COMMENT '市'")
+    private String city;
+    @Column(columnDefinition="COMMENT '县'")
+    private String county;
+    /**
+     * 经纬度
+     */
+    @Column(columnDefinition="COMMENT '经纬度'")
+    private Double lat;
+    /**
+     * 经纬度
+     */
+    @Column(columnDefinition="COMMENT '经纬度'")
+    private Double lng;
+
     @Column(columnDefinition="COMMENT '列入安全生产监管重点企业'")
     private Boolean special;
 
@@ -107,6 +124,46 @@ public class TjsSpecialCompany extends BaseEntityModel {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
     public Boolean getSpecial() {

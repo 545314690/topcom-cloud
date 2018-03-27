@@ -35,6 +35,12 @@ public class TjsAccident extends BaseEntityModel {
      */
     @Column(columnDefinition="COMMENT '事故发生地点'")
     private String address;
+    @Column(columnDefinition="COMMENT '省'")
+    private String province;
+    @Column(columnDefinition="COMMENT '市'")
+    private String city;
+    @Column(columnDefinition="COMMENT '县'")
+    private String county;
     /**
      * 经纬度
      */
@@ -108,7 +114,7 @@ public class TjsAccident extends BaseEntityModel {
     /**
      * 登记注册类型
      */
-    @Column(columnDefinition="COMMENT 登记注册类型''")
+    @Column(columnDefinition="COMMENT '登记注册类型'")
     private String companyType;
     /**
      * 所属行业
@@ -152,6 +158,30 @@ public class TjsAccident extends BaseEntityModel {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
     }
 
     public Double getLat() {
