@@ -51,6 +51,19 @@ public class TjsOrganPerson extends BaseEntityModel {
     @Column(columnDefinition="VARCHAR(50) COMMENT '备注'")
     private  String remarks;
 
+    /**
+     * 文化程度
+     */
+    @Column(columnDefinition="VARCHAR(50) COMMENT '文化程度'")
+    private String education;
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
 
     public String getName() {
         return name;
