@@ -8,6 +8,9 @@ import com.topcom.tjs.utils.RowMappers;
 import com.topcom.tjs.vo.KVPair;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +79,10 @@ public class TjsOrganPersonManagerImpl extends GenericManagerImpl<TjsOrganPerson
     public List<KVPair> countByAreaAndCredentials(String province, String city) {
        String condition = " case when number is not null then '有证' else '无证' end ";
         return this.countByAreaAndProperty(province,city,condition);
+    }
+
+    @Override
+    public Page<TjsOrganPerson> findByOrganId(Long organId,  Pageable pageable) {
+        return tjsOrganPersonDao.findByOrganId(organId, pageable);
     }
 }

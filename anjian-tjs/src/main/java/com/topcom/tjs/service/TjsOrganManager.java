@@ -12,4 +12,8 @@ import java.util.List;
  */
 public interface TjsOrganManager extends GenericManager<TjsOrgan, Long> {
     List<KVPair> countByArea(String province, String city);
+
+    List<TjsOrgan> findByProvince(String province);
+
+    List<TjsOrgan> findByProvinceAndCity(String province, String city);
 }

@@ -5,6 +5,8 @@ import com.topcom.tjs.domain.TjsOrganPerson;
 import com.topcom.tjs.service.TjsOrganPersonManager;
 import com.topcom.tjs.vo.KVPair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,5 +75,15 @@ public class TjsOrganPersonController extends GenericController<
     @ResponseBody
     public List<KVPair> countByCredentials(@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
         return tjsOrganPersonManager.countByAreaAndCredentials(province,city);
+    }
+
+    @RequestMapping(
+            value = {"findByOrgan"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public Page<TjsOrganPerson> findByOrganId(@RequestParam Long organId,@RequestParam Integer page,@RequestParam Integer limit) {
+        return tjsOrganPersonManager.findByOrganId(organId,new PageRequest(page-1,limit));
     }
 }

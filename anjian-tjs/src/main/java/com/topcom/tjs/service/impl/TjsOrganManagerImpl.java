@@ -49,4 +49,14 @@ public class TjsOrganManagerImpl extends GenericManagerImpl<TjsOrgan, Long> impl
         }
         return kvPairs;
     }
+
+    @Override
+    public List<TjsOrgan> findByProvince(String province) {
+        return tjsOrganDao.findByProvince(province);
+    }
+
+    @Override
+    public List<TjsOrgan> findByProvinceAndCity(String province, String city) {
+        return tjsOrganDao.findByProvinceAndCity(province, city);
+    }
 }

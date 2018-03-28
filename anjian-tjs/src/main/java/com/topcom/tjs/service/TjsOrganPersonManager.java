@@ -3,6 +3,8 @@ package com.topcom.tjs.service;
 import com.topcom.cms.base.service.GenericManager;
 import com.topcom.tjs.domain.TjsOrganPerson;
 import com.topcom.tjs.vo.KVPair;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -22,4 +24,6 @@ public interface TjsOrganPersonManager extends GenericManager<TjsOrganPerson, Lo
     List<KVPair> countByAreaAndAge(String province, String city);
 
     List<KVPair> countByAreaAndCredentials(String province, String city);
+
+    Page<TjsOrganPerson> findByOrganId(Long organId, Pageable pageable);
 }
