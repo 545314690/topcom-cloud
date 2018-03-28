@@ -74,7 +74,7 @@ public class TjsAccident extends BaseEntityModel {
     /**
      * 事故概况
      */
-    @Column(columnDefinition="varchar(500) COMMENT '事故概况'")
+    @Column(columnDefinition="varchar(1500) COMMENT '事故概况'")
     private String profile;
     /**
      * 事故发生单位详细情况

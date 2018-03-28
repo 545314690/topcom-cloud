@@ -15,7 +15,7 @@ import java.util.Date;
 @Table(name = "tjs_special_company")
 public class TjsSpecialCompany extends BaseEntityModel {
 
-    @Column(columnDefinition="VARCHAR(50) COMMENT '单位名称'")
+    @Column(columnDefinition="VARCHAR(500) COMMENT '单位名称'")
     private String companyName;
 
     @Column(columnDefinition="VARCHAR(50) COMMENT '统一社会信用代码'")
@@ -101,6 +101,16 @@ public class TjsSpecialCompany extends BaseEntityModel {
     @Column(columnDefinition="DATETIME COMMENT '填报日期'")
     private Date createTableDate;
 
+    @Column(columnDefinition="DATETIME COMMENT '管理分类'")
+    private String GLFL;
+
+    public String getGLFL() {
+        return GLFL;
+    }
+
+    public void setGLFL(String GLFL) {
+        this.GLFL = GLFL;
+    }
 
     public String getCompanyName() {
         return companyName;

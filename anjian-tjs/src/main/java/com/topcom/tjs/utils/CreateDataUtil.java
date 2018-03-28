@@ -1,5 +1,8 @@
 package com.topcom.tjs.utils;
 
+import com.topcom.cms.common.page.DateParam;
+import org.apache.commons.lang.math.RandomUtils;
+
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -22,6 +25,7 @@ public class CreateDataUtil {
         int u = (a+b)/2;
         int o = b-a;
         double value = Math.sqrt(o) * random.nextGaussian() + u;
+        if (value==0){return 0;}
         if (value<a||value>b) {
             return getGaussianRandom(a,b);
         }
@@ -61,6 +65,21 @@ public class CreateDataUtil {
         return result;
     }
 
+    public static List<String> getRandomName(){
+        File file = new File("D:\\wokespace-ma\\git\\topcom-cloud\\anjian-tjs\\Chinese_Names.txt");
+        return FileUtil.read(file);
+    }
+
+    /**
+     * 根据起止时间得到随机时间
+     * @param date
+     * @return
+     */
+    public static Date getRandomDate (DateParam date){
+        long s = date.startDate().getTime();
+        long e = date.endDate().getTime();
+        return new Date((long) (random.nextDouble() * (e - s))+s);
+    }
 
     public static void main(String[] args) {
         List<String> randomName = getRandomName(20);

@@ -42,7 +42,7 @@ public class TjsEnforcement extends BaseEntityModel {
     /**
      * 被检查单位名称
      */
-    @Column(columnDefinition = "varchar(20) COMMENT '被检查单位名称'")
+    @Column(columnDefinition = "varchar(500) COMMENT '被检查单位名称'")
     private String BJCDWMC;
     /**
      * 企业类别
