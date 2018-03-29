@@ -4,6 +4,8 @@ import com.topcom.cms.base.web.spring.controller.GenericController;
 import com.topcom.tjs.domain.TjsOrgan;
 import com.topcom.tjs.service.TjsOrganManager;
 import com.topcom.tjs.vo.KVPair;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import java.util.List;
  * @author maxl
  * @date 2018/3/26 0026
  */
+@Api("监察机构接口")
 @Controller
 @RequestMapping("/tjsOrgan/")
 public class TjsOrganController extends GenericController<
@@ -30,6 +33,7 @@ public class TjsOrganController extends GenericController<
         this.tjsOrganManager = tjsOrganManager;
         this.manager = this.tjsOrganManager;
     }
+    @ApiOperation("根据区域统计")
     @RequestMapping(
             value = {"countByArea"},
             method = {RequestMethod.GET},
@@ -39,6 +43,7 @@ public class TjsOrganController extends GenericController<
     public List<KVPair> countByArea(@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
         return tjsOrganManager.countByArea(province,city);
     }
+    @ApiOperation("根据区域查找")
     @RequestMapping(
             value = {"findByArea"},
             method = {RequestMethod.GET},
