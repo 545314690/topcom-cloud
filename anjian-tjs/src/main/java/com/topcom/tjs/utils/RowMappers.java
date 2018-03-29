@@ -1,5 +1,6 @@
 package com.topcom.tjs.utils;
 
+import com.topcom.tjs.domain.TjsSpecialCompany;
 import com.topcom.tjs.vo.KVPair;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -18,6 +19,19 @@ public class RowMappers {
                 kvPair.setName(resultSet.getString("name"));
                 kvPair.setValue(resultSet.getString("value"));
                 return kvPair;
+            }
+        };
+    }
+    public static RowMapper<TjsSpecialCompany> tjsSpecialCompanyRowMapper() {
+        return new RowMapper<TjsSpecialCompany>() {
+            @Override
+            public TjsSpecialCompany mapRow(ResultSet resultSet, int i) throws SQLException {
+                TjsSpecialCompany company = new TjsSpecialCompany();
+                company.setId(resultSet.getLong("id"));
+                company.setCompanyName(resultSet.getString("companyName"));
+                company.setLng(resultSet.getString("lng"));
+                company.setLat(resultSet.getString("lat"));
+                return company;
             }
         };
     }
