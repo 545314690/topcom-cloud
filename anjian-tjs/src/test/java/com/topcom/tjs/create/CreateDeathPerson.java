@@ -74,7 +74,7 @@ public class CreateDeathPerson {
         person.setAccident(acc);
         person.setAge(CreateDataUtil.getGaussianRandom(25,60));
         person.setCardId("未知");
-        person.setDeathDate(acc.getHaddenedTime());
+        person.setDeathDate(acc.getHappenedTime());
         person.setEducation(education[CreateDataUtil.getGaussianRandomBigLeft(0,education.length-1)]);
         person.setGender(gender[CreateDataUtil.getGaussianRandomBigLeft(0,gender.length-1)]);
         person.setIndustrialInsurance(random.nextBoolean());

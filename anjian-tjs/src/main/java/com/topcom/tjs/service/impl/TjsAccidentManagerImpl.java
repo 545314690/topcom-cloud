@@ -8,14 +8,13 @@ import com.topcom.tjs.utils.RowMappers;
 import com.topcom.tjs.vo.KVPair;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author maxl
@@ -274,5 +273,8 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
         }
         return jdbcTemplate.queryForMap(sql);
     }
-
+    @Override
+    public Page<TjsAccident> findByCompanyIdAndHappenedTimeBetween(Long accidentId, Date startDate, Date endDate, Pageable pageable) {
+        return tjsAccidentDao.findByCompanyIdAndHappenedTimeBetween(accidentId, startDate, endDate,pageable);
+    }
 }

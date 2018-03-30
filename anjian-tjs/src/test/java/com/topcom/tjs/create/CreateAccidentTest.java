@@ -60,7 +60,7 @@ public class CreateAccidentTest {
             tjsAccident.setDeathNumber((Integer) object.get("deathnumber"));
             tjsAccident.setDescription("");
             tjsAccident.setFactors(factors[random.nextInt(factors.length-1)]);
-            tjsAccident.setHaddenedTime((Date) object.get("adate"));
+            tjsAccident.setHappenedTime((Date) object.get("adate"));
             tjsAccident.setInjuredNumber(CreateDataUtil.getGaussianRandomBigLeft(0,100));
             tjsAccident.setLat(company.getLat());
             tjsAccident.setLng(company.getLng());

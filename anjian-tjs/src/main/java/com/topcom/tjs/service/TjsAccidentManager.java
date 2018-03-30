@@ -3,7 +3,10 @@ package com.topcom.tjs.service;
 import com.topcom.cms.base.service.GenericManager;
 import com.topcom.tjs.domain.TjsAccident;
 import com.topcom.tjs.vo.KVPair;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,4 +32,6 @@ public interface TjsAccidentManager extends GenericManager<TjsAccident, Long> {
     List<KVPair> countByCFLB(String type, String province, String city, String industryType);
 
     List<KVPair> countByCFRY(String province, String city, String industryType);
+
+    Page<TjsAccident> findByCompanyIdAndHappenedTimeBetween(Long accidentId, Date startDate, Date endDate, Pageable pageable);
 }
