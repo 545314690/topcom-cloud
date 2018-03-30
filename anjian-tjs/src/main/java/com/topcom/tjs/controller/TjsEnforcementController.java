@@ -76,4 +76,77 @@ public class TjsEnforcementController extends GenericController<
         }
         return kvPairList;
     }
+
+    @ApiOperation("执法检查类别分析")
+    @RequestMapping(
+            value = {"countByCategory"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByCategory(@RequestParam String startDate,@RequestParam String endDate,
+                                        @RequestParam(required = false) String industryType,
+                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndCategory(startDate,endDate,industryType,province,city);
+    }
+    @ApiOperation("是否为随机抽取检查单位")
+    @RequestMapping(
+            value = {"countByRandomCheck"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByRandomCheck(@RequestParam String startDate,@RequestParam String endDate,
+                                        @RequestParam(required = false) String industryType,
+                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndRandomCheck(startDate,endDate,industryType,province,city);
+    }
+    @ApiOperation("是否整改复查")
+    @RequestMapping(
+            value = {"countByReCheck"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByReCheck(@RequestParam String startDate,@RequestParam String endDate,
+                                        @RequestParam(required = false) String industryType,
+                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndReCheck(startDate,endDate,industryType,province,city);
+    }
+    @ApiOperation("是否含职业卫生执法检查")
+    @RequestMapping(
+            value = {"countByHealth"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByHealth(@RequestParam String startDate,@RequestParam String endDate,
+                                        @RequestParam(required = false) String industryType,
+                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndHealth(startDate,endDate,industryType,province,city);
+    }
+    @ApiOperation("是否举报核实执法检查")
+    @RequestMapping(
+            value = {"countByReport"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByReport(@RequestParam String startDate,@RequestParam String endDate,
+                                        @RequestParam(required = false) String industryType,
+                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndReport(startDate,endDate,industryType,province,city);
+    }
+    @ApiOperation("罚款金额、隐患、违法行为")
+    @RequestMapping(
+            value = {"countByFine"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public Map<String, Object> countByFine(@RequestParam String startDate,@RequestParam String endDate,
+                                        @RequestParam(required = false) String industryType,
+                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.sumByDateAndAreaAndIndustryTypeAndFine(startDate,endDate,industryType,province,city);
+    }
 }
