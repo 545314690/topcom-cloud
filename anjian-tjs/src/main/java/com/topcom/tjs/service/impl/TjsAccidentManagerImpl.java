@@ -99,7 +99,7 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
 
     @Override
     public List<KVPair> countByAreaAndType(String province, String city,String industryType) {
-        return this.countByAreaAndProperty(province,city,"type",industryType);
+        return this.countByAreaAndProperty(province,city,"companyScale",industryType);
     }
 
     @Override
@@ -118,8 +118,8 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
 
     @Override
     public List<KVPair> countByProfessionDeath(String province, String city,String industryType) {
-        String condition = "case when countByProfessionDeath = 1 then '职业伤亡'" +
-                "else then '非职业伤亡' end";
+        String condition = "case when professionDeath = 1 then '职业伤亡'" +
+                "else '非职业伤亡' end";
         return this.countByAreaAndProperty(province,city,condition,industryType);
     }
 
@@ -191,8 +191,11 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
                 JB = "其他";
             }
             if (resultMap.containsKey(JB)){
-                resultMap.put(JB,resultMap.get(JB)+(long)map.get(key));
+                resultMap.put(JB,resultMap.get(JB)+(long)resultMap.get(key));
+            }else {
+                resultMap.put(JB,1L);
             }
+
         }
         for (String key:resultMap.keySet()){
             result.add(new KVPair(key,String.valueOf(resultMap.get(key))));
@@ -276,5 +279,18 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
     @Override
     public Page<TjsAccident> findByCompanyIdAndHappenedTimeBetween(Long accidentId, Date startDate, Date endDate, Pageable pageable) {
         return tjsAccidentDao.findByCompanyIdAndHappenedTimeBetween(accidentId, startDate, endDate,pageable);
+    }
+
+    @Override
+    public List<KVPair> countByArea(String province, String city, String industryType) {
+        String condition ="";
+        if (StringUtils.isBlank(province)){
+            condition="province";
+        }else if (StringUtils.isBlank(city)){
+            condition="city";
+        }else {
+            condition = "county";
+        }
+        return this.countByAreaAndProperty(province,city,condition,industryType);
     }
 }
