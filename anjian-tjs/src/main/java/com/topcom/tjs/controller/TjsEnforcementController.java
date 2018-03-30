@@ -5,6 +5,7 @@ import com.topcom.cms.common.page.DateParam;
 import com.topcom.tjs.domain.TjsEnforcement;
 import com.topcom.tjs.service.TjsEnforcementManager;
 import com.topcom.tjs.vo.KVPair;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.*;
  * @author lism
  * @date 2018/3/26 0026
  */
+@Api("执法情况接口")
 @Controller
 @RequestMapping("/tjsEnforcement/")
 public class TjsEnforcementController extends GenericController<
