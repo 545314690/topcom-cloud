@@ -36,6 +36,7 @@ public class TjsEnforcementController extends GenericController<
         this.tjsEnforcementManager = tjsEnforcementManager;
         this.manager = this.tjsEnforcementManager;
     }
+
     @ApiOperation("根据企业id查找")
     @RequestMapping(
             value = {"findByCompany"},
@@ -44,11 +45,12 @@ public class TjsEnforcementController extends GenericController<
     )
     @ResponseBody
     public Page<TjsEnforcement> findByCompanyId(@RequestParam Long companyId, @RequestParam Integer page, @RequestParam Integer limit,
-                                             @RequestParam String startDate, @RequestParam String endDate) {
-        Pageable pageable= new PageRequest(page-1,limit);
+                                                @RequestParam String startDate, @RequestParam String endDate) {
+        Pageable pageable = new PageRequest(page - 1, limit);
         DateParam dateParam = new DateParam(startDate, endDate);
-        return tjsEnforcementManager.findByCompanyIdAndZFJCJZSJBetween(companyId,dateParam.startDate(),dateParam.endDate(),pageable);
+        return tjsEnforcementManager.findByCompanyIdAndZFJCJZSJBetween(companyId, dateParam.startDate(), dateParam.endDate(), pageable);
     }
+
     @ApiOperation("企业违法违规、隐患、整改、统计")
     @RequestMapping(
             value = {"countByCompany"},
@@ -56,22 +58,22 @@ public class TjsEnforcementController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByCompany(@RequestParam Long companyId,@RequestParam String startDate, @RequestParam String endDate) {
+    public List<KVPair> countByCompany(@RequestParam Long companyId, @RequestParam String startDate, @RequestParam String endDate) {
         //TODO:可改为一次查询，避免多次
-        Map<String,String> map = new HashMap();
-        map.put("查处一般事故隐患（项）","CCYBSGYHX");
-        map.put("查处重大事故隐患（项）","CCZDSGYHX");
-        map.put("查处安全生产违法违规行为（项）","CCAQSCWFWGXWX");
-        map.put("已整改安全生产违法违规行为（项）","YZGAQSCWFWGXW");
-        map.put("已整改一般事故隐患（项）","YZGYBSGYH");
-        map.put("已整改重大事故隐患（项）","YZGZDSGYH");
+        Map<String, String> map = new HashMap();
+        map.put("查处一般事故隐患（项）", "CCYBSGYHX");
+        map.put("查处重大事故隐患（项）", "CCZDSGYHX");
+        map.put("查处安全生产违法违规行为（项）", "CCAQSCWFWGXWX");
+        map.put("已整改安全生产违法违规行为（项）", "YZGAQSCWFWGXW");
+        map.put("已整改一般事故隐患（项）", "YZGYBSGYH");
+        map.put("已整改重大事故隐患（项）", "YZGZDSGYH");
         List<KVPair> kvPairList = new ArrayList<>();
         Set<String> keySet = map.keySet();
         Iterator<String> iterator = keySet.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             String key = iterator.next();
             String value = map.get(key);
-            KVPair kvPair = tjsEnforcementManager.countByCompanyIdAndDateAndProperty(companyId,startDate,endDate,key,value);
+            KVPair kvPair = tjsEnforcementManager.countByCompanyIdAndDateAndProperty(companyId, startDate, endDate, key, value);
             kvPairList.add(kvPair);
         }
         return kvPairList;
@@ -84,11 +86,13 @@ public class TjsEnforcementController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByCategory(@RequestParam String startDate,@RequestParam String endDate,
+    public List<KVPair> countByCategory(@RequestParam String startDate, @RequestParam String endDate,
                                         @RequestParam(required = false) String industryType,
-                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndCategory(startDate,endDate,industryType,province,city);
+                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city,
+                                        @RequestParam(required = false) String companyId) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndCategory(startDate, endDate, industryType, province, city, companyId);
     }
+
     @ApiOperation("是否为随机抽取检查单位")
     @RequestMapping(
             value = {"countByRandomCheck"},
@@ -96,11 +100,13 @@ public class TjsEnforcementController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByRandomCheck(@RequestParam String startDate,@RequestParam String endDate,
-                                        @RequestParam(required = false) String industryType,
-                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndRandomCheck(startDate,endDate,industryType,province,city);
+    public List<KVPair> countByRandomCheck(@RequestParam String startDate, @RequestParam String endDate,
+                                           @RequestParam(required = false) String industryType,
+                                           @RequestParam(required = false) String province, @RequestParam(required = false) String city,
+                                           @RequestParam(required = false) String companyId) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndRandomCheck(startDate, endDate, industryType, province, city, companyId);
     }
+
     @ApiOperation("是否整改复查")
     @RequestMapping(
             value = {"countByReCheck"},
@@ -108,11 +114,13 @@ public class TjsEnforcementController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByReCheck(@RequestParam String startDate,@RequestParam String endDate,
-                                        @RequestParam(required = false) String industryType,
-                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndReCheck(startDate,endDate,industryType,province,city);
+    public List<KVPair> countByReCheck(@RequestParam String startDate, @RequestParam String endDate,
+                                       @RequestParam(required = false) String industryType,
+                                       @RequestParam(required = false) String province, @RequestParam(required = false) String city,
+                                       @RequestParam(required = false) String companyId) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndReCheck(startDate, endDate, industryType, province, city, companyId);
     }
+
     @ApiOperation("是否含职业卫生执法检查")
     @RequestMapping(
             value = {"countByHealth"},
@@ -120,11 +128,13 @@ public class TjsEnforcementController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByHealth(@RequestParam String startDate,@RequestParam String endDate,
-                                        @RequestParam(required = false) String industryType,
-                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndHealth(startDate,endDate,industryType,province,city);
+    public List<KVPair> countByHealth(@RequestParam String startDate, @RequestParam String endDate,
+                                      @RequestParam(required = false) String industryType,
+                                      @RequestParam(required = false) String province, @RequestParam(required = false) String city,
+                                      @RequestParam(required = false) String companyId) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndHealth(startDate, endDate, industryType, province, city, companyId);
     }
+
     @ApiOperation("是否举报核实执法检查")
     @RequestMapping(
             value = {"countByReport"},
@@ -132,11 +142,26 @@ public class TjsEnforcementController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByReport(@RequestParam String startDate,@RequestParam String endDate,
-                                        @RequestParam(required = false) String industryType,
-                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndReport(startDate,endDate,industryType,province,city);
+    public List<KVPair> countByReport(@RequestParam String startDate, @RequestParam String endDate,
+                                      @RequestParam(required = false) String industryType,
+                                      @RequestParam(required = false) String province, @RequestParam(required = false) String city,
+                                      @RequestParam(required = false) String companyId) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndReport(startDate, endDate, industryType, province, city, companyId);
     }
+    @ApiOperation("执法检查性质")
+    @RequestMapping(
+            value = {"countByNature"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByNature(@RequestParam String startDate, @RequestParam String endDate,
+                                      @RequestParam(required = false) String industryType,
+                                      @RequestParam(required = false) String province, @RequestParam(required = false) String city,
+                                      @RequestParam(required = false) String companyId) {
+        return tjsEnforcementManager.countByDateAndAreaAndIndustryTypeAndNature(startDate, endDate, industryType, province, city, companyId);
+    }
+
     @ApiOperation("罚款金额、隐患、违法行为")
     @RequestMapping(
             value = {"countByFine"},
@@ -144,9 +169,21 @@ public class TjsEnforcementController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public Map<String, Object> countByFine(@RequestParam String startDate,@RequestParam String endDate,
-                                        @RequestParam(required = false) String industryType,
-                                        @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsEnforcementManager.sumByDateAndAreaAndIndustryTypeAndFine(startDate,endDate,industryType,province,city);
+    public Map<String, Object> countByFine(@RequestParam String startDate, @RequestParam String endDate,
+                                           @RequestParam(required = false) String industryType,
+                                           @RequestParam(required = false) String province, @RequestParam(required = false) String city, @RequestParam(required = false) String companyId) {
+        return tjsEnforcementManager.sumByDateAndAreaAndIndustryTypeAndFine(startDate, endDate, industryType, province, city, companyId);
+    }
+    @ApiOperation("执法文书分析")
+    @RequestMapping(
+            value = {"countByDocument"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public Map<String, Object> countByDocument(@RequestParam String startDate, @RequestParam String endDate,
+                                           @RequestParam(required = false) String industryType,
+                                           @RequestParam(required = false) String province, @RequestParam(required = false) String city, @RequestParam(required = false) String companyId) {
+        return tjsEnforcementManager.sumByDateAndAreaAndIndustryTypeAndDocument(startDate, endDate, industryType, province, city, companyId);
     }
 }
