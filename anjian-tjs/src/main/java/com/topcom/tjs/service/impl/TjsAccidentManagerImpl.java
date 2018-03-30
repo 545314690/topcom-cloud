@@ -5,9 +5,12 @@ import com.topcom.tjs.dao.TjsAccidentDao;
 import com.topcom.tjs.domain.TjsAccident;
 import com.topcom.tjs.service.TjsAccidentManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 
 /**
  * @author maxl
@@ -23,5 +26,9 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
     public void setTjsAccidentDao(TjsAccidentDao tjsAccidentDao) {
         this.tjsAccidentDao = tjsAccidentDao;
         this.dao = tjsAccidentDao;
+    }
+    @Override
+    public Page<TjsAccident> findByCompanyIdAndHappenedTimeBetween(Long accidentId, Date startDate, Date endDate,Pageable pageable) {
+        return tjsAccidentDao.findByCompanyIdAndHappenedTimeBetween(accidentId, startDate, endDate,pageable);
     }
 }

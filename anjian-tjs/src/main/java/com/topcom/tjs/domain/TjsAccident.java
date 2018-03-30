@@ -55,7 +55,7 @@ public class TjsAccident extends BaseEntityModel {
      * 事故发生时间
      */
     @Column(columnDefinition="datetime COMMENT '事故发生时间'")
-    private Date haddenedTime;
+    private Date happenedTime;
     /**
      * 死亡(下落不明）人数
      */
@@ -200,12 +200,12 @@ public class TjsAccident extends BaseEntityModel {
         this.lng = lng;
     }
 
-    public Date getHaddenedTime() {
-        return haddenedTime;
+    public Date getHappenedTime() {
+        return happenedTime;
     }
 
-    public void setHaddenedTime(Date haddenedTime) {
-        this.haddenedTime = haddenedTime;
+    public void setHappenedTime(Date happenedTime) {
+        this.happenedTime = happenedTime;
     }
 
     public Integer getDeathNumber() {

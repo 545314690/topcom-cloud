@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -92,6 +93,13 @@ public class TjsOrganPersonController extends GenericController<
     )
     @ResponseBody
     public Page<TjsOrganPerson> findByOrganId(@RequestParam Long organId,@RequestParam Integer page,@RequestParam Integer limit) {
-        return tjsOrganPersonManager.findByOrganId(organId,new PageRequest(page-1,limit));
+        if(page < 1){
+            page = 1;
+        }
+        if(limit<1){
+            limit = 10;
+        }
+        Pageable pageable =new PageRequest(page-1,limit);
+        return tjsOrganPersonManager.findByOrganId(organId,pageable);
     }
 }
