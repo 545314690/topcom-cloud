@@ -55,6 +55,7 @@ public class TjsEnforcementController extends GenericController<
     )
     @ResponseBody
     public List<KVPair> countByCompany(@RequestParam Long companyId,@RequestParam String startDate, @RequestParam String endDate) {
+        //TODO:可改为一次查询，避免多次
         Map<String,String> map = new HashMap();
         map.put("查处一般事故隐患（项）","CCYBSGYHX");
         map.put("查处重大事故隐患（项）","CCZDSGYHX");
