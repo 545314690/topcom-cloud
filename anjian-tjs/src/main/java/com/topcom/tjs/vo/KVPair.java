@@ -9,6 +9,13 @@ public class KVPair implements Serializable {
     private String name;
     private String value;
 
+    public KVPair(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    public KVPair() {}
+
     public String getName() {
         return name;
     }

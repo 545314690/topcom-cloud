@@ -22,6 +22,18 @@ public class RowMappers {
             }
         };
     }
+
+    public static RowMapper<KVPair> kvPairHatRowMapper() {
+        return new RowMapper<KVPair>() {
+            @Override
+            public KVPair mapRow(ResultSet resultSet, int i) throws SQLException {
+                KVPair kvPair = new KVPair();
+                kvPair.setName(resultSet.getString("keyName"));
+                kvPair.setValue(resultSet.getString("value"));
+                return kvPair;
+            }
+        };
+    }
     public static RowMapper<TjsSpecialCompany> tjsSpecialCompanyRowMapper() {
         return new RowMapper<TjsSpecialCompany>() {
             @Override
