@@ -47,6 +47,16 @@ public class TjsAccidentController extends GenericController<
         return tjsAccidentManager.countByAreaAndGender(province,city,industryType);
     }
 
+    @ApiOperation("地区统计")
+    @RequestMapping(
+            value = {"countByArea"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByArea(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsAccidentManager.countByArea(province,city,industryType);
+    }
     @ApiOperation("企业规模")
     @RequestMapping(
             value = {"countByType"},

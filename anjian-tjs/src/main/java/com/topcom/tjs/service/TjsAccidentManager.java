@@ -34,4 +34,6 @@ public interface TjsAccidentManager extends GenericManager<TjsAccident, Long> {
     List<KVPair> countByCFRY(String province, String city, String industryType);
 
     Page<TjsAccident> findByCompanyIdAndHappenedTimeBetween(Long accidentId, Date startDate, Date endDate, Pageable pageable);
+
+    List<KVPair> countByArea(String province, String city, String industryType);
 }
