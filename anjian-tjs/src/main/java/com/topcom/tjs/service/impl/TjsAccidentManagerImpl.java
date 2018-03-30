@@ -191,9 +191,9 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
                 JB = "其他";
             }
             if (resultMap.containsKey(JB)){
-                resultMap.put(JB,resultMap.get(JB)+(long)resultMap.get(key));
+                resultMap.put(JB,resultMap.get(JB)+Long.valueOf(map.get(key).toString()));
             }else {
-                resultMap.put(JB,1L);
+                resultMap.put(JB,Long.valueOf(map.get(key).toString()));
             }
 
         }
