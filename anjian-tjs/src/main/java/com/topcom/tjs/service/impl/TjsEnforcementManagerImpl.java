@@ -138,6 +138,8 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
         kvList.add(new KVPair("已整改安全生产违法违规行为（项）", "YZGAQSCWFWGXW"));
         kvList.add(new KVPair("已整改一般事故隐患（项）", "YZGYBSGYH"));
         kvList.add(new KVPair("已整改重大事故隐患（项）", "YZGZDSGYH"));
+        kvList.add(new KVPair("已整改重大事故隐患（项）", "YZGZDSGYH"));
+        kvList.add(new KVPair("其中：挂牌督办项（项）", "GPDBX"));
         return this.sumByDateAndAreaAndIndustryTypeAndProperty(startDate, endDate, industryType, province, city, companyId, kvList);
     }
 
