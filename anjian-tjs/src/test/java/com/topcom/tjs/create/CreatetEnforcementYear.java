@@ -1,8 +1,12 @@
 package com.topcom.tjs.create;
 
 
+import com.topcom.tjs.domain.TjsEnforcement;
 import com.topcom.tjs.domain.TjsEnforcementYear;
+import com.topcom.tjs.domain.TjsOrgan;
+import com.topcom.tjs.service.TjsEnforcementManager;
 import com.topcom.tjs.service.TjsEnforcementYearManager;
+import com.topcom.tjs.service.TjsOrganManager;
 import com.topcom.tjs.utils.CreateDataUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,33 +26,37 @@ import java.util.Random;
 public class CreatetEnforcementYear {
 
     List<String> nameList = CreateDataUtil.getRandomName();
-    String[] metricName = new String[]{"安全监管监察年度执法计划","安全监管监察年度执法计划合计","专项"
-            ,"听证会次数","行政复议起数","行政诉讼起数"
-            ,"辖区内重大危险源","实际监控"};
+    String[] metricName = new String[]{"安全监管监察年度执法计划合计,家（矿）次","专项,家（矿）次"
+            ,"听证会次数,次","行政复议起数,起","行政诉讼起数,起"
+            ,"辖区内重大危险源,处","实际监控,处"};
     Random random = new Random();
-
+    String[] keyTrades = new String[]{"煤矿","金属非金属矿山","化工","烟花爆竹","冶金","规模以上其他工贸生产经营单位",
+            "规模以上其他商贸制造业","其他"};
     @Autowired
     TjsEnforcementYearManager tjsEnforcementYearManager;
+
+    @Autowired
+    TjsOrganManager organManager;
     @Test
     public void create(){
-
+        //List<TjsOrgan> all = organManager.findAll();
         List<TjsEnforcementYear> ylist = new ArrayList<>();
-        for(int i=2000;i<2018;i++){
-            for (String s:metricName){
-                TjsEnforcementYear year = new TjsEnforcementYear();
-                year.setChemical(random.nextInt(200));
-                year.setCoalMine(random.nextInt(200));
-                year.setFirecrackers(random.nextInt(200));
-                year.setIndustryMetallurgy(random.nextInt(200));
-                year.setManufactOther(random.nextInt(200));
-                year.setMetallurgy(random.nextInt(200));
-                year.setMetricName(s);
-                year.setOther(random.nextInt(200));
-                year.setTjsOrgan(null);
-                year.setTradeOther(random.nextInt(200));
-                //year.setUnit(random.nextInt(200));
-                ylist.add(year);
-            }
+        for(int i=2011;i<2019;i++){
+
+//            for (TjsOrgan organ:all){
+                for (String metric:metricName){
+                    for (String trade:keyTrades){
+                        TjsEnforcementYear year = new TjsEnforcementYear();
+                        year.setUnit(metric.split(",")[1]);
+                        year.setMetricName(metric.split(",")[0]);
+                        year.setFZR(nameList.get(random.nextInt(nameList.size()-1)));
+                        year.setKeyTrades(trade);
+                        year.setTBR(nameList.get(random.nextInt(nameList.size()-1)));
+                        year.setYear(i);
+                        ylist.add(year);
+                    }
+                }
+//            }
             tjsEnforcementYearManager.save(ylist);
         }
 

@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Table(name = "t_enforcement_year")
 public class TjsEnforcementYear extends BaseEntityModel {
 
-    @ManyToOne
-    @JoinColumn(name = "tjsOrganId",columnDefinition="bigint(20) COMMENT '填报单位'")
-    private TjsOrgan tjsOrgan;
+//    @ManyToOne
+//    @JoinColumn(name = "tjsOrganId",columnDefinition="bigint(20) COMMENT '填报单位'")
+//    private TjsOrgan tjsOrgan;
 
     @Column(columnDefinition = "varchar(50) COMMENT '指标名称'")
     private String metricName;
@@ -21,49 +21,58 @@ public class TjsEnforcementYear extends BaseEntityModel {
     @Column(columnDefinition = "varchar(20) COMMENT '计量单位'")
     private String unit;
 
-    @Column(columnDefinition = "int(5) COMMENT '煤矿'")
-    private Integer coalMine;
-
-    @Column(columnDefinition = "int(5) COMMENT '金属非金属矿山'")
-    private Integer metalMine;
-
-    @Column(columnDefinition = "int(5) COMMENT '化工'")
-    private Integer chemical;
-
-    @Column(columnDefinition = "int(5) COMMENT '烟花爆竹'")
-    private Integer firecrackers;
-
-    @Column(columnDefinition = "int(5) COMMENT '烟花爆竹'")
-    private Integer industryMetallurgy;
-
-    @Column(columnDefinition = "int(5) COMMENT '冶金'")
-    private Integer metallurgy;
-
-    @Column(columnDefinition = "int(5) COMMENT '规模以上其他工贸生产经营单位'")
-    private Integer tradeOther;
-
-    @Column(columnDefinition = "int(5) COMMENT '规模以上其他商贸制造业'")
-    private Integer manufactOther;
-
-    @Column(columnDefinition = "int(5) COMMENT '其他'")
-    private Integer other;
+    @Column(columnDefinition = "varchar(50) COMMENT '重点行业'")
+    private String keyTrades;
 
     @Column(columnDefinition = "int(5) COMMENT '年份'")
     private Integer year;
 
     @Column(columnDefinition = "varchar(20) COMMENT '负责人'")
-    private Integer FZR;
+    private String FZR;
 
     @Column(columnDefinition = "varchar(20) COMMENT '填表人'")
-    private Integer TBR;
+    private String TBR;
 
-    public TjsOrgan getTjsOrgan() {
-        return tjsOrgan;
+
+    public Integer getYear() {
+        return year;
     }
 
-    public void setTjsOrgan(TjsOrgan tjsOrgan) {
-        this.tjsOrgan = tjsOrgan;
+    public void setYear(Integer year) {
+        this.year = year;
     }
+
+    public String getKeyTrades() {
+        return keyTrades;
+    }
+
+    public void setKeyTrades(String keyTrades) {
+        this.keyTrades = keyTrades;
+    }
+
+    public String getFZR() {
+        return FZR;
+    }
+
+    public void setFZR(String FZR) {
+        this.FZR = FZR;
+    }
+
+    public String getTBR() {
+        return TBR;
+    }
+
+    public void setTBR(String TBR) {
+        this.TBR = TBR;
+    }
+
+//    public TjsOrgan getTjsOrgan() {
+//        return tjsOrgan;
+//    }
+//
+//    public void setTjsOrgan(TjsOrgan tjsOrgan) {
+//        this.tjsOrgan = tjsOrgan;
+//    }
 
     public String getMetricName() {
         return metricName;
@@ -81,75 +90,4 @@ public class TjsEnforcementYear extends BaseEntityModel {
         this.unit = unit;
     }
 
-    public Integer getCoalMine() {
-        return coalMine;
-    }
-
-    public void setCoalMine(Integer coalMine) {
-        this.coalMine = coalMine;
-    }
-
-    public Integer getMetalMine() {
-        return metalMine;
-    }
-
-    public void setMetalMine(Integer metalMine) {
-        this.metalMine = metalMine;
-    }
-
-    public Integer getChemical() {
-        return chemical;
-    }
-
-    public void setChemical(Integer chemical) {
-        this.chemical = chemical;
-    }
-
-    public Integer getFirecrackers() {
-        return firecrackers;
-    }
-
-    public void setFirecrackers(Integer firecrackers) {
-        this.firecrackers = firecrackers;
-    }
-
-    public Integer getIndustryMetallurgy() {
-        return industryMetallurgy;
-    }
-
-    public void setIndustryMetallurgy(Integer industryMetallurgy) {
-        this.industryMetallurgy = industryMetallurgy;
-    }
-
-    public Integer getMetallurgy() {
-        return metallurgy;
-    }
-
-    public void setMetallurgy(Integer metallurgy) {
-        this.metallurgy = metallurgy;
-    }
-
-    public Integer getTradeOther() {
-        return tradeOther;
-    }
-
-    public void setTradeOther(Integer tradeOther) {
-        this.tradeOther = tradeOther;
-    }
-
-    public Integer getManufactOther() {
-        return manufactOther;
-    }
-
-    public void setManufactOther(Integer manufactOther) {
-        this.manufactOther = manufactOther;
-    }
-
-    public Integer getOther() {
-        return other;
-    }
-
-    public void setOther(Integer other) {
-        this.other = other;
-    }
 }
