@@ -43,8 +43,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByGender(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByAreaAndGender(province,city,industryType);
+    public List<KVPair> countByGender(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByAreaAndGender( startDate,endDate,province,city,industryType);
     }
 
     @ApiOperation("地区统计")
@@ -54,8 +55,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByArea(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByArea(province,city,industryType);
+    public List<KVPair> countByArea(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByArea( startDate,endDate,province,city,industryType);
     }
     @ApiOperation("企业规模")
     @RequestMapping(
@@ -64,8 +66,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByType(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByAreaAndType(province,city,industryType);
+    public List<KVPair> countByType(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByAreaAndType( startDate,endDate,province,city,industryType);
     }
 
     @ApiOperation("行业类别")
@@ -75,8 +78,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByManageType(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByAreaAndManageType(province,city,industryType);
+    public List<KVPair> countByManageType(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByAreaAndManageType( startDate,endDate,province,city,industryType);
     }
 
     @ApiOperation("死亡人数及保险")
@@ -86,8 +90,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByStatusAndInsurance(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByStatusAndInsurance(province,city,industryType);
+    public List<KVPair> countByStatusAndInsurance(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByStatusAndInsurance( startDate,endDate,province,city,industryType);
     }
 
     @ApiOperation("是否是职业伤亡")
@@ -97,8 +102,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByProfessionDeath(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByProfessionDeath(province,city,industryType);
+    public List<KVPair> countByProfessionDeath(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByProfessionDeath( startDate,endDate,province,city,industryType);
     }
 
     @ApiOperation("文化程度")
@@ -108,8 +114,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByEducation(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByEducation(province,city,industryType);
+    public List<KVPair> countByEducation(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByEducation( startDate,endDate,province,city,industryType);
     }
 
 
@@ -120,8 +127,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByAttribute(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByAttribute(province,city,industryType);
+    public List<KVPair> countByAttribute(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByAttribute( startDate,endDate,province,city,industryType);
     }
 
     @ApiOperation("处分类别详情")
@@ -131,8 +139,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByCFLB(@RequestParam(required = false) String type,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByCFLB(type,province,city,industryType);
+    public List<KVPair> countByCFLB(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String type,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByCFLB( startDate,endDate,type,province,city,industryType);
     }
 
     @ApiOperation("处分人员详情")
@@ -142,8 +151,9 @@ public class TjsAccidentController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<KVPair> countByCFRY(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
-        return tjsAccidentManager.countByCFRY(province,city,industryType);
+    public List<KVPair> countByCFRY(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+         
+        return tjsAccidentManager.countByCFRY( startDate,endDate,province,city,industryType);
     }
     @ApiOperation("根据企业id查找")
     @RequestMapping(
@@ -156,6 +166,6 @@ public class TjsAccidentController extends GenericController<
                                              @RequestParam String startDate, @RequestParam String endDate) {
         Pageable pageable= new PageRequest(page-1,limit);
         DateParam dateParam = new DateParam(startDate, endDate);
-        return tjsAccidentManager.findByCompanyIdAndHappenedTimeBetween(companyId,dateParam.startDate(),dateParam.endDate(),pageable);
+        return tjsAccidentManager.findByCompanyIdAndHappenedTimeBetween(companyId, dateParam.startDate(),dateParam.endDate(),pageable);
     }
 }
