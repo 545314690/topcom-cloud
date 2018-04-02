@@ -107,7 +107,7 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
                 sql += " WHERE ";
                 flag = true;
             }
-            sql += " industryType= '" + industryType + "'";
+            sql += " companyIndustry = '" + industryType + "'";
         }
         if (StringUtils.isNotBlank(city)) {
             if (flag) {

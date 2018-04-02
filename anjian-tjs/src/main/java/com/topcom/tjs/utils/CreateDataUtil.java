@@ -66,7 +66,7 @@ public class CreateDataUtil {
     }
 
     public static List<String> getRandomName(){
-        File file = new File("D:\\wokespace-ma\\git\\topcom-cloud\\anjian-tjs\\Chinese_Names.txt");
+        File file = new File("D:\\data\\Chinese-Names-Corpus\\Chinese_Names.txt");
         return FileUtil.read(file);
     }
 

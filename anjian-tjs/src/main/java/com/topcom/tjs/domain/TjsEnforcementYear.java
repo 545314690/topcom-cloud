@@ -48,6 +48,14 @@ public class TjsEnforcementYear extends BaseEntityModel {
     @Column(columnDefinition = "int(5) COMMENT '其他'")
     private Integer other;
 
+    @Column(columnDefinition = "int(5) COMMENT '年份'")
+    private Integer year;
+
+    @Column(columnDefinition = "varchar(20) COMMENT '负责人'")
+    private Integer FZR;
+
+    @Column(columnDefinition = "varchar(20) COMMENT '填表人'")
+    private Integer TBR;
 
     public TjsOrgan getTjsOrgan() {
         return tjsOrgan;
