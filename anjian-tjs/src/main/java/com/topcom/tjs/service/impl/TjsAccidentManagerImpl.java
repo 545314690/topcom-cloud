@@ -37,113 +37,77 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
     }
 
 
-    public  List<KVPair> countByGroup(String province, String city,String property,String industryType){
+    public  List<KVPair> countByGroup(String startDate, String endDate,String province, String city,String property,String industryType){
         String sql = "select " + property + " as keyName, count(1) as value FROM tjs_special_company ";
-        boolean flag = false;
-        if (StringUtils.isNotBlank(industryType)) {
-            sql += " WHERE industryType= '" + industryType + "'";
-            flag = true;
-        }
-        if (StringUtils.isNotBlank(province)) {
-            if (flag) {
-                sql += " AND ";
-            } else {
-                sql += " WHERE ";
-                flag = true;
-            }
-            sql += " province='" + province + "'";
-        }
-        if (StringUtils.isNotBlank(city)) {
-            if (flag) {
-                sql += " AND ";
-            } else {
-                sql += " WHERE ";
-            }
-            sql += " city='" + city + "'";
-        }
+        sql = connetSqlString(startDate, endDate, city, industryType, sql);
         sql += " group by keyName ORDER BY VALUE DESC ";
         return jdbcTemplate.query(sql, RowMappers.kvPairHatRowMapper());
     }
     @Override
-    public List<KVPair> countByAreaAndProperty(String province, String city,String property,String industryType) {
+    public List<KVPair> countByAreaAndProperty(String startDate, String endDate,String province, String city,String property,String industryType) {
         String sql = "select " + property + " as keyName, count(1) as value FROM tjs_accident  as acc INNER JOIN tjs_death_person as person on acc.id=person.accidentId";
-        boolean flag = false;
-        if (StringUtils.isNotBlank(industryType)) {
-            sql += " WHERE industryType= '" + industryType + "'";
-            flag = true;
-        }
-        if (StringUtils.isNotBlank(province)) {
-            if (flag) {
-                sql += " AND ";
-            } else {
-                sql += " WHERE ";
-                flag = true;
-            }
-            sql += " province='" + province + "'";
-        }
-        if (StringUtils.isNotBlank(city)) {
-            if (flag) {
-                sql += " AND ";
-            } else {
-                sql += " WHERE ";
-            }
-            sql += " city='" + city + "'";
-        }
+        sql = connetSqlString(startDate, endDate, city, industryType, sql);
         sql += " group by keyName ORDER BY VALUE DESC ";
         return jdbcTemplate.query(sql, RowMappers.kvPairHatRowMapper());
     }
     @Override
-    public List<KVPair> countByAreaAndGender(String province, String city,String industryType) {
-        return this.countByAreaAndProperty(province,city,"gender",industryType);
+    public List<KVPair> countByAreaAndGender(String startDate, String endDate,String province, String city,String industryType) {
+        return this.countByAreaAndProperty(startDate,endDate,province,city,"gender",industryType);
     }
 
     @Override
-    public List<KVPair> countByAreaAndType(String province, String city,String industryType) {
-        return this.countByAreaAndProperty(province,city,"companyScale",industryType);
+    public List<KVPair> countByAreaAndType(String startDate, String endDate,String province, String city,String industryType) {
+        return this.countByAreaAndProperty(startDate,endDate,province,city,"companyScale",industryType);
     }
 
     @Override
-    public List<KVPair> countByAreaAndManageType(String province, String city,String industryType) {
-        return this.countByAreaAndProperty(province,city,"manageType",industryType);
+    public List<KVPair> countByAreaAndManageType(String startDate, String endDate,String province, String city,String industryType) {
+        return this.countByAreaAndProperty(startDate,endDate,province,city,"manageType",industryType);
     }
 
     @Override
-    public List<KVPair> countByStatusAndInsurance(String province, String city,String industryType) {
+    public List<KVPair> countByStatusAndInsurance(String startDate, String endDate,String province, String city,String industryType) {
         String condition = "case when industrialInsurance = 1 and status = '死亡' then '死亡有工伤保险' \n" +
                 "when industrialInsurance = 1 and status = '重伤' then '重伤无工伤保险' \n" +
                 "when industrialInsurance = 0 and status = '死亡' then '死亡无工伤保险' \n" +
                 "when industrialInsurance = 0 and status = '重伤' then '重伤有工伤保险' else \"未知\" end";
-        return this.countByAreaAndProperty(province,city,condition,industryType);
+        return this.countByAreaAndProperty(startDate,endDate,province,city,condition,industryType);
     }
 
     @Override
-    public List<KVPair> countByProfessionDeath(String province, String city,String industryType) {
+    public List<KVPair> countByProfessionDeath(String startDate, String endDate,String province, String city,String industryType) {
         String condition = "case when professionDeath = 1 then '职业伤亡'" +
                 "else '非职业伤亡' end";
-        return this.countByAreaAndProperty(province,city,condition,industryType);
+        return this.countByAreaAndProperty(startDate,endDate,province,city,condition,industryType);
     }
 
     @Override
-    public List<KVPair> countByEducation(String province, String city,String industryType) {
-        return this.countByAreaAndProperty(province,city,"education",industryType);
+    public List<KVPair> countByEducation(String startDate, String endDate,String province, String city,String industryType) {
+        return this.countByAreaAndProperty(startDate,endDate,province,city,"education",industryType);
     }
 
     @Override
-    public List<KVPair> countByAttribute(String province, String city,String industryType) {
+    public List<KVPair> countByAttribute(String startDate, String endDate,String province, String city,String industryType) {
         String sql = "select companyAttribute as keyName, count(1) as value FROM tjs_accident";
+        sql = connetSqlString(startDate, endDate, city, industryType, sql);
+        sql += " group by keyName ORDER BY VALUE DESC ";
+        return jdbcTemplate.query(sql, RowMappers.kvPairHatRowMapper());
+    }
+
+    private String connetSqlString(String startDate, String endDate, String city, String industryType, String sql) {
         boolean flag = false;
-        if (StringUtils.isNotBlank(industryType)) {
-            sql += " WHERE industryType= '" + industryType + "'";
+        if (StringUtils.isNotBlank(startDate) && StringUtils.isNotBlank(endDate)) {
+            sql += " WHERE happenedTime BETWEEN '" + startDate + "' AND '" + endDate + "' ";
             flag = true;
         }
-        if (StringUtils.isNotBlank(province)) {
+        if (StringUtils.isNotBlank(industryType)) {
             if (flag) {
                 sql += " AND ";
             } else {
                 sql += " WHERE ";
                 flag = true;
             }
-            sql += " province='" + province + "'";
+            sql += " industryType= '" + industryType + "'";
         }
         if (StringUtils.isNotBlank(city)) {
             if (flag) {
@@ -153,16 +117,15 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
             }
             sql += " city='" + city + "'";
         }
-        sql += " group by keyName ORDER BY VALUE DESC ";
-        return jdbcTemplate.query(sql, RowMappers.kvPairHatRowMapper());
+        return sql;
     }
 
     @Override
-    public List<KVPair> countByCFLB(String type, String province, String city, String industryType) {
+    public List<KVPair> countByCFLB(String startDate, String endDate,String type, String province, String city, String industryType) {
         if (StringUtils.isBlank(type)){
             type = "厅局级";
         }
-        Map map = countByInperson(province,city,industryType);
+        Map map = countByInperson(startDate,endDate,province,city,industryType);
         List<KVPair> result =new ArrayList<>();
         for (Object key:map.keySet()){
             if (key.toString().contains(type.replaceAll("级",""))){
@@ -173,10 +136,10 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
     }
 
     @Override
-    public List<KVPair> countByCFRY(String province, String city, String industryType) {
+    public List<KVPair> countByCFRY(String startDate, String endDate,String province, String city, String industryType) {
         List<KVPair> result = new ArrayList<>();
         Map<String,Long> resultMap = new HashMap<>();
-        Map map = countByInperson(province,city,industryType);
+        Map map = countByInperson(startDate,endDate,province,city,industryType);
         for (Object key:map.keySet()){
             String JB="";
             if (key.toString().contains("省")){
@@ -203,7 +166,7 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
         return result;
     }
 
-    private Map countByInperson(String province, String city, String industryType){
+    private Map countByInperson(String startDate, String endDate,String province, String city, String industryType){
         String condition = "sum(ZJDJCFA) as 政纪党纪处分人省部级,\n" +
                 "sum(ZJDJCFB) as 政纪党纪处分人厅局级,\n" +
                 "sum(ZJDJCFC) as 政纪党纪处分人县处级,\n" +
@@ -252,28 +215,7 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
 
 
         String sql = "select "+condition+" from t_accident_investigation as t1 INNER JOIN tjs_accident t2 on t1.accidentId = t2.ID ";
-        boolean flag = false;
-        if (StringUtils.isNotBlank(industryType)) {
-            sql += " WHERE industryType= '" + industryType + "'";
-            flag = true;
-        }
-        if (StringUtils.isNotBlank(province)) {
-            if (flag) {
-                sql += " AND ";
-            } else {
-                sql += " WHERE ";
-                flag = true;
-            }
-            sql += " province='" + province + "'";
-        }
-        if (StringUtils.isNotBlank(city)) {
-            if (flag) {
-                sql += " AND ";
-            } else {
-                sql += " WHERE ";
-            }
-            sql += " city='" + city + "'";
-        }
+        sql = connetSqlString(startDate, endDate, city, industryType, sql);
         return jdbcTemplate.queryForMap(sql);
     }
     @Override
@@ -282,7 +224,7 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
     }
 
     @Override
-    public List<KVPair> countByArea(String province, String city, String industryType) {
+    public List<KVPair> countByArea(String startDate, String endDate,String province, String city, String industryType) {
         String condition ="";
         if (StringUtils.isBlank(province)){
             condition="province";
@@ -291,6 +233,6 @@ public class TjsAccidentManagerImpl extends GenericManagerImpl<TjsAccident, Long
         }else {
             condition = "county";
         }
-        return this.countByAreaAndProperty(province,city,condition,industryType);
+        return this.countByAreaAndProperty(startDate,endDate,province,city,condition,industryType);
     }
 }
