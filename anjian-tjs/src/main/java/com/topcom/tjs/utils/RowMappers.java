@@ -98,10 +98,10 @@ public class RowMappers {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("年",resultSet.getInt("年"));
                 jsonObject.put("月",resultSet.getInt("月"));
-                jsonObject.put("死亡人数",resultSet.getInt("一般隐患"));
-                jsonObject.put("死亡人数",resultSet.getInt("重大隐患"));
-                jsonObject.put("死亡人数",resultSet.getInt("违法行为"));
-                jsonObject.put("事故起数",resultSet.getInt("执法次数"));
+                jsonObject.put("一般隐患",resultSet.getInt("一般隐患"));
+                jsonObject.put("重大隐患",resultSet.getInt("重大隐患"));
+                jsonObject.put("违法行为",resultSet.getInt("违法行为"));
+                jsonObject.put("执法次数",resultSet.getInt("执法次数"));
                 return jsonObject;
             }
         };

@@ -238,7 +238,7 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
                 "t1.companyId = t2.ID ";
         sqlEnforcet = connectSqlString(startDate, endDate, industryType, province, city, "", sqlEnforcet);
         sqlEnforcet = sqlEnforcet +"group by 年,月 ";
-        List<JSONObject> enforcet = jdbcTemplate.query(sqlEnforcet,RowMappers.tjsAccidentDeathnumberByTime());
+        List<JSONObject> enforcet = jdbcTemplate.query(sqlEnforcet,RowMappers.tjsZfyhByTime());
         List<KVPair> deathNumberKV= new ArrayList<>();
         List<KVPair> accNumber = new ArrayList<>();
         List<KVPair> zhifa = new ArrayList<>();
@@ -249,7 +249,7 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
             JSONObject jsonObject = acc.get(i);
             String key = jsonObject.get("年")+"-"+jsonObject.get("月");
             deathNumberKV.add(new KVPair(key,jsonObject.get("死亡人数").toString()));
-            accNumber.add(new KVPair(key,jsonObject.get("事故次数").toString()));
+            accNumber.add(new KVPair(key,jsonObject.get("事故起数").toString()));
         }
         for (int i=0;i<enforcet.size();i++){
             JSONObject jsonObject =  enforcet.get(i);
@@ -260,9 +260,11 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
             zdyh.add(new KVPair(key,jsonObject.get("重大隐患").toString()));
         }
         result.put("死亡人数",deathNumberKV);
-        result.put("事故次数",accNumber);
+        result.put("事故起数",accNumber);
         result.put("违法行为",zhifa);
         result.put("执法次数",weifa);
+        result.put("一般隐患",ybyh);
+        result.put("重大隐患",zdyh);
         return result;
     }
     @Override
@@ -294,5 +296,24 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
         resultMap.put("事故企业",accList);
         resultMap.put("非事故企业",notList);
         return resultMap;
+    }
+
+    @Override
+    public List<KVPair> countByArea(String startDate, String endDate, String province, String city, String industryType) {
+        String condition ="";
+        if (StringUtils.isBlank(province)){
+            condition="province";
+        }else if (StringUtils.isBlank(city)){
+            condition="city";
+        }else {
+            condition = "county";
+        }
+        String sql = "select "+condition+" as name ,count(1) as value FROM " +
+                "tjs_accident AS t1 " +
+                "INNER JOIN t_enforcement AS t2 ON t1.companyId = t2.ID ";
+
+        sql = connectSqlString(startDate, endDate, industryType, province, city, "", sql);
+        sql = sql+" group by name";
+        return jdbcTemplate.query(sql, RowMappers.kvPairRowMapper());
     }
 }

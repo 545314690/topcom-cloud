@@ -229,4 +229,17 @@ public class TjsEnforcementController extends GenericController<
                                                    @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
         return tjsEnforcementManager.countByZFPZ(startDate, endDate, industryType, province, city);
     }
+
+    @ApiOperation("地区统计")
+    @RequestMapping(
+            value = {"countByArea"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByArea(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+
+        return tjsEnforcementManager.countByArea( startDate,endDate,province,city,industryType);
+    }
+
 }
