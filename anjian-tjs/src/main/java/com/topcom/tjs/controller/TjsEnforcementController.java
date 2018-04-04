@@ -186,4 +186,47 @@ public class TjsEnforcementController extends GenericController<
                                            @RequestParam(required = false) String province, @RequestParam(required = false) String city, @RequestParam(required = false) String companyId) {
         return tjsEnforcementManager.sumByDateAndAreaAndIndustryTypeAndDocument(startDate, endDate, industryType, province, city, companyId);
     }
+
+
+    @ApiOperation("违法执法行为关联分析")
+    @RequestMapping(
+            value = {"countByEnforcet"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public Map<String,List<KVPair>> countByEnforcet(@RequestParam String startDate, @RequestParam String endDate,
+
+                                               @RequestParam(required = false) String industryType,
+                                               @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByEnforcet(startDate, endDate, industryType, province, city);
+    }
+
+    @ApiOperation("监管整改")
+    @RequestMapping(
+            value = {"countByAccAndCompany"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public Map<String,Object> countByAccAndCompany(@RequestParam String startDate, @RequestParam String endDate,
+
+                                                    @RequestParam(required = false) String industryType,
+                                                    @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByJGZG(startDate, endDate, industryType, province, city);
+    }
+
+    @ApiOperation("执法碰撞")
+    @RequestMapping(
+            value = {"countByZFPZ"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public Map countByZFPZ(@RequestParam String startDate, @RequestParam String endDate,
+
+                                                   @RequestParam(required = false) String industryType,
+                                                   @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByZFPZ(startDate, endDate, industryType, province, city);
+    }
 }

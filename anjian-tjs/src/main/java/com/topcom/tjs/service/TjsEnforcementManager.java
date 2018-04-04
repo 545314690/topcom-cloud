@@ -124,4 +124,10 @@ public interface TjsEnforcementManager extends GenericManager<TjsEnforcement, Lo
      * @return
      */
     Map<String,Object> sumByDateAndAreaAndIndustryTypeAndDocument(String startDate, String endDate, String industryType, String province, String city, String companyId);
+
+    Map<String,List<KVPair>> countByEnforcet(String startDate, String endDate, String industryType, String province, String city);
+
+    Map<String,Object> countByJGZG(String startDate, String endDate, String industryType, String province, String city);
+
+    Map countByZFPZ(String startDate, String endDate, String industryType, String province, String city);
 }

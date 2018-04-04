@@ -32,7 +32,17 @@ public class TjsEnforcementYear extends BaseEntityModel {
 
     @Column(columnDefinition = "varchar(20) COMMENT '填表人'")
     private String TBR;
+    @Column(columnDefinition = "int(7) COMMENT '数值'")
+    private Integer value;
 
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 
     public Integer getYear() {
         return year;

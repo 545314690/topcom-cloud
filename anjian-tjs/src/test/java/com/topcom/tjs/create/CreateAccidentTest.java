@@ -1,6 +1,7 @@
 package com.topcom.tjs.create;
 
 import com.mongodb.DBObject;
+import com.topcom.cms.common.page.DateParam;
 import com.topcom.cms.utils.MongoDBUtil;
 import com.topcom.tjs.domain.TjsAccident;
 import com.topcom.tjs.domain.TjsSpecialCompany;
@@ -40,7 +41,7 @@ public class CreateAccidentTest {
         List<TjsSpecialCompany> all = tjsSpecialCompanyManager.findAll();
         List<DBObject> dbObjectList = MongoDBUtil.selectAll("acc");
         List<TjsAccident> accidentList = new ArrayList<>();
-        for (int i =30000;i<dbObjectList.size();i++){
+        for (int i =0;i<30000;i++){
             try {
             TjsSpecialCompany company = all.get(random.nextInt(all.size() - 1));
             DBObject object = dbObjectList.get(i);
@@ -60,7 +61,8 @@ public class CreateAccidentTest {
             tjsAccident.setDeathNumber((Integer) object.get("deathnumber"));
             tjsAccident.setDescription("");
             tjsAccident.setFactors(factors[random.nextInt(factors.length-1)]);
-            tjsAccident.setHappenedTime((Date) object.get("adate"));
+//            tjsAccident.setHappenedTime((Date) object.get("adate"));
+            tjsAccident.setHappenedTime(CreateDataUtil.getRandomDate(new DateParam("2016-05-05","2018-06-06")));
             tjsAccident.setInjuredNumber(CreateDataUtil.getGaussianRandomBigLeft(0,100));
             tjsAccident.setLat(company.getLat());
             tjsAccident.setLng(company.getLng());

@@ -6,6 +6,7 @@ import com.topcom.tjs.domain.TjsEnforcement;
 import com.topcom.tjs.service.TjsEnforcementManager;
 import com.topcom.tjs.utils.RowMappers;
 import com.topcom.tjs.vo.KVPair;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,10 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author lism
@@ -181,5 +179,120 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
         kvList.add(new KVPair("行政处罚决定书（个人）（份）", "XZCFJDSGR"));
         kvList.add(new KVPair("其他文书", "QTWS"));
         return this.sumByDateAndAreaAndIndustryTypeAndProperty(startDate, endDate, industryType, province, city, companyId, kvList);
+    }
+
+    @Override
+    public Map<String,List<KVPair>> countByEnforcet(String startDate, String endDate, String industryType, String province, String city) {
+        String[] keyArray = new String[]{"死亡人数","事故起数","执法次数","违法行为"};
+        Map<String,List<KVPair>> result = new HashMap<>();
+        //执法行为  违法行为
+        //死亡人数  事故起数
+        String sqlAcc = "select DATE_FORMAT(happenedTime, '%Y') as 年,DATE_FORMAT(happenedTime, '%m') as 月,sum(deathNumber) as 死亡人数,count(1) as 事故起数 " +
+                "from tjs_accident as t1 INNER JOIN tjs_special_company as t2 " +
+                "ON " +
+                "t1.companyId = t2.ID ";
+        boolean flag = false;
+        if (StringUtils.isNotBlank(startDate) && StringUtils.isNotBlank(endDate)) {
+            sqlAcc += " WHERE happenedTime BETWEEN '" + startDate + "' AND '" + endDate + "' ";
+            flag = true;
+        }
+        if (StringUtils.isNotBlank(industryType)) {
+            if (flag) {
+                sqlAcc += " AND ";
+            } else {
+                sqlAcc += " WHERE ";
+                flag = true;
+            }
+            sqlAcc += " t2.industryType= '" + industryType + "'";
+        }
+        if (StringUtils.isNotBlank(province)) {
+            if (flag) {
+                sqlAcc += " AND ";
+            } else {
+                sqlAcc += " WHERE ";
+                flag = true;
+            }
+            sqlAcc += " t2.province='" + province + "'";
+        }
+        if (StringUtils.isNotBlank(city)) {
+            if (flag) {
+                sqlAcc += " AND ";
+            } else {
+                sqlAcc += " WHERE ";
+            }
+            sqlAcc += " t2.city='" + city + "'";
+        }
+
+        sqlAcc =sqlAcc+  "group by 年,月";
+       // sqlAcc = connectSqlString(startDate, endDate, industryType, province, city, "", sqlAcc);
+        List<JSONObject> acc = jdbcTemplate.query(sqlAcc,RowMappers.tjsAccidentDeathnumberByTime());
+
+        String sqlEnforcet = "select DATE_FORMAT(ZFJCJZSJ, '%Y') as 年," +
+                "DATE_FORMAT(ZFJCJZSJ, '%m') as 月," +
+                "sum(CCAQSCWFWGXWX) as 违法行为," +
+                "sum(CCYBSGYHX) as 一般隐患," +
+                "sum(CCZDSGYHX) as 重大隐患," +
+                "sum(ZFWF) as 执法次数 " +
+                "from t_enforcement as t1 INNER JOIN tjs_special_company as t2 " +
+                "ON " +
+                "t1.companyId = t2.ID ";
+        sqlEnforcet = connectSqlString(startDate, endDate, industryType, province, city, "", sqlEnforcet);
+        sqlEnforcet = sqlEnforcet +"group by 年,月 ";
+        List<JSONObject> enforcet = jdbcTemplate.query(sqlEnforcet,RowMappers.tjsAccidentDeathnumberByTime());
+        List<KVPair> deathNumberKV= new ArrayList<>();
+        List<KVPair> accNumber = new ArrayList<>();
+        List<KVPair> zhifa = new ArrayList<>();
+        List<KVPair> weifa = new ArrayList<>();
+        List<KVPair> ybyh = new ArrayList<>();
+        List<KVPair> zdyh = new ArrayList<>();
+        for (int i=0;i<acc.size();i++){
+            JSONObject jsonObject = acc.get(i);
+            String key = jsonObject.get("年")+"-"+jsonObject.get("月");
+            deathNumberKV.add(new KVPair(key,jsonObject.get("死亡人数").toString()));
+            accNumber.add(new KVPair(key,jsonObject.get("事故次数").toString()));
+        }
+        for (int i=0;i<enforcet.size();i++){
+            JSONObject jsonObject =  enforcet.get(i);
+            String key = jsonObject.get("年")+"-"+jsonObject.get("月");
+            zhifa.add(new KVPair(key,jsonObject.get("违法行为").toString()));
+            weifa.add(new KVPair(key,jsonObject.get("执法次数").toString()));
+            ybyh.add(new KVPair(key,jsonObject.get("一般隐患").toString()));
+            zdyh.add(new KVPair(key,jsonObject.get("重大隐患").toString()));
+        }
+        result.put("死亡人数",deathNumberKV);
+        result.put("事故次数",accNumber);
+        result.put("违法行为",zhifa);
+        result.put("执法次数",weifa);
+        return result;
+    }
+    @Override
+    public Map<String, Object> countByJGZG(String startDate, String endDate, String industryType, String province, String city) {
+        String sql = "select sum(CCYBSGYHX) as 一般隐患 ," +
+                "sum(CCZDSGYHX) as 重大隐患, " +
+                "(sum(YZGYBSGYH)+ sum(YZGZDSGYH))*100/(sum(CCYBSGYHX)+sum(CCZDSGYHX)) as 整改率 " +
+                "from t_enforcement t1 INNER JOIN tjs_special_company t2 on t1.companyId=t2.ID ";
+        sql = connectSqlString(startDate, endDate, industryType, province, city, "", sql);
+        String sql_acc = sql + " and t2.id IN (SELECT companyId from tjs_accident acc GROUP BY companyId) ";
+        String sql_not = sql + "and t2.id NOT IN (SELECT companyId from tjs_accident acc GROUP BY companyId)";
+        Map accMap = jdbcTemplate.queryForMap(sql_acc);
+        Map notMap = jdbcTemplate.queryForMap(sql_not);
+        Map resultMap = new HashMap();
+        resultMap.put("事故企业",accMap);
+        resultMap.put("非事故企业",notMap);
+        return resultMap;
+    }
+
+    @Override
+    public Map countByZFPZ(String startDate, String endDate, String industryType, String province, String city) {
+        String sql = "select JFJCLB as name,count(1) as  value  from t_enforcement t1 INNER JOIN tjs_special_company t2 on t1.companyId=t2.ID " ;
+        sql = connectSqlString(startDate, endDate, industryType, province, city, "", sql);
+        String sql_acc = sql + " and t2.id IN (SELECT companyId from tjs_accident acc GROUP BY companyId)  group by JFJCLB";
+        String sql_not = sql + "and t2.id NOT IN (SELECT companyId from tjs_accident acc GROUP BY companyId)  group by JFJCLB";
+        List<KVPair> accList = jdbcTemplate.query(sql_acc, RowMappers.kvPairRowMapper());
+        List<KVPair> notList = jdbcTemplate.query(sql_acc, RowMappers.kvPairRowMapper());
+        Map resultMap = new HashMap();
+        resultMap.put("事故企业",accList);
+        resultMap.put("非事故企业",notList);
+        return resultMap;
     }
 }
