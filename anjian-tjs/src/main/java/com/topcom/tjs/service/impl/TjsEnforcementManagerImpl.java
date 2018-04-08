@@ -310,8 +310,8 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
             condition = "county";
         }
         String sql = "select "+condition+" as name ,count(1) as value FROM " +
-                "tjs_accident AS t1 " +
-                "INNER JOIN t_enforcement  AS t2 ON t1.companyId = t2.ID ";
+                "tjs_special_company AS t2 " +
+                "INNER JOIN t_enforcement  AS t1 ON t1.companyId = t2.ID ";
 
         sql = connectSqlString(startDate, endDate, industryType, province, city, "", sql);
         sql = sql+" group by name";
