@@ -3,6 +3,7 @@ package com.topcom.tjs.service;
 import com.topcom.cms.base.service.GenericManager;
 import com.topcom.tjs.domain.TjsEnforcement;
 import com.topcom.tjs.vo.KVPair;
+import com.topcom.tjs.vo.Kv;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -125,11 +126,11 @@ public interface TjsEnforcementManager extends GenericManager<TjsEnforcement, Lo
      */
     Map<String,Object> sumByDateAndAreaAndIndustryTypeAndDocument(String startDate, String endDate, String industryType, String province, String city, String companyId);
 
-    Map<String,List<KVPair>> countByEnforcet(String startDate, String endDate, String industryType, String province, String city);
+    List<Kv> countByEnforcet(String startDate, String endDate, String industryType, String province, String city);
 
-    Map<String,Object> countByJGZG(String startDate, String endDate, String industryType, String province, String city);
+    List<Kv> countByJGZG(String startDate, String endDate, String industryType, String province, String city);
 
-    Map countByZFPZ(String startDate, String endDate, String industryType, String province, String city);
+    List<Kv>  countByZFPZ(String startDate, String endDate, String industryType, String province, String city);
 
     List<KVPair> countByArea(String startDate, String endDate, String province, String city, String industryType);
 }

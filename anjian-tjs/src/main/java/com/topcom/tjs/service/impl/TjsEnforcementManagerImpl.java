@@ -6,6 +6,7 @@ import com.topcom.tjs.domain.TjsEnforcement;
 import com.topcom.tjs.service.TjsEnforcementManager;
 import com.topcom.tjs.utils.RowMappers;
 import com.topcom.tjs.vo.KVPair;
+import com.topcom.tjs.vo.Kv;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,9 +183,8 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
     }
 
     @Override
-    public Map<String,List<KVPair>> countByEnforcet(String startDate, String endDate, String industryType, String province, String city) {
+    public List<Kv> countByEnforcet(String startDate, String endDate, String industryType, String province, String city) {
         String[] keyArray = new String[]{"死亡人数","事故起数","执法次数","违法行为"};
-        Map<String,List<KVPair>> result = new HashMap<>();
         //执法行为  违法行为
         //死亡人数  事故起数
         String sqlAcc = "select DATE_FORMAT(happenedTime, '%Y') as 年,DATE_FORMAT(happenedTime, '%m') as 月,sum(deathNumber) as 死亡人数,count(1) as 事故起数 " +
@@ -259,16 +259,17 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
             ybyh.add(new KVPair(key,jsonObject.get("一般隐患").toString()));
             zdyh.add(new KVPair(key,jsonObject.get("重大隐患").toString()));
         }
-        result.put("死亡人数",deathNumberKV);
-        result.put("事故起数",accNumber);
-        result.put("违法行为",zhifa);
-        result.put("执法次数",weifa);
-        result.put("一般隐患",ybyh);
-        result.put("重大隐患",zdyh);
-        return result;
+        List<Kv> kvList = new ArrayList<>();
+        kvList.add(new Kv("死亡人数",deathNumberKV));
+        kvList.add(new Kv("事故起数",accNumber));
+        kvList.add(new Kv("违法行为",zhifa));
+        kvList.add(new Kv("执法次数",weifa));
+        kvList.add(new Kv("一般隐患",ybyh));
+        kvList.add(new Kv("重大隐患",zdyh));
+        return kvList;
     }
     @Override
-    public Map<String, Object> countByJGZG(String startDate, String endDate, String industryType, String province, String city) {
+    public List<Kv> countByJGZG(String startDate, String endDate, String industryType, String province, String city) {
         String sql = "select sum(CCYBSGYHX) as 一般隐患 ," +
                 "sum(CCZDSGYHX) as 重大隐患, " +
                 "(sum(YZGYBSGYH)+ sum(YZGZDSGYH))*100/(sum(CCYBSGYHX)+sum(CCZDSGYHX)) as 整改率 " +
@@ -278,24 +279,24 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
         String sql_not = sql + "and t2.id NOT IN (SELECT companyId from tjs_accident acc GROUP BY companyId)";
         Map accMap = jdbcTemplate.queryForMap(sql_acc);
         Map notMap = jdbcTemplate.queryForMap(sql_not);
-        Map resultMap = new HashMap();
-        resultMap.put("事故企业",accMap);
-        resultMap.put("非事故企业",notMap);
-        return resultMap;
+        List<Kv> result = new ArrayList();
+        result.add(new Kv("事故企业",Kv.map2Kv(accMap)));
+        result.add(new Kv("非事故企业",Kv.map2Kv(notMap)));
+        return result;
     }
 
     @Override
-    public Map countByZFPZ(String startDate, String endDate, String industryType, String province, String city) {
+    public List<Kv> countByZFPZ(String startDate, String endDate, String industryType, String province, String city) {
         String sql = "select JFJCLB as name,count(1) as  value  from t_enforcement t1 INNER JOIN tjs_special_company t2 on t1.companyId=t2.ID " ;
         sql = connectSqlString(startDate, endDate, industryType, province, city, "", sql);
         String sql_acc = sql + " and t2.id IN (SELECT companyId from tjs_accident acc GROUP BY companyId)  group by JFJCLB";
         String sql_not = sql + "and t2.id NOT IN (SELECT companyId from tjs_accident acc GROUP BY companyId)  group by JFJCLB";
         List<KVPair> accList = jdbcTemplate.query(sql_acc, RowMappers.kvPairRowMapper());
         List<KVPair> notList = jdbcTemplate.query(sql_acc, RowMappers.kvPairRowMapper());
-        Map resultMap = new HashMap();
-        resultMap.put("事故企业",accList);
-        resultMap.put("非事故企业",notList);
-        return resultMap;
+        List<Kv> result = new ArrayList();
+        result.add(new Kv("事故企业",accList));
+        result.add(new Kv("非事故企业",notList));
+        return result;
     }
 
     @Override
@@ -310,7 +311,7 @@ public class TjsEnforcementManagerImpl extends GenericManagerImpl<TjsEnforcement
         }
         String sql = "select "+condition+" as name ,count(1) as value FROM " +
                 "tjs_accident AS t1 " +
-                "INNER JOIN t_enforcement AS t2 ON t1.companyId = t2.ID ";
+                "INNER JOIN t_enforcement  AS t2 ON t1.companyId = t2.ID ";
 
         sql = connectSqlString(startDate, endDate, industryType, province, city, "", sql);
         sql = sql+" group by name";
