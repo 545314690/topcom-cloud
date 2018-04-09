@@ -3,6 +3,8 @@ package com.topcom.tjs.utils;
 
 //import org.apache.commons.io.output.FileWriterWithEncoding;
 
+import org.apache.commons.io.output.FileWriterWithEncoding;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -89,45 +91,45 @@ public class FileUtil {
      * @param append   是否追加
      * @throws IOException
      */
-//    public synchronized static void write(String str, String fileName,
-//                                          boolean append) throws IOException {
-//        // 写入文件的url
-//        String urlcontent = null;
-//        BufferedWriter bw1;
-//        urlcontent = str;
-//        File file = new File(fileName);
-//        if (!file.exists()) {
-//            file.createNewFile();
-//        }
-//        bw1 = new BufferedWriter(new FileWriterWithEncoding(file, "UTF-8",
-//                append));
-//        bw1.write(urlcontent);
-//        bw1.flush();
-//        bw1.close();
-//    }
-//
-//    /**
-//     * 写文件
-//     *
-//     * @param str      要写的内容
-//     * @param fileName （文件路径）文件名
-//     * @param code     编码
-//     * @param append   是否追加
-//     * @throws IOException
-//     */
-//    public static void write(String str, String fileName, String code,
-//                             boolean append) throws IOException {
-//        BufferedWriter bw1;
-//        str = str + '\n';
-//        File file = new File(fileName);
-//        if (!file.exists()) {
-//            file.createNewFile();
-//        }
-//        bw1 = new BufferedWriter(new FileWriterWithEncoding(file, code, append));
-//        bw1.write(str);
-//        bw1.flush();
-//        bw1.close();
-//    }
+    public synchronized static void write(String str, String fileName,
+                                          boolean append) throws IOException {
+        // 写入文件的url
+        String urlcontent = null;
+        BufferedWriter bw1;
+        urlcontent = str;
+        File file = new File(fileName);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        bw1 = new BufferedWriter(new FileWriterWithEncoding(file, "UTF-8",
+                append));
+        bw1.write(urlcontent);
+        bw1.flush();
+        bw1.close();
+    }
+
+    /**
+     * 写文件
+     *
+     * @param str      要写的内容
+     * @param fileName （文件路径）文件名
+     * @param code     编码
+     * @param append   是否追加
+     * @throws IOException
+     */
+    public static void write(String str, String fileName, String code,
+                             boolean append) throws IOException {
+        BufferedWriter bw1;
+        str = str + '\n';
+        File file = new File(fileName);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        bw1 = new BufferedWriter(new FileWriterWithEncoding(file, code, append));
+        bw1.write(str);
+        bw1.flush();
+        bw1.close();
+    }
 
     /**
      * 根据文件名 获取文件内容

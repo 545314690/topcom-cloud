@@ -5,6 +5,7 @@ import com.topcom.cms.common.page.DateParam;
 import com.topcom.tjs.domain.TjsEnforcement;
 import com.topcom.tjs.service.TjsEnforcementManager;
 import com.topcom.tjs.vo.KVPair;
+import com.topcom.tjs.vo.Kv;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,4 +187,60 @@ public class TjsEnforcementController extends GenericController<
                                            @RequestParam(required = false) String province, @RequestParam(required = false) String city, @RequestParam(required = false) String companyId) {
         return tjsEnforcementManager.sumByDateAndAreaAndIndustryTypeAndDocument(startDate, endDate, industryType, province, city, companyId);
     }
+
+
+    @ApiOperation("违法执法行为关联分析")
+    @RequestMapping(
+            value = {"countByEnforcet"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<Kv> countByEnforcet(@RequestParam String startDate, @RequestParam String endDate,
+
+                                               @RequestParam(required = false) String industryType,
+                                               @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByEnforcet(startDate, endDate, industryType, province, city);
+    }
+
+    @ApiOperation("监管整改")
+    @RequestMapping(
+            value = {"countByAccAndCompany"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<Kv> countByAccAndCompany(@RequestParam String startDate, @RequestParam String endDate,
+
+                                                    @RequestParam(required = false) String industryType,
+                                                    @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByJGZG(startDate, endDate, industryType, province, city);
+    }
+
+    @ApiOperation("执法碰撞")
+    @RequestMapping(
+            value = {"countByZFPZ"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<Kv> countByZFPZ(@RequestParam String startDate, @RequestParam String endDate,
+
+                          @RequestParam(required = false) String industryType,
+                          @RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+        return tjsEnforcementManager.countByZFPZ(startDate, endDate, industryType, province, city);
+    }
+
+    @ApiOperation("地区统计")
+    @RequestMapping(
+            value = {"countByArea"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<KVPair> countByArea(@RequestParam String startDate,@RequestParam String endDate,@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
+
+        return tjsEnforcementManager.countByArea( startDate,endDate,province,city,industryType);
+    }
+
 }
