@@ -3,6 +3,7 @@ package com.topcom.tjs.controller;
 import com.topcom.cms.base.web.spring.controller.GenericController;
 import com.topcom.tjs.domain.TjsSpecialCompany;
 import com.topcom.tjs.service.TjsSpecialCompanyManager;
+import com.topcom.tjs.vo.CompanyVO;
 import com.topcom.tjs.vo.KVPair;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -109,5 +110,15 @@ public class TjsSpecialCompanyController extends GenericController<
     @ResponseBody
     public List<KVPair> countByLicenceDate(@RequestParam(required = false) String industryType,@RequestParam(required = false) String province, @RequestParam(required = false) String city) {
         return tjsSpecialCompanyManager.countByAreaAndIndustryTypeAndcountByLicenceDate(industryType,province,city);
+    }
+    @ApiOperation("查询范围内的企业")
+    @RequestMapping(
+            value = {"findByCircleArea"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    @ResponseBody
+    public List<CompanyVO> findByCricleArea(@RequestParam  Double lat, @RequestParam Double lng, @RequestParam Double radius) {
+        return tjsSpecialCompanyManager.findByCircleArea(lat,lng,radius);
     }
 }

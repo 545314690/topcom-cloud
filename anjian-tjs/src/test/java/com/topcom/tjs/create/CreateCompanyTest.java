@@ -64,13 +64,13 @@ public class CreateCompanyTest {
                 //行业分类代码 与所属行业对应
                 company.setIndustryNumber(random.nextInt(5));
                 company.setIndustryType(industryType[company.getIndustryNumber()]);
-                company.setLat(object.get("lat").toString());
+                company.setLat(Double.valueOf(object.get("lat").toString()));
                 company.setLawPlan(random.nextBoolean());
                 company.setLicence(session[random.nextInt(2)]);
                 company.setLicenceStartDate(CreateDataUtil.getRandomDate(new DateParam("2016-01-01", "2017-12-12")));
                 //结束时间为开始时间加上6个月
                 company.setLicenceEndDate(new Date((long) (company.getLicenceStartDate().getTime() + 6 * 30.5 * 24 * 60 * 60)));
-                company.setLng(object.get("lng").toString());
+                company.setLng(Double.valueOf(object.get("lng").toString()));
                 company.setLogoType(logoType[random.nextInt(logoType.length - 1)]);
                 company.setNumber(random.nextLong());
                 //发证机关

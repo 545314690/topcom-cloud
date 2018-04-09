@@ -33,13 +33,13 @@ public class TjsSpecialCompany extends BaseEntityModel {
     /**
      * 经纬度
      */
-    @Column(columnDefinition="VARCHAR(50) COMMENT '经纬度'")
-    private String lat;
+    @Column(columnDefinition="DOUBLE(9,6) COMMENT '经纬度'")
+    private Double lat;
     /**
      * 经纬度
      */
-    @Column(columnDefinition="VARCHAR(50) COMMENT '经纬度'")
-    private String lng;
+    @Column(columnDefinition="DOUBLE(9,6) COMMENT '经纬度'")
+    private Double lng;
 
     @Column(columnDefinition="BIT COMMENT '列入安全生产监管重点企业'")
     private Boolean special;
@@ -160,19 +160,19 @@ public class TjsSpecialCompany extends BaseEntityModel {
         this.county = county;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public Double getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(Double lng) {
         this.lng = lng;
     }
 

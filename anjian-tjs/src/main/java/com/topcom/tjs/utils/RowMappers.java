@@ -1,6 +1,7 @@
 package com.topcom.tjs.utils;
 
 import com.topcom.tjs.domain.TjsSpecialCompany;
+import com.topcom.tjs.vo.CompanyVO;
 import com.topcom.tjs.vo.KVPair;
 import com.topcom.tjs.vo.TBHB;
 import org.springframework.jdbc.core.RowMapper;
@@ -69,8 +70,25 @@ public class RowMappers {
                 TjsSpecialCompany company = new TjsSpecialCompany();
                 company.setId(resultSet.getLong("id"));
                 company.setCompanyName(resultSet.getString("companyName"));
-                company.setLng(resultSet.getString("lng"));
-                company.setLat(resultSet.getString("lat"));
+                company.setLng(resultSet.getDouble("lng"));
+                company.setLat(resultSet.getDouble("lat"));
+                return company;
+            }
+        };
+    }
+    /**
+     * 企业RowMapper
+     * @return
+     */
+    public static RowMapper<CompanyVO> companyVORowMapper() {
+        return new RowMapper<CompanyVO>() {
+            @Override
+            public CompanyVO mapRow(ResultSet resultSet, int i) throws SQLException {
+                CompanyVO company = new CompanyVO();
+                company.setId(resultSet.getLong("id"));
+                company.setCompanyName(resultSet.getString("companyName"));
+                company.setLng(resultSet.getDouble("lng"));
+                company.setLat(resultSet.getDouble("lat"));
                 return company;
             }
         };
