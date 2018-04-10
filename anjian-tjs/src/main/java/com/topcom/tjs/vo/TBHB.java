@@ -3,6 +3,7 @@ package com.topcom.tjs.vo;
 import java.io.Serializable;
 
 /**
+ * 同比环比VO
  * Created by lsm on 2018/3/27 0027.
  */
 public class TBHB implements Serializable {

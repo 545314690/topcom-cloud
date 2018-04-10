@@ -3,7 +3,6 @@ package com.topcom.tjs.controller;
 import com.topcom.cms.base.web.spring.controller.GenericController;
 import com.topcom.tjs.domain.TjsSpecialCompany;
 import com.topcom.tjs.service.TjsSpecialCompanyManager;
-import com.topcom.tjs.vo.CompanyVO;
 import com.topcom.tjs.vo.KVPair;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -118,7 +117,7 @@ public class TjsSpecialCompanyController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<CompanyVO> findByCricleArea(@RequestParam  Double lat, @RequestParam Double lng, @RequestParam Double radius) {
+    public List<TjsSpecialCompany> findByCricleArea(@RequestParam  Double lat, @RequestParam Double lng, @RequestParam Double radius) {
         return tjsSpecialCompanyManager.findByCircleArea(lat,lng,radius);
     }
 }

@@ -7,7 +7,6 @@ import com.topcom.tjs.domain.TjsSpecialCompany;
 import com.topcom.tjs.service.TjsSpecialCompanyManager;
 import com.topcom.tjs.utils.GeoUtil;
 import com.topcom.tjs.utils.RowMappers;
-import com.topcom.tjs.vo.CompanyVO;
 import com.topcom.tjs.vo.KVPair;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,8 @@ public class TjsSpecialCompanyManagerImpl extends GenericManagerImpl<TjsSpecialC
 
     @Override
     public List<TjsSpecialCompany> findByArea(String industryType, String province, String city) {
-        String sql = "SELECT id,companyName,lat,lng FROM tjs_special_company ";
+        String sql = "SELECT * FROM tjs_special_company ";
+//        String sql = "SELECT id,companyName,lat,lng FROM tjs_special_company ";
         boolean flag = false;
         if (StringUtils.isNotBlank(industryType)) {
             flag = true;
@@ -129,14 +129,14 @@ public class TjsSpecialCompanyManagerImpl extends GenericManagerImpl<TjsSpecialC
     }
 
     @Override
-    public List<CompanyVO> findByCircleArea(Double lat, Double lng, Double radius) {
+    public List<TjsSpecialCompany> findByCircleArea(Double lat, Double lng, Double radius) {
         //先根据原点和半径求出矩形区域
         Rectangle rect = GeoUtil.geoRectangle(lat, lng, radius);
         //查询出在矩形区域内的企业
-        String sql = "SELECT id,companyName,lat,lng FROM tjs_special_company  WHERE (lng BETWEEN ? AND ?) AND (lat BETWEEN ? AND ?); ";
-        List<CompanyVO> specialCompanyList = jdbcTemplate.query(sql, new Object[]{rect.getMinX(), rect.getMaxX(), rect.getMinY(), rect.getMaxY()}, RowMappers.companyVORowMapper());
+        String sql = "SELECT * FROM tjs_special_company  WHERE (lng BETWEEN ? AND ?) AND (lat BETWEEN ? AND ?); ";
+        List<TjsSpecialCompany> specialCompanyList = jdbcTemplate.query(sql, new Object[]{rect.getMinX(), rect.getMaxX(), rect.getMinY(), rect.getMaxY()}, RowMappers.tjsSpecialCompanyRowMapper());
         //根据原点到企业所在位置的距离和半径对比过滤出在圆形范围内的点，去掉矩形内圆形外的点
-        List<CompanyVO> companies = specialCompanyList.stream().filter(tjsSpecialCompany -> {
+        List<TjsSpecialCompany> companies = specialCompanyList.stream().filter(tjsSpecialCompany -> {
             return GeoUtil.filter(lat, lng, tjsSpecialCompany.getLat(), tjsSpecialCompany.getLng(), radius);
         }).collect(Collectors.toList());
         return companies;

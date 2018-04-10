@@ -73,6 +73,28 @@ public class RowMappers {
                 company.setCompanyName(resultSet.getString("companyName"));
                 company.setLng(resultSet.getDouble("lng"));
                 company.setLat(resultSet.getDouble("lat"));
+                company.setAddress(resultSet.getString("address"));
+                company.setSCC(resultSet.getString("SCC"));
+                company.setProvince(resultSet.getString("province"));
+                company.setCity(resultSet.getString("city"));
+                company.setSpecial(resultSet.getBoolean("special"));
+                company.setScale(resultSet.getBoolean("scale"));
+                company.setProductType(resultSet.getString("productType"));
+                company.setIndustryNumber(resultSet.getInt("industryNumber"));
+                company.setIndustryType(resultSet.getString("industryType"));
+                company.setCompanyAttribute(resultSet.getString("companyAttribute"));
+                company.setLogoType(resultSet.getString("logoType"));
+                company.setPersonNumber(resultSet.getInt("personNumber"));
+                company.setCompanyType(resultSet.getString("companyType"));
+                company.setLicence(resultSet.getString("licence"));
+                company.setNumber(resultSet.getLong("number"));
+                company.setOrganName(resultSet.getString("organName"));
+                company.setLicenceStartDate(resultSet.getDate("licenceStartDate"));
+                company.setLicenceEndDate(resultSet.getDate("licenceEndDate"));
+                company.setGLFL(resultSet.getString("GLFL"));
+                company.setHazardousChemicals(resultSet.getBoolean("hazardousChemicals"));
+                company.setLawPlan(resultSet.getBoolean("lawPlan"));
+                company.setCancellation(resultSet.getBoolean("cancellation"));
                 return company;
             }
         };

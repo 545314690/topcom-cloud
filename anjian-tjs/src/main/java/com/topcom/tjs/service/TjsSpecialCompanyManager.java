@@ -2,7 +2,6 @@ package com.topcom.tjs.service;
 
 import com.topcom.cms.base.service.GenericManager;
 import com.topcom.tjs.domain.TjsSpecialCompany;
-import com.topcom.tjs.vo.CompanyVO;
 import com.topcom.tjs.vo.KVPair;
 
 import java.util.List;
@@ -28,5 +27,5 @@ public interface TjsSpecialCompanyManager extends GenericManager<TjsSpecialCompa
 
     List<KVPair> countByAreaAndIndustryTypeAndcountByLicenceDate(String industryType, String province, String city);
 
-    List<CompanyVO> findByCircleArea(Double lat, Double lng, Double radius);
+    List<TjsSpecialCompany> findByCircleArea(Double lat, Double lng, Double radius);
 }

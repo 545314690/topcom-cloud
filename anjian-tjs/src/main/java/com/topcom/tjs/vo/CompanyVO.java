@@ -18,6 +18,12 @@ public class CompanyVO implements Serializable {
 
     private String companyName;
 
+    private String address;
+
+    private String province;
+
+    private String city;
+
     public Long getId() {
         return id;
     }
