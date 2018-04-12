@@ -117,7 +117,7 @@ public class TjsSpecialCompanyController extends GenericController<
             produces = {"application/json"}
     )
     @ResponseBody
-    public List<TjsSpecialCompany> findByCricleArea(@RequestParam  Double lat, @RequestParam Double lng, @RequestParam Double radius) {
+    public List<TjsSpecialCompany> findByCircleArea(@RequestParam  Double lat, @RequestParam Double lng, @RequestParam Double radius) {
         return tjsSpecialCompanyManager.findByCircleArea(lat,lng,radius);
     }
 }
