@@ -10,7 +10,6 @@ import java.util.List;
 public class ChartData {
     private String name;
     private List<NameValue> data;
-
     public ChartData() {
     }
 
